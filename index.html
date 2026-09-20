@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f7fb" />
+    <title>Pulse — сообщения</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Список чатов">
+        <header class="sidebar-head">
+          <div class="brand"><span class="brand-mark">✦</span> pulse</div>
+          <button class="icon-button compose" aria-label="Новое сообщение">✎</button>
+        </header>
+
+        <label class="search" for="search-input">
+          <span>⌕</span>
+          <input id="search-input" type="search" placeholder="Поиск" />
+        </label>
+
+        <nav class="filter-row" aria-label="Фильтры чатов">
+          <button class="filter active">Все <span>12</span></button>
+          <button class="filter">Непрочитанные <span>3</span></button>
+        </nav>
+
+        <section class="chat-list" aria-label="Диалоги">
+          <button class="chat active" data-chat="anna" type="button">
+            <span class="avatar anna">А<span class="online-dot"></span></span>
+            <span class="chat-copy"><b>Анна Белова</b><small>Выглядит просто волшебно ✨</small></span>
+            <span class="chat-meta"><time>12:46</time><i class="read">✓✓</i></span>
+          </button>
+          <button class="chat" data-chat="team" type="button">
+            <span class="avatar group">С</span>
+            <span class="chat-copy"><b>Studio Team <em>4</em></b><small>Мария: Собрала новый экран</small></span>
+            <span class="chat-meta"><time>11:32</time><i class="badge">2</i></span>
+          </button>
+          <button class="chat" data-chat="max" type="button">
+            <span class="avatar max">М<span class="online-dot"></span></span>
+            <span class="chat-copy"><b>Макс Орлов</b><small>Голосовое сообщение</small></span>
+            <span class="chat-meta"><time>10:18</time><i class="voice">◖ 0:18</i></span>
+          </button>
+          <button class="chat" data-chat="saved" type="button">
+            <span class="avatar saved">⌑</span>
+            <span class="chat-copy"><b>Избранное</b><small>Идеи для весенней поездки</small></span>
+            <span class="chat-meta"><time>вчера</time></span>
+          </button>
+          <button class="chat" data-chat="lena" type="button">
+            <span class="avatar lena">Е</span>
+            <span class="chat-copy"><b>Елена Ким</b><small>Увидимся в пятницу!</small></span>
+            <span class="chat-meta"><time>вчера</time><i class="read">✓✓</i></span>
+          </button>
+        </section>
+
+        <footer class="profile">
+          <span class="avatar me">Н</span>
+          <span><b>Никита</b><small>В сети</small></span>
+          <button class="more" aria-label="Меню">•••</button>
+        </footer>
+      </aside>
+
+      <section class="conversation" aria-label="Переписка с Анной Беловой">
+        <header class="conversation-head">
+          <div class="contact"><span class="avatar anna">А<span class="online-dot"></span></span><span><b id="contact-name">Анна Белова</b><small id="contact-status">в сети</small></span></div>
+          <div class="header-actions"><button class="icon-button" aria-label="Видеозвонок">◉</button><button class="icon-button" aria-label="Информация">ⓘ</button></div>
+        </header>
+
+        <div class="message-area" id="message-area">
+          <div class="date-pill">Сегодня</div>
+          <article class="message incoming">Доброе утро! Я наконец-то собрала подборку для нашей поездки 🌿<time>12:39</time></article>
+          <article class="message incoming">Как тебе этот вариант?</article>
+          <article class="message outgoing">О, очень нравится! Особенно свет и эти тёплые детали.<time>12:43 <span>✓✓</span></time></article>
+          <article class="photo-card">
+            <div class="photo-art" aria-label="Абстрактное изображение интерьера">
+              <div class="sun"></div><div class="arch"></div><div class="window"></div><div class="plant p1"></div><div class="plant p2"></div><div class="chair"></div>
+            </div>
+            <div class="photo-caption">Выглядит просто волшебно ✨ <time>12:46 <span>✓✓</span></time></div>
+          </article>
+          <div class="typing" id="typing"><span></span><span></span><span></span></div>
+        </div>
+
+        <form class="composer" id="composer">
+          <button class="attach" type="button" aria-label="Прикрепить файл">＋</button>
+          <input id="message-input" autocomplete="off" placeholder="Сообщение" aria-label="Введите сообщение" />
+          <button class="emoji" type="button" aria-label="Эмодзи">☺</button>
+          <button class="send" aria-label="Отправить сообщение" type="submit">↑</button>
+        </form>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
