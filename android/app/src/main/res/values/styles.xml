@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="yc_accent">#00A3FF</color>
+    <color name="yc_bg">#FFFFFF</color>
+    <style name="Theme.YC" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/yc_bg</item>
+        <item name="android:statusBarColor">@color/yc_bg</item>
+        <item name="android:navigationBarColor">@color/yc_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorAccent">@color/yc_accent</item>
+    </style>
+</resources>

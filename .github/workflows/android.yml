@@ -1,0 +1,49 @@
+name: YOUCHAT APK
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Prepare
+        env:
+          GS: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          KS: ${{ secrets.KEYSTORE_B64 }}
+        run: |
+          if [ -z "$KS" ]; then echo "Нет секрета KEYSTORE_B64"; exit 1; fi
+          printf '%s' "$KS" | base64 -d > android/yc.jks
+          mkdir -p android/app/src/main/assets
+          cp index.html android/app/src/main/assets/index.html
+          if [ -n "$GS" ]; then printf '%s' "$GS" > android/app/google-services.json; fi
+          ls -la android/app
+      - name: Build APK
+        working-directory: android
+        env:
+          VC: ${{ github.run_number }}
+          KS_PASS: ${{ secrets.KS_PASS }}
+        run: gradle assembleRelease --no-daemon --stacktrace
+      - name: Rename
+        run: cp android/app/build/outputs/apk/release/app-release.apk YOUCHAT.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: YOUCHAT-apk
+          path: YOUCHAT.apk
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: YOUCHAT (сборка ${{ github.run_number }})
+          files: YOUCHAT.apk
+          make_latest: true

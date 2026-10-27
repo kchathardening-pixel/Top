@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.application'
+}
+// Push-уведомления включаются, когда рядом лежит google-services.json из Firebase
+if (file('google-services.json').exists()) {
+    apply plugin: 'com.google.gms.google-services'
+}
+
+android {
+    namespace 'ru.youchat.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'ru.youchat.app'
+        minSdk 24
+        targetSdk 35
+        versionCode((System.getenv('VC') ?: '1') as int)
+        versionName(System.getenv('VN') ?: '3.5')
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../yc.jks')
+            storePassword System.getenv('KS_PASS') ?: 'youchat-ks'
+            keyAlias 'youchat'
+            keyPassword System.getenv('KS_PASS') ?: 'youchat-ks'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.5.1')
+    implementation 'com.google.firebase:firebase-messaging'
+}
