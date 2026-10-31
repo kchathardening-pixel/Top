@@ -1,0 +1,5 @@
+<!doctype html><meta charset="utf-8"><title>YOUCHAT</title><script>
+/* ссылки вида /u/nick и /join/xxx: открываем приложение с параметром */
+var b=location.pathname.split('/').filter(Boolean),base=location.pathname.indexOf('/Top/')===0||location.pathname.indexOf('/top/')===0?'/'+b[0]+'/':'/';
+var rest=b.slice(base==='/'?0:1).join('/');location.replace(base+'?go='+encodeURIComponent(rest)+location.hash);
+</script>

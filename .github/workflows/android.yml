@@ -27,11 +27,13 @@ jobs:
           mkdir -p android/app/src/main/assets
           cp index.html android/app/src/main/assets/index.html
           if [ -n "$GS" ]; then printf '%s' "$GS" > android/app/google-services.json; fi
+          echo "VN=$(grep -o "const VERSION='[0-9.]*'" index.html | head -1 | grep -o '[0-9][0-9.]*')" >> $GITHUB_ENV
           ls -la android/app
       - name: Build APK
         working-directory: android
         env:
           VC: ${{ github.run_number }}
+          VN: ${{ env.VN }}
           KS_PASS: ${{ secrets.KS_PASS }}
         run: gradle assembleRelease --no-daemon --stacktrace
       - name: Rename

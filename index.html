@@ -1948,6 +1948,213 @@ html.hallo .chtitle::after{content:" 🎃";font-size:.8em}
 .ds-you i{background:#fff;border:1.2px solid rgba(23,24,43,.18);border-radius:6px 6px 6px 2px;box-shadow:1.5px 2px 0 rgba(23,24,43,.1)}
 .ds-you .p3{background:linear-gradient(135deg,#0fa78a,#6C5CE7);border:0}.ds-you .p4{background:#17182B;border-radius:8px 8px 8px 3px}
 .dspick{grid-template-columns:repeat(2,1fr)!important}
+
+
+/* 4.0 звонки */
+.callv::after{background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.15) 40%,rgba(0,0,0,.6))}
+.callv .cinfo .avw{position:relative;border-radius:50%;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.callv.ringing .cinfo .avw::before,.callv.ringing .cinfo .avw::after{content:"";position:absolute;inset:-14px;border-radius:50%;border:2px solid rgba(255,255,255,.45);animation:cring 2.2s ease-out infinite;pointer-events:none}
+.callv.ringing .cinfo .avw::after{animation-delay:1.1s}
+@keyframes cring{0%{transform:scale(.85);opacity:.9}100%{transform:scale(1.55);opacity:0}}
+.callv .cst{padding:4px 12px;border-radius:14px;background:rgba(0,0,0,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.callv .cb2 button{transition:transform .15s,background .2s;box-shadow:0 4px 18px rgba(0,0,0,.18)}
+.callv .cb2 button:active{transform:scale(.92)}
+.callv .cb2 span{opacity:.9;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+.callv.video .cbtns{padding:14px 18px;border-radius:28px;background:rgba(0,0,0,.28);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.callv.video .lv{border:2px solid rgba(255,255,255,.6)}
+
+/* 4.0 меню вложений */
+.sheet.attp{left:0;right:0;bottom:0;gap:0}
+.attbox{background:var(--bg2,var(--cell));border-radius:22px 22px 0 0;padding:6px 0 calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.18)}
+.attgrab{width:38px;height:5px;border-radius:3px;background:var(--fg3,rgba(127,127,127,.4));margin:4px auto 10px}
+.attgal{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;max-height:44vh;overflow-y:auto;padding:0 3px}
+.attgal>button{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--cell2,rgba(127,127,127,.12))}
+.attcam{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--accent);font-size:13px}
+.attcam small{color:var(--fg)}
+.attth img,.attth video{width:100%;height:100%;object-fit:cover;display:block}
+.attth .attv{position:absolute;left:6px;bottom:6px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;display:grid;place-items:center}
+.attth .attck{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;background:rgba(0,0,0,.2);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+.attth.on .attck{background:var(--accent)}.attth.on img,.attth.on video{transform:scale(.9);border-radius:10px;transition:transform .15s}
+.atthint{grid-column:span 1;display:flex;align-items:center;padding:8px;font-size:12px;color:var(--fg2);line-height:1.3}
+.atttabs{display:flex;gap:4px;overflow-x:auto;padding:12px 10px 4px;scrollbar-width:none}.atttabs::-webkit-scrollbar{display:none}
+.atttabs button{flex:0 0 66px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--fg2)}
+.atttabs .atic{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:#fff;font-size:14px}
+.attopts{display:flex;gap:8px;padding:8px 12px 0;overflow-x:auto}
+.attopts button{flex:none;display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:16px;background:var(--cell2,rgba(127,127,127,.12));font-size:13px;white-space:nowrap}
+.attsendw{padding:12px 16px 4px}.attsend{width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+/* 4.0 пузыри: группировка как в Telegram — соседние сообщения «склеиваются» */
+:root{--r-bub:19px;--r-join:7px}
+.mrow.me .bub:not(.tail){border-bottom-right-radius:var(--r-join)}
+.mrow.them .bub:not(.tail){border-bottom-left-radius:var(--r-join)}
+.mrow.me+.mrow.me .bub{border-top-right-radius:var(--r-join)}
+.mrow.them+.mrow.them .bub{border-top-left-radius:var(--r-join)}
+.me .bub.tail{border-bottom-right-radius:5px}.them .bub.tail{border-bottom-left-radius:5px}
+.them .bub:not(.media){box-shadow:0 1px 1.5px rgba(0,0,0,.08)}
+.bub{padding:7px 12px 6px 13px}
+:root[data-bub="notail"] .mrow .bub{border-radius:var(--r-bub)!important}
+:root[data-bub="square"]{--r-join:4px}
+
+/* 4.0 вход и регистрация */
+.authv2{background:var(--bg)}
+.authv2 .scroll{padding-bottom:30px}
+.ahero{position:relative;padding:calc(56px + env(safe-area-inset-top,0px)) 24px 26px;text-align:center;color:#fff;background:radial-gradient(120% 90% at 100% 0%,color-mix(in srgb,var(--accent) 70%,#7a5cff) 0%,transparent 60%),linear-gradient(160deg,color-mix(in srgb,var(--accent) 92%,#000),color-mix(in srgb,var(--accent) 60%,#0a3d4a));border-radius:0 0 32px 32px;box-shadow:0 12px 40px color-mix(in srgb,var(--accent) 30%,transparent)}
+.ahero h1{font-size:28px;margin:14px 0 6px;font-weight:700;letter-spacing:-.01em}
+.ahero p{margin:0;font-size:14.5px;opacity:.85;line-height:1.35}
+.aback{position:absolute;left:10px;top:calc(10px + env(safe-area-inset-top,0px));width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(10px)}
+.alogo{width:84px;height:84px;margin:0 auto;border-radius:26px;display:grid;place-items:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.authv2 .avpick{position:relative;width:104px;margin:0 auto}
+.authv2 .avpick #rav{border-radius:50%;box-shadow:0 0 0 4px rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.2);cursor:pointer}
+.avcam{position:absolute;right:-2px;bottom:-2px;width:36px;height:36px;border-radius:50%;background:#fff;color:var(--accent);display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.2);cursor:pointer}
+.authv2 .form{display:flex;flex-direction:column;gap:10px;padding:22px 18px 0}
+.afield{display:flex;align-items:center;gap:10px;padding:0 14px;min-height:54px;border-radius:16px;background:var(--cell);border:1.5px solid transparent;color:var(--fg2);transition:border-color .15s,box-shadow .15s}
+.afield:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+.afield input{flex:1;min-width:0;border:0;background:none;outline:none;font-size:17px;color:var(--fg);padding:14px 0}
+.afield .aat{font-size:19px;width:20px;text-align:center}
+.aeye{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--fg3,var(--fg2))}.aeye.on{color:var(--accent)}
+.authv2 .hint{padding:0 6px;margin-top:-4px;font-size:12.5px}
+.apw{display:flex;gap:6px;padding:0 6px}.apw i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.apw[data-s="1"] i:nth-child(-n+1){background:#ff453a}.apw[data-s="2"] i:nth-child(-n+2){background:#ff9f0a}.apw[data-s="3"] i:nth-child(-n+3){background:#30b158}.apw[data-s="4"] i{background:#30b158}
+.abtn{margin-top:8px;min-height:54px;border-radius:16px;font-size:17px;background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 70%,#7a5cff));box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 35%,transparent)}
+.authv2 .lnkbtn b{color:var(--accent)}
+.aterms{text-align:center;font-size:12px;color:var(--fg2);padding:4px 20px;line-height:1.35}
+.onb-btns{display:flex;flex-direction:column;align-items:stretch;gap:10px}
+.onb-btns .btn{min-height:54px;border-radius:16px;font-size:17px;background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 70%,#7a5cff));box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 35%,transparent)}
+.onb-btns .lnkbtn{align-self:center;padding:10px 16px;font-weight:600}
+.bdrow{display:flex;align-items:center;gap:4px;width:calc(100% - 24px);margin:4px 12px 6px;padding:8px 6px 8px 12px;border-radius:16px;background:linear-gradient(120deg,color-mix(in srgb,#ff9f0a 16%,var(--cell)),color-mix(in srgb,#ff2d78 12%,var(--cell)))}
+.bdrow .bdmain{flex:1;display:flex;align-items:center;gap:12px;text-align:left;min-width:0}
+.bdrow .bdp{font-size:28px;flex:none}.bdrow .bdt{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+.bdrow b{font-size:15px}.bdrow small{font-size:12.5px;color:var(--fg2)}
+.bdrow .bdx{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:var(--fg2)}
+
+.ctcard{margin:8px 16px 4px;border-radius:var(--r-card);background:var(--cell);overflow:hidden}
+.ctmain{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;text-align:left}.ctmain .tx{flex:1;display:flex;flex-direction:column;line-height:1.25}.ctmain b{font-size:15.5px}.ctmain small{font-size:12.5px;color:var(--fg2)}
+.ctbtns{display:flex;gap:8px;padding:0 12px 12px;flex-wrap:wrap}.ctbtns button{flex:1;min-width:140px;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border-radius:12px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);font-size:13.5px;font-weight:600}
+.ctmain .sq-ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;flex:none}
+.ctcard{box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+.vmini{position:absolute;right:12px;bottom:calc(90px + env(safe-area-inset-bottom,0px));width:min(62vw,280px);aspect-ratio:16/9;z-index:140;border-radius:16px;overflow:hidden;background:#000;box-shadow:0 14px 40px rgba(0,0,0,.45);touch-action:none;animation:fi .2s}
+.vmini video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
+.vmini .vmbar{position:absolute;top:6px;right:6px;display:flex;gap:6px;z-index:2}
+.vmini .vmbar button{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center}
+
+/* быстрый режим: без размытия и тяжёлых теней (на слабых телефонах размытие — главная причина «лагов») */
+:root[data-lite] *,:root[data-lite] *::before,:root[data-lite] *::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+:root[data-lite]{--glass:color-mix(in srgb,var(--bg) 97%,var(--fg))}
+:root[data-lite] .bub,:root[data-lite] .cb2 button,:root[data-lite] .abtn,:root[data-lite] .onb-btns .btn,:root[data-lite] .attbox{box-shadow:none!important}
+:root[data-lite] .bub{animation:none}
+:root[data-lite] .callv .cbg{filter:none}
+
+/* фиксация записи как в Telegram: тянем вверх — запись идёт без удержания */
+.reclock{position:absolute;right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px));width:44px;padding:10px 0 8px;border-radius:22px;display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 4px 18px rgba(0,0,0,.14);color:var(--fg2);z-index:4;opacity:0;transform:translateY(12px);transition:opacity .2s,transform .12s;pointer-events:none}
+.reclock.on{opacity:1;transform:none}
+.reclock .lki{color:color-mix(in srgb,var(--fg2) calc((1 - var(--k,0))*100%),var(--accent))}
+.reclock .lka{animation:lkup 1.2s ease-in-out infinite}
+.reclock.locked{color:var(--accent)}.reclock.locked .lka{display:none}
+@keyframes lkup{0%,100%{transform:translateY(2px);opacity:.5}50%{transform:translateY(-3px);opacity:1}}
+
+/* 4.1: без «прыжков» — анимация только у нового сообщения, а не у всех при каждой перерисовке */
+.bub{animation:none}
+.mrow.fresh{animation:fresh .34s cubic-bezier(.2,.9,.3,1)}
+.mrow.me.fresh{animation:freshme .36s cubic-bezier(.2,.9,.3,1)}
+@keyframes freshme{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes fresh{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#msgs{overflow-anchor:none}
+/* загрузка фото и видео прямо в чате */
+.upov{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.28);border-radius:inherit;z-index:2}
+.upov svg{position:absolute;width:52px;height:52px;animation:upspin 1.1s linear infinite}
+.upov.det svg{animation:none;transform:rotate(-90deg)}
+.upov .upr{stroke-dashoffset:calc(100 - var(--p,3));transition:stroke-dashoffset .25s}
+.upov:not(.det) .upr{stroke-dashoffset:72}
+.upov button{position:relative;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff}
+@keyframes upspin{to{transform:rotate(360deg)}}
+
+/* личный QR-код */
+.viewer.qrv2{display:flex;flex-direction:column;color:#fff;overflow:hidden;z-index:120;transition:background .4s}
+.qrpat{position:absolute;inset:-20px;display:grid;grid-template-columns:repeat(6,1fr);gap:26px 10px;padding:30px 10px;opacity:.18;pointer-events:none;font-size:34px;text-align:center}
+.qrpat span{transform:rotate(var(--r)) scale(var(--s))}
+.qrtop,.qrbot{position:relative;display:flex;align-items:center;justify-content:space-between;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 0}
+.qrbot{padding:0 18px calc(22px + env(safe-area-inset-bottom,0px))}
+.qrr{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14)}
+.qrpill{display:flex;align-items:center;gap:8px;height:52px;padding:0 20px;border-radius:26px;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14);font-size:16.5px;font-weight:600}
+.qrpills{display:flex;gap:4px;padding:4px;border-radius:30px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14)}
+.qrpills button{width:52px;height:46px;border-radius:23px;display:grid;place-items:center;color:#fff}
+.qrmid{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 24px}
+.qrc2{width:min(76vw,320px);background:#fff;border-radius:30px;padding:26px 26px 22px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:qrin .45s cubic-bezier(.2,.9,.3,1.2)}
+.qrsvg{width:100%;aspect-ratio:1}.qrsvg svg{width:100%;height:100%;display:block}
+.qrc2 b{font-size:clamp(22px,7vw,30px);font-weight:800;letter-spacing:.01em;font-family:-apple-system,"SF Pro Display",Roboto,sans-serif;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qrh2{margin:0;font-size:13.5px;line-height:1.4;text-align:center;color:rgba(255,255,255,.75);max-width:300px}
+.qrsel{position:absolute;left:12px;right:12px;bottom:calc(92px + env(safe-area-inset-bottom,0px));padding:12px;border-radius:24px;background:rgba(20,20,22,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);animation:min .25s}
+.qrsw,.qrem{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}.qrsw::-webkit-scrollbar,.qrem::-webkit-scrollbar{display:none}
+.qrsw button{flex:none;width:46px;height:46px;border-radius:50%;border:3px solid transparent}.qrsw button.on{border-color:#fff}
+.qrem button{flex:none;width:46px;height:46px;border-radius:14px;font-size:24px;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.08)}.qrem button.on{background:rgba(255,255,255,.28)}
+@keyframes qrin{from{opacity:0;transform:scale(.9) translateY(10px)}}
+.viewer.qrv2{align-items:stretch!important;justify-content:flex-start!important;padding:0!important}
+.qrtop,.qrbot{width:100%;box-sizing:border-box}
+/* ===== Профиль 4.1: чистый современный вид ===== */
+.pscr{background:var(--bg2)}
+.pscr .cover{height:132px;border-radius:0 0 28px 28px;filter:saturate(.92)}
+.pscr .pname{letter-spacing:-.4px}
+.pscr .pnick{display:flex;justify-content:center;align-items:center;gap:6px;font-size:15px}
+.pscr .pdot{color:var(--fg3)}.pscr .pst2{color:var(--fg2);font-weight:400}
+.pscr .pstat{display:none}
+.pillbtns.pb4{grid-template-columns:repeat(4,1fr);gap:8px;margin:0 16px}
+.pillbtns.pb4>button,.pillbtns.pb4>label{height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:var(--cell);border-radius:16px;color:var(--fg);font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:transform .15s ease,background .15s ease}
+.pillbtns.pb4>button svg,.pillbtns.pb4>label svg{color:var(--accent)}
+.pillbtns.pb4>button:active,.pillbtns.pb4>label:active{transform:scale(.95)}
+.pscr .ptabs{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:3px;margin:14px 16px 0;background:color-mix(in srgb,var(--fg) 7%,transparent);border-radius:13px}
+.pscr .ptabs button{height:34px;justify-content:center;border-radius:10px;background:transparent;color:var(--fg2);font-size:13.5px;transition:background .2s ease,color .2s ease,box-shadow .2s ease}
+.pscr .ptabs button.on{background:var(--cell);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.pscr .group{border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.pscr .pav .av{border-color:var(--bg2);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.qfrow{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,var(--cell)),var(--cell))}
+.qfrow .qfav{width:40px;height:40px;font-size:0;background:none}
+.qfrow .qfav .av{width:40px!important;height:40px!important}
+/* ===== Маркет ===== */
+.mkhero{display:flex;gap:16px;align-items:center;margin:16px 16px 12px}
+.mkicon{width:96px!important;height:96px!important;border-radius:24px!important;flex:none;box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 30%,transparent)}
+.mkhd{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.mkhd b{font-size:22px;letter-spacing:-.4px}.mkhd small{color:var(--fg2);font-size:14px;margin:2px 0 12px}
+.mkget{min-width:120px;height:34px;padding:0 20px;border-radius:17px;background:var(--accent);color:#fff;font-weight:700;font-size:15px;position:relative;overflow:hidden;transition:transform .15s ease,opacity .2s}
+.mkget:active{transform:scale(.95)}.mkget.off{background:color-mix(in srgb,var(--fg) 10%,transparent);color:var(--fg2)}
+.mkget.run{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent)}
+.mkget.run::before{content:"";position:absolute;inset:0;width:var(--p,0%);background:color-mix(in srgb,var(--accent) 35%,transparent);transition:width .25s ease}
+.mkget .mkpct{position:relative;font-variant-numeric:tabular-nums}
+.mktrust{display:flex;gap:12px;align-items:flex-start;margin:0 16px 12px;padding:12px 14px;border-radius:16px;background:var(--cell)}
+.mktrust>svg{flex:none;margin-top:1px}.mktrust b{display:block;font-size:15px}.mktrust small{display:block;color:var(--fg2);font-size:13px;margin-top:2px;line-height:1.35}
+.mktrust.ok>svg{color:#30b158}.mktrust.bad{background:color-mix(in srgb,#ff9f0a 12%,var(--cell))}.mktrust.bad>svg,.mktrust.bad b{color:#c77700}
+:root[data-theme="dark"] .mktrust.bad>svg,:root[data-theme="dark"] .mktrust.bad b{color:#ffb340}
+.mktrust a{color:var(--accent)}
+.mkstats{display:grid;grid-template-columns:repeat(4,1fr);margin:4px 16px 8px;padding:12px 0;border-top:.5px solid var(--line);border-bottom:.5px solid var(--line)}
+.mkstats>div{display:flex;flex-direction:column;align-items:center;gap:3px;border-left:.5px solid var(--line)}.mkstats>div:first-child{border-left:0}
+.mkstats small{font-size:11px;color:var(--fg2);text-transform:uppercase;letter-spacing:.3px}.mkstats b{font-size:15px}
+.mknotes{padding:12px 16px;white-space:pre-line;font-size:15px;line-height:1.45}
+.mkempty{margin:8px 16px 4px;padding:22px;text-align:center;color:var(--fg2);background:var(--cell);border-radius:16px;line-height:1.5}
+.mkfoot{margin:8px 32px 0;font-size:12.5px;color:var(--fg2);line-height:1.4}
+.val.mono{font-family:ui-monospace,Menlo,monospace;font-size:13px}
+/* ===== 4.3: плавность и скорость ===== */
+/* затемнение нижнего экрана без filter — дешевле для GPU на слабых телефонах */
+#main,.layer{transition:transform .5s cubic-bezier(.32,.72,0,1)!important}
+#main.under,.layer.under{filter:none!important}
+#main::after,.layer::after{content:"";position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.32,.72,0,1);z-index:999}
+#main.under::after,.layer.under::after{opacity:.12}
+:root[data-theme="dark"] #main.under::after,:root[data-theme="dark"] .layer.under::after{opacity:.3}
+.layer{will-change:transform}
+/* длинные списки рисуются только видимой частью */
+.list>.crow{content-visibility:auto;contain-intrinsic-size:auto 76px}
+.group>.cell{contain:layout paint}
+/* нажатия как в iOS */
+.crow{transition:background-color .2s ease,transform .2s cubic-bezier(.3,1.3,.5,1)}
+.crow:active{transform:scale(.985)}
+.cell:active,.sheet .grp>button:active{transition:background-color 0s}
+.btn,.round,.lnk{transition:transform .18s cubic-bezier(.3,1.4,.5,1),opacity .15s}
+.btn:active,.round:active{transform:scale(.94)}
+/* новые сообщения собеседника — мягкое появление слева */
+.mrow.them.fresh{animation:freshthem .4s cubic-bezier(.2,1.1,.4,1)}
+@keyframes freshthem{from{opacity:0;transform:translate(-10px,10px) scale(.94)}to{opacity:1;transform:none}}
+/* шторки и меню */
+.sheet .grp{transform-origin:50% 100%}
+.dim{backdrop-filter:none}
+@media (prefers-reduced-motion:reduce){.crow,.btn,.round{transition:none}.mrow.them.fresh{animation:none}#main::after,.layer::after{transition:none}}
 </style>
 </head>
 <body>
@@ -1962,12 +2169,13 @@ html.hallo .chtitle::after{content:" 🎃";font-size:.8em}
 window.YOUCHAT_SUPABASE = {
   url: "https://zixpmlvuhtvqmzgzrxdo.supabase.co",
   key: "sb_publishable_JOkGjAdCaYIWeWagZtt_rw_9xgbbKkJ",
+  vapid: "BD61duSiyyTTmv7sM-vQo3d4tpd3j8Q_sAv7CRCyP-shCZU-o_ailv9kaf1yk-0XAZ7Y4vH5-_WrPOas_xZ4N2M",
   anon: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppeHBtbHZ1aHR2cW16Z3pyeGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwMTg0MTEsImV4cCI6MjEwODU5NDQxMX0.dli4cgP-lX-zMmGwv7zDipTMrgVCWQ2peugyQTRegi8"
 };
 window.YOUCHAT_FIREBASE = { databaseURL: "supabase" };
 window.YOUCHAT_LOCAL = false;
 /* Необязательно: адрес вашего сайта, если index.html выложен в интернет (для ссылок-приглашений) */
-window.YOUCHAT_SITE = '';
+window.YOUCHAT_SITE = 'https://kchathardening-pixel.github.io/Top';
 </script>
 <script>
 /* YOUCHAT ↔ Supabase: база и вход — одной функцией внутри Postgres (yc_api), мгновенные обновления через Supabase Realtime.
@@ -2015,19 +2223,24 @@ const xr=(url,body,headers,ms)=>new Promise((res,rej)=>{try{const x=new XMLHttpR
  x.onload=()=>{const t=x.responseText;res({status:x.status||200,ok:!x.status||(x.status>=200&&x.status<300),json:async()=>JSON.parse(t)})};x.onerror=()=>rej(new Error('xhr: нет соединения'));x.ontimeout=()=>{const e=new Error('timeout');e.name='AbortError';rej(e)};x.send(body)}catch(e){rej(e)}});
 const fr=async(url,body,headers,ms)=>{const r=await xfetch(url,{method:'POST',headers,body},ms);const st=typeof r.status==='number'?r.status:200;let t=null;try{t=await r.text()}catch(e){}
  return {status:st,ok:r.ok!=null?!!r.ok:(st>=200&&st<300),json:async()=>JSON.parse(t)}};
-const TRS=['rf','rx','sf','sx'];let TRI=0;try{const v=+localStorage.getItem('yc-sb-tr');if(v>0&&v<TRS.length)TRI=v}catch(e){}
+/* порядок: сначала путь как в 3.4 (служебная функция, без параметров в адресе) — его пропускают все обёртки; прямой путь включается сам, если проверка прошла */
+const TRS=['sf','rf','sx','rx'];let TRI=0;try{const v=localStorage.getItem('yc-sb-tr2');if(v&&TRS.indexOf(v)>=0)TRI=TRS.indexOf(v)}catch(e){}
 const rawPost1=async(tr,body,ms)=>{const h={'Content-Type':'text/plain;charset=UTF-8'};const viaSvc=tr[0]==='s';
  if(!viaSvc&&!QMODE&&KEYS[0])h.apikey=KEYS[0];const url=viaSvc?SVC:rpcUrl();
  const r=tr[1]==='x'?await xr(url,body,h,ms):await fr(url,body,h,ms);
  if(!viaSvc&&(r.status===401||r.status===403)&&QMODE){QMODE=false;try{localStorage.setItem('yc-sb-hdr','1')}catch(e){}return rawPost1(tr,body,ms)}
+ if(r.status===404||r.status===0)throw new Error('HTTP '+r.status);
  return r};
+const setTR=i=>{if(i===TRI)return;TRI=i;try{localStorage.setItem('yc-sb-tr2',TRS[i])}catch(e){}};
+let upgraded=false;
+const tryUpgrade=()=>{if(upgraded||TRS[TRI]!=='sf')return;upgraded=true;setTimeout(async()=>{try{const r=await rawPost1('rf',JSON.stringify({op:'whoami',tok:TOK,cid:CID}),6000);if(r.ok){const j=await r.json();if(j&&typeof j==='object'&&!j.error&&!j.message)setTR(TRS.indexOf('rf'))}}catch(e){}},4000)};
 const rawPost=async(body,ms)=>{let last;for(let k=0;k<TRS.length;k++){const i=(TRI+k)%TRS.length;
-  try{const r=await rawPost1(TRS[i],body,k?Math.min(ms,15000):ms);if(i!==TRI){TRI=i;try{localStorage.setItem('yc-sb-tr',String(i))}catch(e){}}return r}
-  catch(e){last=e;if(e&&e.name==='AbortError'&&k)break}}
+  try{const r=await rawPost1(TRS[i],body,k?Math.min(ms,12000):ms);setTR(i);if(!k)tryUpgrade();return r}
+  catch(e){last=e}}
  throw last||new Error('нет соединения')};
 const post=async(op,b,tries)=>{tries=tries==null?3:tries;let last;
  for(let i=0;i<tries;i++){try{
-   const r=await rawPost(JSON.stringify({...b,op,tok:TOK,cid:CID}),op==='auth'?45000:25000);
+   const r=await rawPost(JSON.stringify({...b,op,tok:TOK,cid:CID}),op==='auth'?45000:15000);
    if(r.status>=500||r.status===429){last=new Error('HTTP '+r.status);await sleep(400*(i+1));continue}
    let j;try{j=await r.json()}catch(e){j=null}
    if(!r.ok){j={error:(j&&(j.message||j.error))||('HTTP '+r.status)}}
@@ -2093,10 +2306,14 @@ const rtOpen=()=>{if(!RT||ws||typeof WebSocket==='undefined')return;const key=KE
  s.onclose=()=>{clearInterval(hb);if(ws===s)ws=null;if(!joined)keyI++;rtLive=false;rtTry++;setTimeout(rtOpen,Math.min(30000,1000*rtTry))};
  s.onerror=()=>{}};
 /* опрос как запасной путь: если Realtime недоступен — чаще, если работает — изредка */
-let lastPoll=0;
+let lastPoll=0;const SINCE={s:null,t:0,ok:null,busy:false};
 setInterval(()=>{if(!subs.size)return;const vis=typeof document==='undefined'||document.visibilityState!=='hidden';const now=Date.now();
  if(awaitEcho&&now-awaitEcho>4000){awaitEcho=0;deafUntil=now+120000}
- const fast=!rtLive||deafUntil>now;const gap=!vis?60000:fast?3500:60000;if(now-lastPoll>=gap){lastPoll=now;refreshAll()}},1000);
+ const fast=!rtLive||deafUntil>now;
+ /* без websocket: каждые 1.5 с спрашиваем только «что изменилось» и перечитываем лишь затронутое */
+ if(fast&&vis&&SINCE.ok!==false&&!SINCE.busy&&now-SINCE.t>=(document.querySelector('#msgs')?900:1500)){SINCE.t=now;SINCE.busy=true;call('since',{s:SINCE.s}).then(r=>{SINCE.busy=false;if(!r||r.error||r.s==null){SINCE.fail=(SINCE.fail||0)+1;if(SINCE.fail>3)SINCE.ok=false;return}
+   SINCE.fail=0;SINCE.ok=true;const first=SINCE.s==null;SINCE.s=r.s;if(r.reset){refreshAll();return}if(!first&&r.h)r.h.forEach(h=>onChg(h))},()=>{SINCE.busy=false})}
+ const gap=!vis?60000:fast?(SINCE.ok?30000:3500):60000;if(now-lastPoll>=gap){lastPoll=now;refreshAll()}},300);
 /* «отключение»: что записать, когда вкладка закрыта или пропала связь */
 let hasOd=false;
 const ping=async()=>{if(!hasOd||!TOK)return;try{const r=await post('ping',{},1);if(r&&r.known===false){hasOd=false;setConn(false);setTimeout(()=>setConn(true),50)}}catch(e){}};
@@ -2156,12 +2373,17 @@ const auth={currentUser:UID?mkUser(UID):null,
 const db={ref:p=>new Ref(p||'')};
 window.YC_TEST_FIREBASE=()=>({db,auth,TS:{'.sv':'timestamp'}});
 /* ---- push: токен от приложения-обёртки YOUCHAT для Android ---- */
-const pushReg=()=>{try{const N=window.YCNative;if(!N||!TOK||!UID)return;const t=N.getPushToken?String(N.getPushToken()||''):'';if(!t)return;
+/* web push: в браузере (сайт по https) — подписка через service worker и ключ VAPID */
+const u8k=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0))};
+const webPushReg=async force=>{try{if(!TOK||!UID||!C.vapid||!window.YC_SWREG||!('PushManager' in window)||typeof Notification==='undefined'||Notification.permission!=='granted')return;
+ const reg=window.YC_SWREG;let sub=await reg.pushManager.getSubscription();if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:u8k(C.vapid)});
+ const t=JSON.stringify(sub.toJSON());if(!force&&LS.get('yc-push-tok-'+UID)===t)return;const r=await call('pushreg',{token:t,plat:'web'});if(r&&r.ok)LS.set('yc-push-tok-'+UID,t)}catch(e){}};
+const pushReg=(force)=>{try{const N=window.YCNative;if(!N){webPushReg(force);return}if(!TOK||!UID)return;const t=N.getPushToken?String(N.getPushToken()||''):'';if(!t)return;
  if(LS.get('yc-push-tok-'+UID)===t)return;call('pushreg',{token:t,plat:'fcm'}).then(r=>{if(r&&r.ok)LS.set('yc-push-tok-'+UID,t)}).catch(()=>{})}catch(e){}};
 window.YCNativePush=t=>{setTimeout(pushReg,50)};
 setTimeout(pushReg,4000);setInterval(pushReg,10*60000);
 /* ---- файлы: хранилище Supabase (быстро, через CDN), содержимое зашифровано на устройстве ---- */
-const xhr=(method,url,body,headers,resType,ms)=>new Promise((res,rej)=>{try{const x=new XMLHttpRequest();x.open(method,url,true);if(resType)x.responseType=resType;for(const k in headers||{})x.setRequestHeader(k,headers[k]);x.timeout=ms||120000;x.onload=()=>res({status:x.status,body:x.response});x.onerror=()=>rej(new Error('xhr'));x.ontimeout=()=>rej(new Error('timeout'));x.send(body==null?null:body)}catch(e){rej(e)}});
+const xhr=(method,url,body,headers,resType,ms)=>new Promise((res,rej)=>{try{const x=new XMLHttpRequest();x.open(method,url,true);if(resType)x.responseType=resType;for(const k in headers||{})x.setRequestHeader(k,headers[k]);x.timeout=ms||120000;if(method==='PUT'&&x.upload&&window.YC_UPPROG){const f=window.YC_UPPROG;x.upload.onprogress=e=>{if(e.lengthComputable)try{f(e.loaded/e.total)}catch(_){}}}x.onload=()=>res({status:x.status,body:x.response});x.onerror=()=>rej(new Error('xhr'));x.ontimeout=()=>rej(new Error('timeout'));x.send(body==null?null:body)}catch(e){rej(e)}});
 const svc=async o=>{const bd=JSON.stringify({...o,tok:TOK}),H={'Content-Type':'text/plain;charset=UTF-8'};let r;try{r=await fr(SVC,bd,H,60000)}catch(e){r=await xr(SVC,bd,H,60000)}let j=null;try{j=await r.json()}catch(e){}if(!r.ok||!j||j.error)throw new Error((j&&j.error)||('HTTP '+r.status));return j};
 const upload=async bytes=>{const j=await svc({op:'up',size:bytes.byteLength||bytes.length});const url=BASE+'/storage/v1'+j.url;const H={'Content-Type':'application/octet-stream','x-upsert':'false'};let ok=false;
  try{const r=await xhr('PUT',url,new Blob([bytes],{type:'application/octet-stream'}),H,null,300000);ok=r.status>=200&&r.status<300}catch(e){}
@@ -2171,7 +2393,7 @@ const download=async path=>{const url=BASE+'/storage/v1/object/public/media/'+pa
  try{const r=await xhr('GET',url,null,null,'arraybuffer',300000);if(r.status===200&&r.body&&r.body.byteLength)return r.body}catch(e){}
  try{const r=await xfetch(url,{method:'GET'},300000);if(r.ok){const ab=await r.arrayBuffer();if(ab&&ab.byteLength)return ab}}catch(e){}
  const j=await svc({op:'dl',path});const bin=atob(j.b64||'');const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);return u8.buffer};
-window.YC_SUPA={rt:()=>({live:rtLive,deaf:deafUntil>Date.now(),subs:subs.size}),cid:CID,upload,download,admin:()=>call('admin',{}),pushReg};
+window.YC_SUPA={op:(o,b)=>call(o,b||{}),pub:p=>BASE+'/storage/v1/object/public/media/'+p,rt:()=>({live:rtLive,deaf:deafUntil>Date.now(),subs:subs.size}),cid:CID,upload,download,admin:()=>call('admin',{}),pushReg};
 })();
 
 /* ===== Тестовый режим без сервера: база Firebase эмулируется прямо на устройстве (IndexedDB) =====
@@ -2315,8 +2537,9 @@ const fail=(code,error)=>{throw {code,error}};
 const fbErr=e=>{const m=String((e&&(e.code||e.message))||e||'');
  if(/PERMISSION_DENIED|permission/i.test(m))return 'Нет прав на это действие';
  if(/network|unavailable|offline|Failed to fetch/i.test(m))return 'Нет соединения с интернетом'+(e&&e.detail?' ['+e.detail+']':'');
- if(/operation-not-allowed/.test(m))return 'В Firebase не включён вход по почте: Authentication → Sign-in method → Email/Password';
+ if(/operation-not-allowed/.test(m))return 'Вход по почте временно недоступен';
  if(/too-many-requests/.test(m))return 'Слишком много попыток. Подождите минуту';
+ if(/rate\/too-many/.test(m))return 'Слишком много действий подряд. Подождите немного';
  if(/wrong-password|invalid-credential|invalid-login|user-not-found/.test(m))return 'Неверный ник или пароль';
  if(/weak-password/.test(m))return 'Пароль слишком простой — минимум 6 символов';
  if(/OperationError|decrypt/i.test(m))return 'Не удалось расшифровать — неверный пароль?';
@@ -2334,7 +2557,7 @@ const sealPriv=async(jwk,pub,pw)=>{const salt=rnd(16);const e=await aesEnc(await
 /* ---------- кэши ---------- */
 const C={dmT:{},users:{},meta:{},keys:{},dec:new Map(),blobs:new Map(),members:{}};
 const userOf=async uid=>{if(C.users[uid])return C.users[uid];const u=await gv(`users/${uid}`);if(u)C.users[uid]={...u,id:uid};return C.users[uid]||null};
-const pubUser=u=>u&&({away:u.away&&u.away.on?u.away:null,biz:u.biz&&u.biz.on?u.biz:null,birthday:u.birthday||null,link:u.link||null,cover:u.cover==null?null:u.cover,cmds:u.bot&&Array.isArray(u.cmds)?u.cmds:null,pm:u.pm||null,show:Array.isArray(u.show)?u.show:null,nc:u.nc==null?null:u.nc,pe:u.pe||null,np:+u.np||0,owner:u.owner||null,bot:!!u.bot,id:u.id,nick:u.nick,name:u.name,bio:u.bio||'',hue:u.hue||0,avatar:pvH(u,'photo')?null:(u.avatar||null),status:u.status||'',seen:u.show_seen===false||pvH(u,'seen')?null:(u.seen||null),online:!!(FB.online&&FB.online[u.id])&&!pvH(u,'seen')});
+const pubUser=u=>u&&({away:u.away&&u.away.on?u.away:null,biz:u.biz&&u.biz.on?u.biz:null,birthday:pvH(u,'bday')?null:(u.birthday||null),link:u.link||null,cover:u.cover==null?null:u.cover,cmds:u.bot&&Array.isArray(u.cmds)?u.cmds:null,pm:u.pm||null,show:Array.isArray(u.show)?u.show:null,nc:u.nc==null?null:u.nc,pe:u.pe||null,np:+u.np||0,owner:u.owner||null,bot:!!u.bot,id:u.id,nick:u.nick,name:u.name,bio:pvH(u,'bio')?'':(u.bio||''),hue:u.hue||0,avatar:pvH(u,'photo')?null:(u.avatar||null),status:u.status||'',seen:u.show_seen===false||pvH(u,'seen')?null:(u.seen||null),online:!!(FB.online&&FB.online[u.id])&&!pvH(u,'seen')});
 const pvH=(u,k)=>{const p=u&&u.priv;if(!p||!p[k]||p[k]==='all'||!FB.me||u.id===FB.me)return false;if(p[k]==='nobody')return true;C.inC=C.inC||{};const c=C.inC[u.id];if(c===undefined)pvChk(u.id);return c!==true};
 const pvChk=uid=>{C.inC=C.inC||{};if(C.inC[uid]!==undefined)return;C.inC[uid]=false;gv(`contacts/${uid}/${FB.me}`).then(v=>{if(v){C.inC[uid]=true;if(RTF.emit&&C.users[uid])RTF.emit({type:'user',user:pubUser(C.users[uid])})}}).catch(()=>{})};
 const metaOf=async(cid,fresh)=>{if(!fresh&&C.meta[cid])return C.meta[cid];const m=await gv(`chats/${cid}/meta`);if(m)C.meta[cid]=m;else delete C.meta[cid];return m};
@@ -2539,10 +2762,13 @@ const seedOfficial=async()=>{
  await sys(lounge,'Группа создана')};
 const login=async({nick,password})=>{const n=String(nick||'').replace(/^@/,'').toLowerCase();const rec=n?await gv(`nicks/${n}`):null;if(!rec)fail(401,'Неверный ник или пароль');
  await FB.auth.signInWithEmailAndPassword(rec.login,String(password||''));FB.me=FB.auth.currentUser.uid;
- await unlockWithPassword(FB.me,String(password));return {token:'fb',user:pubUser(await userOf(FB.me))}};
+ if(!await gv(`keys/${FB.me}`)){/* ключ сброшен администратором: создаём новый (старые личные переписки останутся зашифрованы старым ключом) */
+  const kp=await crypto.subtle.generateKey(ECP,true,['deriveBits']);const jwk=await crypto.subtle.exportKey('jwk',kp.privateKey);const pj=await crypto.subtle.exportKey('jwk',kp.publicKey);const pub={x:pj.x,y:pj.y};
+  await upd({[`keys/${FB.me}`]:await sealPriv(jwk,pub,String(password)),[`users/${FB.me}/pub`]:pub});delete C.users[FB.me];await setPriv(jwk,pub);saveLocalPriv(FB.me,jwk)}
+ else await unlockWithPassword(FB.me,String(password));return {token:'fb',user:pubUser(await userOf(FB.me))}};
 
 /* ---------- пост «что нового» в официальном канале ---------- */
-const CHANGELOG={'1.9':`**YOUCHAT 1.9** — истории, опросы и списки дел
+const CHANGELOG={'4.1':`**YOUCHAT 4.1**\n\n🔒 **Запись голосовых без удержания** — потяните кнопку микрофона вверх, запись закрепится. Нажмите «отправить», когда закончите.\n\n🖼 **Фото уходят сразу** — снимок появляется в чате мгновенно, поверх видно, как идёт загрузка.\n\n✨ **Плавные сообщения** — новые сообщения появляются мягко, без прыжков.\n\n🎧 **Музыка играет везде** — трек из профиля или голосовое продолжают звучать, пока вы переходите по приложению.\n\n🔳 **Новый QR-код** — фирменная карточка с темами и узорами, можно сохранить картинкой.\n\n👤 **Обновлённый профиль** — чище и удобнее.\n\n🤝 **Тихий друг** — мягко напомнит о близких, с кем вы давно не переписывались.\n\n🛡 **Защита от атак** — ограничение частоты запросов и закрытые служебные функции.`,'1.9':`**YOUCHAT 1.9** — истории, опросы и списки дел
 
 **Редактор историй**
 • Текст с подложкой и выбором цвета
@@ -2576,7 +2802,8 @@ const CHANGELOG={'1.9':`**YOUCHAT 1.9** — истории, опросы и сп
 • **Фильтры чатов** теперь в одну строку
 • **Кнопка «Запустить»** у новых ботов — вместо поля ввода, как в Telegram
 
-Спасибо, что пользуетесь YOUCHAT!`,'3.5':`**YOUCHAT 3.5 — скорость и уведомления**\n\n⚡ **В разы быстрее** — логика базы перенесена прямо на сервер базы данных: каждый запрос выполняется за миллисекунды, регистрация занимает пару секунд\n🖼 **Быстрые фото и видео** — файлы лежат в отдельном хранилище и раздаются через сеть доставки, при этом остаются зашифрованными\n🔔 **Push-уведомления** — в приложении YOUCHAT для Android уведомления приходят, даже когда оно закрыто; нажмите — откроется нужный чат\n📱 **Несколько устройств** — входите с разных устройств, всё синхронизируется\n🛡 **Надёжнее** — исправлен случайный выход из аккаунта после перезапуска, ключи входа хранятся с запасной копией\n📊 **Для администратора** — в админке появился раздел «Сервер и база»: пользователи, сообщения за сутки, заполненность базы и хранилища`,'3.4':`**YOUCHAT 3.4 — облачная база**\n\nYOUCHAT переехал на собственный сервер:\n\n☁️ **Общая база** — аккаунты, чаты, каналы и файлы хранятся в облаке, а не на одном устройстве\n⚡ **Мгновенная доставка** — сообщения, реакции, «печатает…» и статусы приходят сразу\n🔐 **Защита** — каждое действие проверяется на сервере по правилам доступа, пароли хранятся только в виде хэша\n📶 **Плохая связь** — если мгновенный канал недоступен, приложение само переходит на частую проверку новых сообщений\n\nВажно: аккаунты из тестового режима остались на прежнем устройстве — зарегистрируйтесь заново.`,'3.3':`**YOUCHAT 3.3 — стиль YOU**\n\nМы создали собственный язык дизайна — его нет больше нигде:\n\n📐 **Угол YOU** — у каждой карточки и кнопки один острый угол, как хвостик пузыря в нашем логотипе.\n📜 **Бумага и чернила** — тёплый «бумажный» фон, чернильный текст, мятный и фиолетовый — фирменная пара.\n🗂 **Слои** — карточки-листки с тонким контуром и смещённой тенью вместо размытия.\n⚪ **Точка** — фон «тетрадь в точку».\n🌊 **Волна** — каждое касание расходится волной от пальца.\n🟪 **Капсула** — аватарки в форме скруглённого квадрата.\n\nОсновным остаётся привычный классический вид. Стиль YOU, «Жидкое стекло» и «Минимализм» включаются в Настройки → Темы и оформление.\n\nСпасибо, что пользуетесь YOUCHAT!`,'3.2':`**YOUCHAT 3.2 — новый дизайн**\n\n✨ **Два новых стиля:** «Жидкое стекло» — прозрачные панели с бликами и объёмом, и «Минимализм» — тонкие линии и ничего лишнего. Переключаются в Настройки → Темы и оформление, там же можно вернуть классику.\n\n💠 **Фирменный вид:** новый логотип и иконка, анимированная заставка, градиенты и узор на обоях чатов.\n\n👤 **Профиль:** вкладки «Музыка · Знаки · Инфо» и размытая обложка из аватарки.\n⚙️ **Настройки:** поиск по всем пунктам.\n🌙 **Тёмная тема:** глубокий фон и неоновые акценты.\n🎞 **Анимации:** иконки вкладок, переключатели, полёт отправленного сообщения.\n\nСпасибо, что пользуетесь YOUCHAT!`,'3.1':`**YOUCHAT 3.1**\n\n📞 **Групповые звонки** — до 8 человек, с видео или без. Кнопка в шапке группы, а все участники видят баннер «Войти».\n\n🔴 **Прямые эфиры в каналах** — видео или только звук, чат эфира и реакции. Пока до 10 зрителей одновременно.\n\n🔒 **Конфиденциальность** — выберите, кто видит время входа и фото, кто может звонить и добавлять вас в группы.\n\n📱 **Вход по QR-коду** и уведомление о новом входе. Неактивные устройства выходят из аккаунта сами.\n\n📊 **Статистика каналов** — лучшее время для постов, реакции подписчиков, отписки и выгрузка в CSV. Свои эмодзи для реакций.\n\n🏷 **Теги в «Избранном»**, 📉 **экономия трафика**, 🇬🇧 **английский интерфейс** и обучение для новичков.\n\nСпасибо, что пользуетесь YOUCHAT!`,'3.0':`**YOUCHAT 3.0** — самое большое обновление\n\n🛟 **Поддержка YOUCHAT**\n• Чат «YOUCHAT Поддержка» закреплён в списке чатов\n• Бот-помощник сразу предлагает статьи из справки\n• Номер обращения, статус и оценка ответа 👍/👎\n• Встряхните телефон, чтобы сообщить об ошибке\n\n🛠 **Для разработчиков**\nНастройки → «Для разработчиков»: редактор кода с подсветкой и автоскобками, консоль мини-приложений, API-песочница, отладчик ботов, инспектор, утилиты (JSON, Base64, QR, цвета, RegExp) и резервная копия.\n\n🧩 **Мини-приложения 2.0**\nФайлы index.html, style.css и app.js, живой просмотр, хранилище данных, главная кнопка, кнопка «Назад», отправка в чат и выбор контакта.\n\n📞 **Звонки**\nЖурнал звонков, реакции во время разговора, свёрнутый звонок, смена камеры, показ экрана и индикатор качества связи.\n\n🖼 **Фото и альбомы**\nЯркость, контраст, насыщенность, тепло, стикеры, толщина кисти, отражение. Порядок фото в альбоме — перетаскиванием.\n\n✍️ **Новая панель ввода**\nОбновлённый дизайн, сетка вложений, отложенная отправка в одно касание и список черновиков.\n\n⚡ Длинные чаты теперь работают заметно быстрее.\n\nСпасибо, что пользуетесь YOUCHAT!`,'2.2':`**YOUCHAT 2.2**\n\n🧩 **Мини-приложения**\nИгры, магазины и сервисы прямо внутри YOUCHAT.\n• Настройки → «Мини-приложение»: вставьте ссылку на сайт или напишите свой код (HTML/CSS/JS)\n• Готовые шаблоны: «Привет», «Счётчик», «Кубики»\n• YouChat API: имя пользователя, уведомления, вибрация, цвета темы\n• Публикуйте в каталоге и делитесь ссылкой — она открывается прямо из чата\n\nПриложения работают в изолированном окне и не видят ваших переписок.\n\nСпасибо, что пользуетесь YOUCHAT!`,'2.1':`**YOUCHAT 2.1**\n\n⭐ **YOUCHAT Premium**\n• Никакой рекламы\n• Значок Premium рядом с именем\n• Анимированная GIF-аватарка и сияющее кольцо в профиле\n• «О себе» до 300 символов и больше места для музыки\n• Эксклюзивные темы «Аврора» и «Космос»\n\n📢 **Реклама для всех**\nТеперь любой может рассказать о своём канале, группе или боте: Настройки → «Реклама в YOUCHAT» → «Подать объявление». Каждое объявление проверяет администрация.\n\nСпасибо, что пользуетесь YOUCHAT!`,'2.0':`**YOUCHAT 2.0**\n\nБольшое обновление: боты 2.0 с магазином, записью и викторинами, новый профиль с QR-кодом, витриной и музыкой, уровни, рейтинг и событие «Хеллоуин» 🎃\n\n📢 **Реклама**\nВ YOUCHAT появятся аккуратные объявления — в списке чатов и внизу каналов. Они помогают приложению оставаться бесплатным. Любое объявление можно скрыть, а ваши переписки зашифрованы и никак не используются для рекламы.\n\nСпасибо, что пользуетесь YOUCHAT!`,'1.9.9':`**YOUCHAT 1.9.9 · Боты 2.0 и новый профиль**\n\n🤖 **Боты 2.0**\n• Новые шаблоны: **Магазин**, **Запись** на услуги, **Викторина** и **Приветствие** для групп\n• Свои **команды** и кнопка **«Меню»** в чате с ботом\n• Картинки и **кнопки-ссылки** в ответах\n• Аватар и цвет бота, статистика пользователей\n• **Проверка** бота прямо в конструкторе и **рассылки** по подписчикам\n\n👤 **Профиль**\n• Карточка «Информация» с днём рождения и копированием ника\n• **QR-код** профиля — покажите, чтобы вас нашли\n• **Витрина** знаков и достижений\n• **Музыка профиля** 🎵\n\nСпасибо, что пользуетесь YOUCHAT!`,'1.9.8':`**YOUCHAT 1.9.8 · Хеллоуин 🎃**
+Спасибо, что пользуетесь YOUCHAT!`,'4.0':`**YOUCHAT 4.0 — большое обновление**\n\n📞 **Звонки через любой интернет** — ретрансляторы связи и переподключение без обрыва.\n\n⚡ **Быстрее на слабой связи** — изменения приходят за секунду даже без мгновенного соединения.\n\n📎 **Новое меню вложений** — как в Telegram: недавние фото, галерея, файлы, опросы.\n\n👥 **Друзья из контактов** и приглашения по ссылке.\n\n🖼 **Фото для тем форума**, дни рождения друзей, новые настройки приватности.\n\n🎬 **Мини-плеер** и продолжение видео с места.\n\n🌐 **Веб-версия** с работой без сети и push-уведомлениями.\n\n🎨 **Новый дизайн** регистрации и сообщений.`,
+'3.5':`**YOUCHAT 3.5 — скорость и уведомления**\n\n⚡ **В разы быстрее** — логика базы перенесена прямо на сервер базы данных: каждый запрос выполняется за миллисекунды, регистрация занимает пару секунд\n🖼 **Быстрые фото и видео** — файлы лежат в отдельном хранилище и раздаются через сеть доставки, при этом остаются зашифрованными\n🔔 **Push-уведомления** — в приложении YOUCHAT для Android уведомления приходят, даже когда оно закрыто; нажмите — откроется нужный чат\n📱 **Несколько устройств** — входите с разных устройств, всё синхронизируется\n🛡 **Надёжнее** — исправлен случайный выход из аккаунта после перезапуска, ключи входа хранятся с запасной копией\n📊 **Для администратора** — в админке появился раздел «Сервер и база»: пользователи, сообщения за сутки, заполненность базы и хранилища`,'3.4':`**YOUCHAT 3.4 — облачная база**\n\nYOUCHAT переехал на собственный сервер:\n\n☁️ **Общая база** — аккаунты, чаты, каналы и файлы хранятся в облаке, а не на одном устройстве\n⚡ **Мгновенная доставка** — сообщения, реакции, «печатает…» и статусы приходят сразу\n🔐 **Защита** — каждое действие проверяется на сервере по правилам доступа, пароли хранятся только в виде хэша\n📶 **Плохая связь** — если мгновенный канал недоступен, приложение само переходит на частую проверку новых сообщений\n\nВажно: аккаунты из тестового режима остались на прежнем устройстве — зарегистрируйтесь заново.`,'3.3':`**YOUCHAT 3.3 — стиль YOU**\n\nМы создали собственный язык дизайна — его нет больше нигде:\n\n📐 **Угол YOU** — у каждой карточки и кнопки один острый угол, как хвостик пузыря в нашем логотипе.\n📜 **Бумага и чернила** — тёплый «бумажный» фон, чернильный текст, мятный и фиолетовый — фирменная пара.\n🗂 **Слои** — карточки-листки с тонким контуром и смещённой тенью вместо размытия.\n⚪ **Точка** — фон «тетрадь в точку».\n🌊 **Волна** — каждое касание расходится волной от пальца.\n🟪 **Капсула** — аватарки в форме скруглённого квадрата.\n\nОсновным остаётся привычный классический вид. Стиль YOU, «Жидкое стекло» и «Минимализм» включаются в Настройки → Темы и оформление.\n\nСпасибо, что пользуетесь YOUCHAT!`,'3.2':`**YOUCHAT 3.2 — новый дизайн**\n\n✨ **Два новых стиля:** «Жидкое стекло» — прозрачные панели с бликами и объёмом, и «Минимализм» — тонкие линии и ничего лишнего. Переключаются в Настройки → Темы и оформление, там же можно вернуть классику.\n\n💠 **Фирменный вид:** новый логотип и иконка, анимированная заставка, градиенты и узор на обоях чатов.\n\n👤 **Профиль:** вкладки «Музыка · Знаки · Инфо» и размытая обложка из аватарки.\n⚙️ **Настройки:** поиск по всем пунктам.\n🌙 **Тёмная тема:** глубокий фон и неоновые акценты.\n🎞 **Анимации:** иконки вкладок, переключатели, полёт отправленного сообщения.\n\nСпасибо, что пользуетесь YOUCHAT!`,'3.1':`**YOUCHAT 3.1**\n\n📞 **Групповые звонки** — до 8 человек, с видео или без. Кнопка в шапке группы, а все участники видят баннер «Войти».\n\n🔴 **Прямые эфиры в каналах** — видео или только звук, чат эфира и реакции. Пока до 10 зрителей одновременно.\n\n🔒 **Конфиденциальность** — выберите, кто видит время входа и фото, кто может звонить и добавлять вас в группы.\n\n📱 **Вход по QR-коду** и уведомление о новом входе. Неактивные устройства выходят из аккаунта сами.\n\n📊 **Статистика каналов** — лучшее время для постов, реакции подписчиков, отписки и выгрузка в CSV. Свои эмодзи для реакций.\n\n🏷 **Теги в «Избранном»**, 📉 **экономия трафика**, 🇬🇧 **английский интерфейс** и обучение для новичков.\n\nСпасибо, что пользуетесь YOUCHAT!`,'3.0':`**YOUCHAT 3.0** — самое большое обновление\n\n🛟 **Поддержка YOUCHAT**\n• Чат «YOUCHAT Поддержка» закреплён в списке чатов\n• Бот-помощник сразу предлагает статьи из справки\n• Номер обращения, статус и оценка ответа 👍/👎\n• Встряхните телефон, чтобы сообщить об ошибке\n\n🛠 **Для разработчиков**\nНастройки → «Для разработчиков»: редактор кода с подсветкой и автоскобками, консоль мини-приложений, API-песочница, отладчик ботов, инспектор, утилиты (JSON, Base64, QR, цвета, RegExp) и резервная копия.\n\n🧩 **Мини-приложения 2.0**\nФайлы index.html, style.css и app.js, живой просмотр, хранилище данных, главная кнопка, кнопка «Назад», отправка в чат и выбор контакта.\n\n📞 **Звонки**\nЖурнал звонков, реакции во время разговора, свёрнутый звонок, смена камеры, показ экрана и индикатор качества связи.\n\n🖼 **Фото и альбомы**\nЯркость, контраст, насыщенность, тепло, стикеры, толщина кисти, отражение. Порядок фото в альбоме — перетаскиванием.\n\n✍️ **Новая панель ввода**\nОбновлённый дизайн, сетка вложений, отложенная отправка в одно касание и список черновиков.\n\n⚡ Длинные чаты теперь работают заметно быстрее.\n\nСпасибо, что пользуетесь YOUCHAT!`,'2.2':`**YOUCHAT 2.2**\n\n🧩 **Мини-приложения**\nИгры, магазины и сервисы прямо внутри YOUCHAT.\n• Настройки → «Мини-приложение»: вставьте ссылку на сайт или напишите свой код (HTML/CSS/JS)\n• Готовые шаблоны: «Привет», «Счётчик», «Кубики»\n• YouChat API: имя пользователя, уведомления, вибрация, цвета темы\n• Публикуйте в каталоге и делитесь ссылкой — она открывается прямо из чата\n\nПриложения работают в изолированном окне и не видят ваших переписок.\n\nСпасибо, что пользуетесь YOUCHAT!`,'2.1':`**YOUCHAT 2.1**\n\n⭐ **YOUCHAT Premium**\n• Никакой рекламы\n• Значок Premium рядом с именем\n• Анимированная GIF-аватарка и сияющее кольцо в профиле\n• «О себе» до 300 символов и больше места для музыки\n• Эксклюзивные темы «Аврора» и «Космос»\n\n📢 **Реклама для всех**\nТеперь любой может рассказать о своём канале, группе или боте: Настройки → «Реклама в YOUCHAT» → «Подать объявление». Каждое объявление проверяет администрация.\n\nСпасибо, что пользуетесь YOUCHAT!`,'2.0':`**YOUCHAT 2.0**\n\nБольшое обновление: боты 2.0 с магазином, записью и викторинами, новый профиль с QR-кодом, витриной и музыкой, уровни, рейтинг и событие «Хеллоуин» 🎃\n\n📢 **Реклама**\nВ YOUCHAT появятся аккуратные объявления — в списке чатов и внизу каналов. Они помогают приложению оставаться бесплатным. Любое объявление можно скрыть, а ваши переписки зашифрованы и никак не используются для рекламы.\n\nСпасибо, что пользуетесь YOUCHAT!`,'1.9.9':`**YOUCHAT 1.9.9 · Боты 2.0 и новый профиль**\n\n🤖 **Боты 2.0**\n• Новые шаблоны: **Магазин**, **Запись** на услуги, **Викторина** и **Приветствие** для групп\n• Свои **команды** и кнопка **«Меню»** в чате с ботом\n• Картинки и **кнопки-ссылки** в ответах\n• Аватар и цвет бота, статистика пользователей\n• **Проверка** бота прямо в конструкторе и **рассылки** по подписчикам\n\n👤 **Профиль**\n• Карточка «Информация» с днём рождения и копированием ника\n• **QR-код** профиля — покажите, чтобы вас нашли\n• **Витрина** знаков и достижений\n• **Музыка профиля** 🎵\n\nСпасибо, что пользуетесь YOUCHAT!`,'1.9.8':`**YOUCHAT 1.9.8 · Хеллоуин 🎃**
 
 🎃 **Событие «Хеллоуин в YOUCHAT»** — до 2 ноября
 По приложению прячутся тыквы. Нажимайте на них, чтобы собрать — до 5 в день. Соберите **13 тыкв** и получите особый знак «Хеллоуин 2026» навсегда. В событии есть тема оформления и эффект для сообщений 👻
@@ -2668,7 +2895,7 @@ const fbCall=async(method,path,body)=>{
    if(String(body.password||'').length<6)fail(400,'Новый пароль — минимум 6 символов');
    try{await FB.auth.signInWithEmailAndPassword(login,String(body.old||''))}catch(e){fail(400,'Текущий пароль неверный')}
    const k=await gv(`keys/${me}`);let jwk;try{jwk=JSON.parse(D8.decode(await aesDec(await pwKey(String(body.old),b64d(k.salt)),k)))}catch(e){fail(400,'Текущий пароль неверный')}
-   await FB.auth.currentUser.updatePassword(String(body.password));await ref(`keys/${me}`).set(await sealPriv(jwk,k.pub,String(body.password)));return ok}
+   await FB.auth.currentUser.updatePassword(String(body.password));await ref(`keys/${me}`).update(await sealPriv(jwk,k.pub,String(body.password)));return ok}
   if(id==='sessions')return ok;
   const cur=await userOf(me);
   if(method==='PATCH'){const up={};
@@ -2677,7 +2904,7 @@ const fbCall=async(method,path,body)=>{
     const rec=await gv(`nicks/${cur.nick.toLowerCase()}`);if(n.toLowerCase()!==cur.nick.toLowerCase()){await ref(`nicks/${n.toLowerCase()}`).set({uid:me,login:rec.login});await ref(`nicks/${cur.nick.toLowerCase()}`).remove()}up.nick=n}
    if(body.bio!==undefined){const pr=await gv(`premium/${me}`).catch(()=>null);const isP=pr&&(!pr.until||pr.until>nowMs());up.bio=String(body.bio||'').slice(0,isP?300:160)}if(body.hue!==undefined)up.hue=Math.abs(+body.hue||0)%360;if(body.avatar!==undefined)up.avatar=body.avatar||null;
    if(body.show_seen!==undefined)up.show_seen=!!body.show_seen;
-   if(body.priv!==undefined){const z=body.priv||{};const v=(x,all3=true)=>['all','contacts'].concat(all3?['nobody']:[]).includes(x)?x:'all';up.priv={seen:v(z.seen),photo:v(z.photo),calls:v(z.calls),groups:v(z.groups,false)};up.show_seen=up.priv.seen!=='nobody'}
+   if(body.priv!==undefined){const z=body.priv||{};const v=(x,all3=true)=>['all','contacts'].concat(all3?['nobody']:[]).includes(x)?x:'all';up.priv={seen:v(z.seen),photo:v(z.photo),calls:v(z.calls),groups:v(z.groups,false),bday:v(z.bday),bio:v(z.bio),phone:v(z.phone),fwd:v(z.fwd)};up.show_seen=up.priv.seen!=='nobody'}
    if(body.sttl!==undefined)up.sttl=[0,7,30,90,180].includes(+body.sttl)?+body.sttl:180;
    if(body.away!==undefined){const z=body.away||{};const hm=v=>/^\d{2}:\d{2}$/.test(String(v||''))?String(v):null;up.away=z.on||z.text?{on:!!z.on,text:String(z.text||'').slice(0,1000),mode:['always','offline','sched'].includes(z.mode)?z.mode:'always',from:hm(z.from)||'19:00',to:hm(z.to)||'09:00',tzo:Number.isFinite(+z.tzo)?Math.round(+z.tzo):0,every:z.every==null?6:Math.min(168,Math.max(0,+z.every||0))}:null}
    if(body.biz!==undefined){const z=body.biz||{};up.biz=z.on?{on:true,cat:String(z.cat||'').slice(0,40),hours:String(z.hours||'').slice(0,80),addr:String(z.addr||'').slice(0,120),greet:String(z.greet||'').slice(0,500)}:null}if(body.birthday!==undefined)up.birthday=/^\d{4}-\d{2}-\d{2}$/.test(String(body.birthday))?String(body.birthday):null;if(body.link!==undefined)up.link=String(body.link||'').trim().slice(0,100)||null;if(body.cover!==undefined)up.cover=body.cover==null?null:Math.abs(+body.cover||0)%360;if(body.show!==undefined)up.show=Array.isArray(body.show)?body.show.map(x=>String(x).slice(0,24)).filter(x=>/^[ab]:[a-z0-9_]{1,20}$/.test(x)).slice(0,8):null;if(body.pm!==undefined){const z=body.pm;up.pm=z&&z.blob?{n:String(z.n||'Музыка').slice(0,80),blob:String(z.blob).slice(0,40),key:String(z.key||'').slice(0,100),iv:String(z.iv||'').slice(0,100),mime:String(z.mime||'audio/mpeg').slice(0,40)}:null}if(body.nc!==undefined)up.nc=body.nc==null||body.nc===''?null:Math.abs(+body.nc||0)%360;if(body.pe!==undefined)up.pe=String(body.pe||'').slice(0,8)||null;if(body.status!==undefined)up.status=String(body.status||'').trim().slice(0,70);
@@ -2782,6 +3009,27 @@ if(a==='support'||a==='help'){const sup=(await gv('nicks/efim').catch(()=>null)|
   const ids=Object.keys(await gv(`adreqby/${me}`).catch(()=>null)||{});const out=[];for(const k of ids){const r0=await gv(`adreq/${k}`).catch(()=>null);if(!r0)continue;const v={id:k,...r0};if(r0.ad){const st=await gv(`adstat/${r0.ad}`).catch(()=>null)||{};const L=Object.values(st);v.stats={views:L.reduce((a0,y)=>a0+(+y.v||0),0),clicks:L.reduce((a0,y)=>a0+(+y.c||0),0)};const ad=await gv(`ads/${r0.ad}`).catch(()=>null);v.live=!!(ad&&ad.on&&(!ad.to||ad.to>nowMs()))}out.push(v)}
   return out.sort((p1,p2)=>p2.t-p1.t)}
  if(a==='adstat'){if(!id)fail(400,'Нет объявления');const cur=await gv(`adstat/${id}/${me}`).catch(()=>null)||{};const nv={v:(cur.v||0)+Math.max(0,Math.min(50,+body.v||0)),c:(cur.c||0)+Math.max(0,Math.min(10,+body.c||0)),t:nowMs()};await ref(`adstat/${id}/${me}`).set(nv);return ok}
+ if(a==='phone'){/* поиск друзей по номеру: на сервере хранится только хэш номера, сам номер — нигде */
+  const norm=x=>{let d=String(x||'').replace(/\D/g,'');if(d.length===11&&d[0]==='8')d='7'+d.slice(1);if(d.length===10&&d[0]==='9')d='7'+d;return d.length>=10&&d.length<=15?d:''};
+  const ph=async d=>{const b=await crypto.subtle.digest('SHA-256',E8.encode('yc-ph1:'+d));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')};
+  if(id==='lookup'){const list=(Array.isArray(body.phones)?body.phones:[]).slice(0,500);const out=[];const seen=new Set();
+   await Promise.all(list.map(async it=>{const d=norm(it&&it.tel||it);if(!d||seen.has(d))return;seen.add(d);const uid=await gv(`phidx/${await ph(d)}`).catch(()=>null);
+    let u=null;if(typeof uid==='string'&&uid!==me){u=await userOf(uid).catch(()=>null)}out.push({tel:d,name:String(it&&it.name||'').slice(0,60),user:u?pubUser(u):null})}));
+   out.sort((x,y)=>(!!y.user-!!x.user)||x.name.localeCompare(y.name,'ru'));return out}
+  const k=await gv(`keys/${me}`).catch(()=>null)||{};
+  if(method==='GET')return {set:!!k.ph,tail:k.pt||null};
+  if(method==='DELETE'||!body.phone){if(k.ph){await ref(`phidx/${k.ph}`).remove().catch(()=>{});await ref(`keys/${me}`).update({ph:null,pt:null})}return {set:false}}
+  const d=norm(body.phone);if(!d)fail(400,'Введите номер полностью, например +7 900 123-45-67');const h=await ph(d);
+  const ex=await gv(`phidx/${h}`).catch(()=>null);if(ex&&ex!==me)fail(409,'Этот номер уже привязан к другому аккаунту');
+  if(k.ph&&k.ph!==h)await ref(`phidx/${k.ph}`).remove().catch(()=>{});
+  const pv=((C.users[me]||{}).priv||{}).phone;if(pv!=='nobody')await ref(`phidx/${h}`).set(me);else await ref(`phidx/${h}`).remove().catch(()=>{});
+  await ref(`keys/${me}`).update({ph:h,pt:d.slice(-2)});return {set:true,tail:d.slice(-2)}}
+ if(a==='market'){if(method==='GET')return await gv('app/market').catch(()=>null)||null;
+  const SB=window.YC_SUPA;if(!SB||!SB.op)fail(503,'Маркет недоступен в этой сборке');
+  const act=String(body.a||'');if(!['pub','del','ok','code'].includes(act))fail(400,'bad');
+  const r=await SB.op('mk',{...body,a:act});
+  if(r&&r.error){const E={'PERMISSION_DENIED: admin':[403,'Только для администратора @efim'],'mk/badcode':[403,'Неверный код подтверждения'],'mk/too-many':[429,'Слишком много попыток. Попробуйте через час'],'mk/changed':[409,'Файл версии изменился — проверьте и подтвердите заново'],'mk/none':[404,'Нет опубликованной версии'],'mk/nocode':[503,'Код подтверждения ещё не задан на сервере'],'mk/bad':[400,'Проверьте данные версии']}[r.error]||[400,String(r.error)];fail(E[0],E[1])}
+  return r}
  if(a==='release'){if(method==='GET')return await gv('app/release').catch(()=>null)||null;
   if((await gv('nicks/efim').catch(()=>null)||{}).uid!==me)fail(403,'Публиковать обновления может только администратор @efim');
   if(body.clear){await ref('app/release').remove();return {ok:true}}
@@ -2986,11 +3234,13 @@ if(a==='support'||a==='help'){const sup=(await gv('nicks/efim').catch(()=>null)|
    if(body.all){for(const k of Object.keys(cur))cur[k]=null}else if(pid&&body.unpin){cur[pid]=null}else if(pid){cur[pid]=nowMs()}else if(old){cur[old]=null}
    const rest=Object.entries(cur).filter(([,v])=>v).sort((a,b)=>b[1]-a[1]);await upd({[`chats/${id}/pins`]:Object.keys(cur).length?Object.fromEntries(Object.entries(cur).filter(([,v])=>v)):null,[`chats/${id}/pin`]:rest.length?+rest[0][0]:null});if(pid&&!body.unpin&&!body.all&&(meta.type==='group'||meta.type==='channel'))await sys(id,`${(C.users[me]||{}).name} закрепил(а) сообщение`,meta);return chatView(id)}
   if(b==='topics'){if(method==='POST'){if(!isAdm(m))fail(403,'Нужны права администратора');const title=String(body.title||'').trim().slice(0,64);if(!title)fail(400,'Введите название темы');
-    const tid=nowMs();const icon=String(body.icon||'💬').slice(0,8);await ref(`topics/${id}/${tid}`).set({e:await encFor(id,{title,icon},meta),t:tid});
-    await postRaw(id,'sys',{text:`Создана тема «${title}»`},{meta,topic:tid});return {id:tid,title,icon}}
+    const icon=String(body.icon||'💬').slice(0,8);const photo=/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(String(body.photo||''))&&String(body.photo).length<60000?String(body.photo):null;
+    if(body.tid){const tid0=+body.tid;const old=await gv(`topics/${id}/${tid0}`);if(!old)fail(404,'Тема не найдена');await ref(`topics/${id}/${tid0}`).set({e:await encFor(id,{title,icon,photo},meta),t:old.t||tid0});return {id:tid0,title,icon,photo}}
+    const tid=nowMs();await ref(`topics/${id}/${tid}`).set({e:await encFor(id,{title,icon,photo},meta),t:tid});
+    await postRaw(id,'sys',{text:`Создана тема «${title}»`},{meta,topic:tid});return {id:tid,title,icon,photo}}
    if(!m&&!meta.is_public)fail(403,'Это закрытый чат');const tps=await gv(`topics/${id}`)||{};const out=[];
    const lastIn=async tp=>{const rows=await qlist(ref(`messages/${id}`).orderByChild('tp').equalTo(tp).limitToLast(1));if(!rows.length)return null;const [k,r]=rows[0];const c=await decFrom(id,r.e);return {id:MID(k),t:r.t,user_id:r.f,kind:r.k,text:previewText(r.k,r.k==='poll'?{poll:c.poll}:c)}};
-   for(const [tid,t] of Object.entries(tps)){const c=await decFrom(id,t.e);out.push({id:+tid,title:c.title||'Тема',icon:c.icon||'💬',created:t.t,last:await lastIn(+tid)})}
+   for(const [tid,t] of Object.entries(tps)){const c=await decFrom(id,t.e);out.push({id:+tid,title:c.title||'Тема',icon:c.icon||'💬',photo:c.photo||null,created:t.t,last:await lastIn(+tid)})}
    out.sort((p1,p2)=>((p2.last&&p2.last.id)||0)-((p1.last&&p1.last.id)||0));out.push({id:null,title:'Общее',icon:'#',last:await lastIn(0)});return out}
   if(b==='search'){if(!m&&!meta.is_public)fail(403,'Это закрытый чат');const s2=(qv('q')||'').trim().toLowerCase();if(s2.length<2)return [];
    const rows=await qlist(ref(`messages/${id}`).orderByKey().limitToLast(1500));const out=[];
@@ -3423,7 +3673,7 @@ const linkFor=c=>c.slug?`${ORIGIN}/c/${c.slug}`:'';
 const LINK_RE=/\/(c|u|join)\/([\w-]+)\/?$/;
 
 /* ================= настройки (на устройстве) ================= */
-const VERSION='3.5.1';
+const VERSION='4.3.0';
 const DEF={theme:'system',accent:'mint',size:16,banners:true,sound:true,enter:true,sysnotif:false,wall:'def',folders:[],archived:{},ttl:{},amoled:false,pin:null,pinAfter:1,hidePreview:false,swipeReply:true,anim:true,tabHide:true};
 let SET={...DEF};try{SET={...DEF,...JSON.parse(localStorage.getItem('yc-set')||'{}')}}catch(e){}
 if(!SET.m15b){SET.tabHide=true;SET.m15b=1;try{localStorage.setItem('yc-set',JSON.stringify(SET))}catch(e){}}
@@ -3432,7 +3682,7 @@ let drT=null;const setDraft=(k,v)=>{if(v&&v.trim())DRAFTS[k]=v;else delete DRAFT
 const saveSet=()=>{try{localStorage.setItem('yc-set',JSON.stringify(SET))}catch(e){}};
 const WALLS={def:['var(--wall)','Стандартные'],mint:['linear-gradient(165deg,color-mix(in srgb,var(--accent) 38%,var(--bg)),var(--bg) 70%)','Акцент'],sunset:['linear-gradient(160deg,#ff9a8b55,#ff6a8855 45%,#6a5af955),var(--bg)','Закат'],ocean:['linear-gradient(170deg,#0ea5e955,#1e3a8a66),var(--bg)','Океан'],forest:['linear-gradient(170deg,#22c55e44,#14532d66),var(--bg)','Лес'],dots:['radial-gradient(color-mix(in srgb,var(--fg) 14%,transparent) 1.2px,transparent 1.6px) 0 0/18px 18px,var(--bg)','Точки'],grid:['linear-gradient(color-mix(in srgb,var(--fg) 7%,transparent) 1px,transparent 1px) 0 0/22px 22px,linear-gradient(90deg,color-mix(in srgb,var(--fg) 7%,transparent) 1px,transparent 1px) 0 0/22px 22px,var(--bg)','Сетка']};
 let WALL_PHOTO='';try{WALL_PHOTO=localStorage.getItem('yc-wall-photo')||''}catch(e){}
-const applyLook=()=>{const r=document.documentElement;if(SET.theme==='system')r.removeAttribute('data-theme');else r.setAttribute('data-theme',SET.theme);if(SET.amoled)r.setAttribute('data-amoled','1');else r.removeAttribute('data-amoled');if(SET.anim===false)r.setAttribute('data-noanim','1');else r.removeAttribute('data-noanim');r.setAttribute('data-bub',SET.bubble||'round');
+const applyLook=()=>{const r=document.documentElement;if(SET.theme==='system')r.removeAttribute('data-theme');else r.setAttribute('data-theme',SET.theme);if(SET.amoled)r.setAttribute('data-amoled','1');else r.removeAttribute('data-amoled');{const lite=SET.lite===true||(SET.lite!==false&&((navigator.deviceMemory&&navigator.deviceMemory<=4)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4)));if(lite)r.setAttribute('data-lite','1');else r.removeAttribute('data-lite')}if(SET.anim===false)r.setAttribute('data-noanim','1');else r.removeAttribute('data-noanim');r.setAttribute('data-bub',SET.bubble||'round');
  const a=ACCENTS[SET.accent]||ACCENTS.mint;r.style.setProperty('--accent',a[0]);r.style.setProperty('--accent-2',a[1]);r.style.setProperty('--fs',SET.size+'px');
  const w=SET.wall==='photo'&&WALL_PHOTO?`linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.18)),url(${WALL_PHOTO}) center/cover`:(WALLS[SET.wall]||WALLS.def)[0];r.style.setProperty('--wallbg',w);try{dsApply()}catch(e){}};
 applyLook();
@@ -3485,7 +3735,7 @@ let bt;const banner=(av,title,text,onTap)=>{if(!SET.banners)return;const b=$('#b
 let actx=null;const getActx=()=>{if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}return actx};
 document.addEventListener('pointerdown',()=>getActx(),{once:true});
 const ding=()=>{if(!SET.sound)return;const a=getActx();if(!a)return;try{const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(880,a.currentTime);o.frequency.exponentialRampToValueAtTime(1320,a.currentTime+.08);g.gain.setValueAtTime(.0001,a.currentTime);g.gain.exponentialRampToValueAtTime(.12,a.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+.28);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+.3)}catch(e){}};
-let swReg=null;if(false){navigator.serviceWorker.register('/sw.js').then(r=>swReg=r).catch(()=>{});
+let swReg=null;if((location.protocol==='https:'||location.hostname==='localhost')&&'serviceWorker' in navigator&&!window.YCNative){navigator.serviceWorker.register('sw.js').then(r=>{swReg=r;window.YC_SWREG=r;setTimeout(()=>{try{window.YC_SUPA&&YC_SUPA.pushReg()}catch(e){}},2000)}).catch(()=>{});
  navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.type==='open'){const id=new URL(e.data.url,ORIGIN).searchParams.get('chat');if(id){closeLayers();openChat(id)}}})}
 const sysNotify=(title,body,chatId)=>{if(!SET.sysnotif||!('Notification' in window)||Notification.permission!=='granted')return;
  const opt={body,icon:'/icon-192.png',badge:'/icon-192.png',tag:'chat-'+chatId,data:{url:'/?chat='+chatId}};
@@ -3508,18 +3758,22 @@ const shareLink=async(url,title)=>{if(navigator.share){try{await navigator.share
 /* ================= вход и регистрация ================= */
 const logoutLocal=()=>{try{$('#tabbar').classList.remove('hide');const b=$('#banscr');if(b)b.remove();MYBAN=MYMUTE=null}catch(e){}try{localStorage.removeItem('yc-last-uid')}catch(e){}S.token=null;S.me=null;S.started=false;S.chats={};S.tab='chats';S.q='';S.filter='all';S.users={};S.contacts=[];try{fbDisconnect()}catch(e){}closeLayers();welcome()};
 const authForm=mode=>{const reg=mode==='reg';let hue=Math.floor(Math.random()*360),avatar=null,nickT;
- screen(`<div class="layer modal" style="animation:none">
-  <div class="bar"><button class="lnk" data-a="welcome">Назад</button><div class="t">${reg?'Новый аккаунт':'Вход'}</div><span style="min-width:70px"></span></div>
-  <div class="scroll"><div class="form" id="af">
-   ${reg?`<div class="avpick"><div id="rav"></div><label>Выбрать фото<input type="file" accept="image/*" id="rfile" hidden></label></div>`:`<div class="avpick"><div class="logo" style="width:96px;height:96px;border-radius:28px">${ic('chat',48,2)}</div></div>`}
-   <div><div class="fgrp">
-    ${reg?`<label><span>Имя</span><input id="fname" maxlength="40" placeholder="Как вас зовут" autocomplete="name" required></label>`:''}
-    <label><span>Ник</span><input id="fnick" maxlength="24" placeholder="nickname" autocapitalize="none" autocomplete="username" spellcheck="false" required></label>
-    <label><span>Пароль</span><input id="fpass" type="password" maxlength="100" placeholder="${reg?'Минимум 6 символов':'Ваш пароль'}" autocomplete="${reg?'new-password':'current-password'}" required></label>
-   </div><div class="hint" id="fhint">${reg?'По нику вас найдут друзья: латиница, цифры и _, от 4 символов.':''}</div></div>
-   <div style="padding:0 16px;display:flex;flex-direction:column;gap:12px"><button class="btn" id="fgo" type="button">${reg?'Создать аккаунт':'Войти'}</button><div class="err" id="ferr"></div>${reg?'':`<button class="btn2 qrlogb" type="button" data-a="qrLogin">${ic('qr',20,2.2)}Войти по QR-коду</button>`}
-   <button type="button" class="lnkbtn" data-a="${reg?'login':'reg'}" style="align-self:center">${reg?'Уже есть аккаунт? Войти':'Нет аккаунта? Создать'}</button></div>
+ screen(`<div class="layer modal authv2" style="animation:none">
+  <div class="scroll"><div class="ahero"><button class="aback" data-a="welcome" aria-label="Назад">${ic('back',24,2.4)}</button>
+   ${reg?`<div class="avpick"><div id="rav"></div><label class="avcam" aria-label="Выбрать фото">${ic('cam',18,2.2)}<input type="file" accept="image/*" id="rfile" hidden></label></div>`:`<div class="alogo">${ic('chat',44,2)}</div>`}
+   <h1>${reg?'Создайте аккаунт':'С возвращением!'}</h1><p>${reg?'Минута — и вы в YOUCHAT. Нажмите на аватар, чтобы сменить цвет':'Войдите по нику и паролю'}</p></div>
+  <div class="form" id="af">
+   ${reg?`<label class="afield">${ic('user',20,2)}<input id="fname" maxlength="40" placeholder="Имя" autocomplete="name" required></label>`:''}
+   <label class="afield"><b class="aat">@</b><input id="fnick" maxlength="24" placeholder="ник" autocapitalize="none" autocomplete="username" spellcheck="false" required></label>
+   <div class="hint" id="fhint">${reg?'По нику вас найдут друзья: латиница, цифры и _, от 4 символов.':''}</div>
+   <label class="afield">${ic('lock',20,2)}<input id="fpass" type="password" maxlength="100" placeholder="${reg?'Пароль — минимум 6 символов':'Пароль'}" autocomplete="${reg?'new-password':'current-password'}" required><button type="button" class="aeye" id="feye" aria-label="Показать пароль">${ic('eye',20,2)}</button></label>
+   ${reg?'<div class="apw"><i></i><i></i><i></i><i></i></div>':''}
+   <button class="btn abtn" id="fgo" type="button">${reg?'Создать аккаунт':'Войти'}</button><div class="err" id="ferr"></div>${reg?'':`<button class="btn2 qrlogb" type="button" data-a="qrLogin">${ic('qr',20,2.2)}Войти по QR-коду</button>`}
+   <button type="button" class="lnkbtn" data-a="${reg?'login':'reg'}" style="align-self:center">${reg?'Уже есть аккаунт? <b>Войти</b>':'Нет аккаунта? <b>Создать</b>'}</button>
+   ${reg?'<div class="aterms">Пароли хранятся только в зашифрованном виде, личные сообщения шифруются на устройстве</div>':''}
   </div></div></div>`);
+ {const pw=$('#fpass'),eye=$('#feye');eye.onclick=()=>{pw.type=pw.type==='password'?'text':'password';eye.classList.toggle('on',pw.type==='text')};
+  const bars=$('.apw');if(bars)pw.addEventListener('input',()=>{const v=pw.value;const sc=(v.length>=6)+(v.length>=10)+(/[0-9]/.test(v)&&/[a-zа-я]/i.test(v))+(/[^a-zA-Zа-яА-Я0-9]/.test(v)||/[A-ZА-Я]/.test(v));bars.dataset.s=v?sc:0})}
  const nick=$('#fnick'),hint=$('#fhint'),err=$('#ferr');
  if(reg){const name=$('#fname');const draw=()=>{$('#rav').innerHTML=avatarHTML({name:name.value||'?',hue,avatar:avatar&&avatar.preview},104)};draw();
   $('#rav').onclick=()=>{hue=(hue+47)%360;draw()};name.oninput=draw;
@@ -3533,7 +3787,7 @@ const authForm=mode=>{const reg=mode==='reg';let hue=Math.floor(Math.random()*36
    else r=await api('POST','/api/login',{nick:nick.value,password:$('#fpass').value});
    S.token=r.token;
    if(reg&&avatar){try{const up=await uploadAv(avatar.blob);await api('PATCH','/api/me',{avatar:up.url})}catch(_){}}
-   if(reg){try{localStorage.setItem('yc-wn-350','1');localStorage.setItem('yc-tour-pending','1')}catch(e){}}await start();if(reg)setTimeout(openSetup,400)}
+   if(reg){try{localStorage.setItem('yc-wn-430','1');localStorage.setItem('yc-tour-pending','1')}catch(e){}}await start();if(reg)setTimeout(openSetup,400)}
   catch(ex){err.textContent=errMsg(ex);toast(errMsg(ex));go.disabled=false}};
  $('#fgo').onclick=submit;
  $('#af').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT'){e.preventDefault();submit()}})};
@@ -3547,13 +3801,13 @@ const start=async()=>{
  api('GET','/api/contacts').then(l=>{addUsers(l);S.contacts=l.map(u=>u.id);renderAll()}).catch(()=>{});
  api('GET','/api/users').then(l=>{addUsers(l);renderAll()}).catch(()=>{});
  S.started=true;try{$('#tabbar').classList.remove('hide')}catch(e){}tbY={};try{if(localStorage.getItem('yc-lo-note')){localStorage.removeItem('yc-lo-note');setTimeout(()=>toast('Вы вышли из аккаунта. Открыт: '+S.me.name),600)}}catch(e){}cacheReady();accTouch();setTimeout(()=>api('POST','/api/changelog',{v:VERSION}).then(r=>{if(r&&r.ok)loadChats().catch(()=>{})}).catch(()=>{}),2500);setTimeout(()=>{loadBlocks();sesStart();outboxFlush()},900);$('#tabbar').hidden=false;setTimeout(watchCalls,800);if(SET.pin)showLock('unlock');setTimeout(()=>runSched(),1500);connectWS();fbTouchSeen();renderAll();route();loadStories();
- let wn=false;try{wn=localStorage.getItem('yc-wn-350')==='1';localStorage.setItem('yc-wn-350','1')}catch(e){}if(!wn&&!layers.length)setTimeout(()=>openWhatsNew(),600);
+ let wn=false;try{wn=localStorage.getItem('yc-wn-430')==='1';localStorage.setItem('yc-wn-430','1')}catch(e){}if(!wn&&!layers.length)setTimeout(()=>openWhatsNew(),600);
 };
 const loadChats=async()=>{const list=await api('GET','/api/chats');const m={};list.forEach(c=>{m[c.id]=c;if(c.peer)addUsers([c.peer])});S.chats=m;renderAll()};
 const loadChat=async id=>{try{const c=await api('GET','/api/chats/'+id);if(c.peer)addUsers([c.peer]);if(c.member)S.chats[id]=c;else delete S.chats[id];renderAll();return c}catch(e){if(e.code===404||e.code===403){delete S.chats[id];renderAll()}return null}};
-const route=()=>{const p=location.pathname;const qs=new URLSearchParams(location.search);
+const route=()=>{const qs=new URLSearchParams(location.search);const p=qs.get('go')?'/'+qs.get('go'):location.pathname.replace(/^\/(top|Top)(?=\/)/,'');
  let m;if((m=/^\/c\/([\w]+)/.exec(p)))openLink(m[1]);else if((m=/^\/join\/([\w-]+)/.exec(p)))openInvite(m[1]);else if((m=/^\/u\/([\w]+)/.exec(p)))openLink(m[1]);else if(qs.get('chat'))openChat(qs.get('chat'));
- if(m||qs.get('chat')){try{history.replaceState(null,'',/^https?:$/.test(location.protocol)?'/':location.pathname)}catch(e){}}};
+ if(m||qs.get('chat')||qs.get('go')){try{history.replaceState(null,'',/^https?:$/.test(location.protocol)?location.pathname.replace(/[^/]*$/,''):location.pathname)}catch(e){}}};
 
 /* ================= реальное время: Firebase ================= */
 const RT={};
@@ -3596,7 +3850,13 @@ const markRead=id=>{const c=S.chats[id];if(!c||!c.last)return;if(c.unread||c.men
 
 /* ================= вкладки ================= */
 let qFocus=false;
-let RA_T=0;const renderAll=()=>{if(!S.started)return;{const ps=document.querySelector('#main .pscr');if(ps&&ps._pull){clearTimeout(RA_T);RA_T=setTimeout(renderAll,350);return}}cacheSave();renderTabbar();keepScroll($('#main'),()=>{$('#main').innerHTML=S.tab==='chats'?tplChats():S.tab==='contacts'?tplContacts():S.tab==='me'?tplMe():tplSettings()});
+/* плавная перестановка чатов в списке (FLIP): чат с новым сообщением мягко уезжает наверх */
+const flipGrab=root=>{const m=new Map();const rows=root.querySelectorAll('.list>.crow[data-c]');if(rows.length>80)return null;const vh=innerHeight;rows.forEach(r=>{const b=r.getBoundingClientRect();if(b.bottom>-200&&b.top<vh+200)m.set(r.dataset.c,{y:b.top,t:(r.querySelector('.prev,.sub,small')||{}).textContent||''})});return m};
+const flipPlay=(root,m)=>{if(!m||!m.size||typeof Element.prototype.animate!=='function')return;root.querySelectorAll('.list>.crow[data-c]').forEach(r=>{const o=m.get(r.dataset.c);const b=r.getBoundingClientRect();
+ if(o){const dy=o.y-b.top;if(Math.abs(dy)>2)r.animate([{transform:`translateY(${dy}px)`},{transform:'none'}],{duration:420,easing:'cubic-bezier(.32,.72,0,1)'});
+  if(dy>2)r.animate([{backgroundColor:'color-mix(in srgb,var(--accent) 10%,transparent)'},{backgroundColor:'transparent'}],{duration:900,easing:'ease-out'})}
+ else if(b.top<innerHeight)r.animate([{opacity:0,transform:'translateY(-10px)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.32,.72,0,1)'})})};
+let RA_T=0;const renderAll=()=>{if(!S.started)return;{const ps=document.querySelector('#main .pscr');if(ps&&ps._pull){clearTimeout(RA_T);RA_T=setTimeout(renderAll,350);return}}cacheSave();renderTabbar();{const mn=$('#main');const fl=S.tab==='chats'&&SET.anim!==false&&mn.dataset.tab==='chats'?flipGrab(mn):null;keepScroll(mn,()=>{mn.innerHTML=S.tab==='chats'?tplChats():S.tab==='contacts'?tplContacts():S.tab==='me'?tplMe():tplSettings()});mn.dataset.tab=S.tab;if(fl)flipPlay(mn,fl)}
  try{chHead2()}catch(e){}try{chSwRestore()}catch(e){}try{const ps=$('#main .pscr');if(ps)profFx(ps)}catch(e){}const qi=$('#q');if(qi&&qFocus){qi.focus();qi.setSelectionRange(qi.value.length,qi.value.length)}try{const sq=$('#setq');if(sq&&SETQ){const f=document.activeElement===document.body;setqApply();if(f)sq.focus()}}catch(e){}
  layers.forEach(l=>l.refresh&&l.refresh());if(S.open)S.open.refreshHead()};
 const TABS=[['chats','chat','Чаты'],['contacts','users','Контакты'],['me','user','Профиль'],['settings','gear','Настройки']];
@@ -3635,12 +3895,27 @@ const tplChats=()=>{const q=S.q.trim().toLowerCase().replace(/^@/,'');let list=O
  const F=[['all','Все'],...FD,['unread','Непрочитанные',nUnread],['dm','Личные'],['group','Группы'],['channel','Каналы']];
  return `${tplChHead(q,F)}<div class="scroll chscroll" data-key="chats" style="padding-top:${CHH||250}px">
  ${S.wsOk===false&&S.started?`<div class="postbar">${ic('dot',14,6)}Соединение…</div>`:''}
- <div class="list">${!q&&S.filter==='all'?updRow()+evRow()+tplArchiveRow():''}${supMix(adListMix(list.map(tplChatRow),q),q)}</div>
+ <div class="list">${!q&&S.filter==='all'?updRow()+mkRow()+bdayRow()+quietRow()+tplArchiveRow():''}${supMix(adListMix(list.map(tplChatRow),q),q)}</div>
  ${!list.length&&!q&&!(S.filter==='all'&&archivedList().length)?`<div class="empty"><div class="big">${ic('chat',40,2)}</div>${S.filter==='all'?'Пока пусто. Найдите друга по @нику в поиске или создайте группу.<div class="emptybtns"><button class="btn sm" data-a="tab" data-t="contacts">Найти друзей</button><button class="btn sm soft" data-a="mkgroup" data-t="group">Создать группу</button></div>':'В этой папке нет чатов'}</div>`:''}
  ${extra}${q?tplMsgResults(q):''}${q&&!list.length&&!extra&&S.search&&!(S.search.msgs&&S.search.msgs.length)?'<div class="empty">Ничего не нашлось</div>':''}
 </div>`};
 
-const tplContacts=()=>{const q=S.q.trim().toLowerCase().replace(/^@/,'');
+let PHONE_ME=null;
+const inviteText=()=>`Привет! Я в YOUCHAT — общаемся там? Добавляй меня: @${S.me.nick}\n${ORIGIN}/u/${S.me.nick}`;
+const pickPhoneContacts=async()=>{
+ try{if(window.YCNative&&YCNative.getContacts){const r=JSON.parse(YCNative.getContacts()||'[]');if(Array.isArray(r)&&r.length)return r;toast('Разрешите доступ к контактам и нажмите ещё раз');return []}}catch(e){}
+ if(navigator.contacts&&navigator.contacts.select){const r=await navigator.contacts.select(['name','tel'],{multiple:true});return r.flatMap(c=>(c.tel||[]).map(t=>({name:(c.name||[])[0]||'',tel:t})))}
+ return null};
+const openPhoneFind=async()=>{let list=null,busy=false,err='';
+ const el=subPage('Друзья из контактов',()=>`${list===null?`<div class="empty" style="padding-top:30px"><div class="big">${ic('users',40,2)}</div>${busy?'<div class="spin"></div>':`Выберите контакты — мы проверим, кто уже пользуется YOUCHAT.<br><small style="color:var(--fg2)">Номера не сохраняются: сравниваются только их зашифрованные отпечатки.</small><div class="emptybtns"><button class="btn sm" id="pkc">Выбрать контакты</button></div>`}${err?`<div class="note">${esc(err)}</div>`:''}</div>
+  <div class="section">Или введите номер</div><div class="fgrp"><label><span>Номер</span><input id="phq" type="tel" placeholder="+7 900 123-45-67" autocomplete="tel"></label></div><div style="padding:10px 16px"><button class="btn sm soft" id="phgo">Проверить</button></div>`
+  :`${list.filter(x=>x.user).length?`<div class="section">Уже в YOUCHAT · ${list.filter(x=>x.user).length}</div><div class="group" style="padding:4px 0">${list.filter(x=>x.user).map(x=>`<div class="crow"><button data-a="profile" data-u="${x.user.id}" style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">${avatarHTML(x.user,44)}<div class="mid" style="border:0"><div class="nm"><span>${esc(x.name||x.user.name)}</span></div><div class="pv">@${esc(x.user.nick)}</div></div></button><button class="btn sm" data-a="dm" data-u="${x.user.id}">Написать</button></div>`).join('')}</div>`:''}
+   ${list.filter(x=>!x.user).length?`<div class="section">Пригласить · ${list.filter(x=>!x.user).length}</div><div class="group" style="padding:4px 0">${list.filter(x=>!x.user).map(x=>`<div class="crow"><div class="mid" style="border:0;padding-left:16px"><div class="nm"><span>${esc(x.name||'+'+x.tel)}</span></div><div class="pv">+${esc(x.tel)}</div></div><a class="btn sm soft" href="sms:+${esc(x.tel)}?body=${encodeURIComponent(inviteText())}">Пригласить</a></div>`).join('')}</div>`:''}
+   ${!list.length?'<div class="empty">В выбранных контактах нет номеров</div>':''}<div style="padding:14px 16px"><button class="btn soft" id="pkc">Выбрать другие контакты</button></div>`}`,el=>{
+  const run=async items=>{busy=true;err='';el.refresh();try{list=await api('POST','/api/phone/lookup',{phones:items});addUsers(list.filter(x=>x.user).map(x=>x.user))}catch(e){err=errMsg(e);list=null}busy=false;el.refresh()};
+  const b=$('#pkc',el);if(b)b.onclick=async()=>{try{const r=await pickPhoneContacts();if(r===null){err='На этом устройстве нельзя открыть контакты из приложения. Введите номер вручную или отправьте ссылку-приглашение.';el.refresh();return}run(r)}catch(e){}};
+  const g=$('#phgo',el);if(g)g.onclick=()=>{const v=$('#phq',el).value;if(v.replace(/\D/g,'').length<10){toast('Введите номер полностью');return}run([{tel:v,name:''}])}})};
+const tplContacts=()=>{if(PHONE_ME===null&&S.me){PHONE_ME=false;api('GET','/api/phone').then(r=>{PHONE_ME=r;if(S.tab==='contacts')renderAll()}).catch(()=>{PHONE_ME=null})}const q=S.q.trim().toLowerCase().replace(/^@/,'');
  const allU=Object.values(S.users).filter(u=>u.id!==S.me.id&&u.nick&&!u.bot).sort((a,b)=>a.name.localeCompare(b.name,'ru'));
  const match=p=>!q||p.name.toLowerCase().includes(q)||(p.nick||'').toLowerCase().includes(q);
  const mine=allU.filter(u=>S.contacts.includes(u.id)).filter(match),others=allU.filter(u=>!S.contacts.includes(u.id)).filter(match);
@@ -3649,6 +3924,8 @@ const tplContacts=()=>{const q=S.q.trim().toLowerCase().replace(/^@/,'');
  return `<div class="scroll" data-key="contacts">
  <div class="hdr"><h1>Контакты</h1></div>
  <div class="sticky" style="padding-top:0"><label class="searchf">${ic('search',18,2.2)}<input id="q" type="search" placeholder="Найти или добавить по имени, @нику" value="${esc(S.q)}" autocomplete="off"></label></div>
+ ${q?'':`<div class="ctcard"><button class="ctmain" data-a="phoneFind"><span class="sq-ic" style="background:linear-gradient(135deg,#30b158,#0fa78a)">${ic('users',18,2.2)}</span><span class="tx"><b>Найти друзей из контактов</b><small>Покажем, кто уже в YOUCHAT, остальных можно пригласить</small></span><span class="chev">${ic('chev',18,2.2)}</span></button>
+  <div class="ctbtns"><button data-a="shareInvite">${ic('link',16,2.2)}Пригласить по ссылке</button><button data-a="myPhone">${ic('phone',16,2.2)}${PHONE_ME&&PHONE_ME.set?'Мой номер ··'+esc(PHONE_ME.tail||''):'Указать мой номер'}</button></div></div>`}
  ${mine.length?`<div class="section">Мои контакты · ${mine.length}</div><div class="group" style="padding:4px 0">${mine.map(x=>row(x,true)).join('')}</div>`:(!q?`<div class="empty"><div class="big">${ic('users',40,2)}</div>Контактов пока нет. Добавьте людей из списка ниже или найдите по @нику.<div class="emptybtns"><button class="btn sm" data-a="shareMe">Пригласить друга</button></div></div>`:'')}
  ${others.length?`<div class="section">${q?'Найдено':'Все в YOUCHAT'} · ${others.length}</div><div class="group" style="padding:4px 0">${others.map(x=>row(x,false)).join('')}</div>`:''}
  ${q&&!mine.length&&!others.length?'<div class="empty">Никого не нашли. Проверьте @ник.</div>':''}
@@ -3658,9 +3935,9 @@ const tplMe=()=>{const p=S.me;
  return `<div class="scroll pscr" data-key="me" data-u="${p.id}">${pminiHTML(p,false)}
  <div class="cover ${p.avatar&&p.cover==null&&SET.ds!=='classic'?'avc':''}" style="background:${grad(p.cover!=null?p.cover:(p.hue||200))};${p.avatar&&p.cover==null?`--avbg:url(&quot;${esc(M(p.avatar)||'')}&quot;);`:''}padding-top:env(safe-area-inset-top,0px)">${patHTML(p)}<div style="display:flex;justify-content:flex-end;gap:10px;padding:10px 12px"><button class="round" data-a="profQR" data-u="${p.id}" aria-label="QR-код" style="color:#fff;background:rgba(255,255,255,.22)">${ic('qr',18,2.1)}</button><button class="round" data-a="editProfile" aria-label="Изменить" style="color:#fff;background:rgba(255,255,255,.22)">${ic('edit',18,2.1)}</button></div></div>
  <div class="pav ${isPrem(p.id)?'prem':''}" data-a="avGal" data-u="${p.id}">${avatarHTML(p,124)}${npDots(p)}</div>
- <div class="pname" style="${nameSty(p)}">${esc(p.name)}${bdg(p.id,22,true)}</div><div class="pnick">@${esc(p.nick)}</div>${lvlChip(p.id)}<div class="pstat">${p.status?esc(p.status):'в сети'}</div>
- <div style="height:18px"></div>
-  <div class="pillbtns"><label style="background:var(--cell);border-radius:16px;height:66px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer">${ic('cam',22,2)}Фото<input type="file" accept="image/*" data-change="myPhoto" hidden></label><button data-a="editProfile">${ic('edit',22,2)}Изменить</button><button data-a="look">${ic('palette',22,2)}Оформление</button></div>${ptabsHTML()}
+ <div class="pname" style="${nameSty(p)}">${esc(p.name)}${bdg(p.id,22,true)}</div><div class="pnick">@${esc(p.nick)}<span class="pdot">·</span><span class="pst2">${p.status?esc(p.status):'в сети'}</span></div>${lvlChip(p.id)}
+ <div style="height:20px"></div>
+  <div class="pillbtns pb4"><label>${ic('cam',22,2)}Фото<input type="file" accept="image/*" data-change="myPhoto" hidden></label><button data-a="editProfile">${ic('edit',22,2)}Изменить</button><button data-a="look">${ic('palette',22,2)}Стиль</button><button data-a="shareMe">${ic('link',22,2)}Ссылка</button></div>${ptabsHTML()}
  <div style="height:14px"></div>
  <div id="pt-music"></div>${pmCard(p)}<div id="pt-show"></div>${showcaseHTML(p)}<div id="pt-info"></div>${infoCard(p)}
  ${ratingCellHTML()}${isSuper()?superMeHTML():''}<div class="group"><button class="cell ic" data-a="saved"><span class="sq-ic" style="background:#7d5cf5">${ic('book',17,2.2)}</span><div class="tx">Избранное<small>Ваши сохранённые сообщения</small></div><span class="chev">${ic('chev',18,2.2)}</span></button>
@@ -3701,7 +3978,7 @@ const tplSettings=()=>{const p=S.me;const th=curTheme();
  <div class="group">${cell('miniApps','#0a84ff','apps','Мини-приложения','Каталог')}</div>
  <div class="section">YOUCHAT</div><div class="group">
   <button class="cell ic" data-a="whatsnew"><span class="sq-ic" style="background:#ff2d78">${ic('sparkle',17,2.2)}</span><div class="tx">Что нового</div><span class="newb">${VERSION}</span><span class="chev">${ic('chev',18,2.2)}</span></button>
-  ${cell('about','#8e8e93','info','О приложении','')}</div>
+  ${cell('market','#0a84ff','download','Маркет',typeof MK!=='undefined'&&MK&&MK.ok&&mkNew()?'Обновление':'')}${cell('about','#8e8e93','info','О приложении','')}</div>
  <div style="height:14px"></div>
  <div class="group"><button class="cell" data-a="logout" style="color:var(--danger);justify-content:center"><div class="tx" style="text-align:center;flex:none;font-weight:600">Выйти из аккаунта</div></button></div>
  <p class="note" style="text-align:center;padding:16px 32px 0">YOUCHAT ${VERSION}${window.YOUCHAT_LOCAL===true?' · тестовый режим':''}</p>
@@ -3715,7 +3992,7 @@ const subPage=(title,body,bind)=>{const el=push(`<div class="bar"><button class=
 const swCell=(k,t,sub,on)=>`<button class="cell" data-a="sw" data-k="${k}"><div class="tx">${t}${sub?`<small>${sub}</small>`:''}</div><span class="sw ${(on!==undefined?on:SET[k])?'on':''}"></span></button>`;
 const openLook=()=>subPage('Темы и оформление',()=>`<div style="height:12px"></div>${dsPickHTML()}<div class="section">Готовые темы</div>${tplThemes()}<div class="section">Режим</div>
  <div class="seg">${[['system','Авто'],['light','Светлая'],['dark','Тёмная']].map(([k,l])=>`<button class="${SET.theme===k?'on':''}" data-a="setv" data-k="theme" data-v="${k}">${l}</button>`).join('')}</div>
- <div class="group" style="margin-top:10px">${swCell('amoled','Чёрный AMOLED','Глубокий чёрный в тёмной теме — экономит заряд')}${swCell('anim','Анимации','Плавные переходы, свайп назад от края экрана')}</div>
+ <div class="group" style="margin-top:10px">${swCell('amoled','Чёрный AMOLED','Глубокий чёрный в тёмной теме — экономит заряд')}${swCell('anim','Анимации','Плавные переходы, свайп назад от края экрана')}${swCell('lite','Быстрый режим','Без размытия и тяжёлых эффектов — плавнее на недорогих телефонах. Включается сам на слабых устройствах',document.documentElement.hasAttribute('data-lite'))}</div>
  <div class="section">Форма сообщений</div><div class="seg">${BUBS.map(([k,l])=>`<button class="${(SET.bubble||'round')===k?'on':''}" data-a="setv" data-k="bubble" data-v="${k}">${l}</button>`).join('')}</div>
  <div class="section">Цвет акцента</div><div class="group"><div class="dots">${Object.entries(ACCENTS).map(([k,a])=>`<button class="${SET.accent===k?'on':''}" style="background:${a[0]}" data-a="setv" data-k="accent" data-v="${k}" aria-label="${a[2]}"></button>`).join('')}</div></div>
  <div class="section">Обои чата</div><div class="group"><div class="dots" style="gap:12px">${Object.entries(WALLS).map(([k,w])=>`<button class="${SET.wall===k?'on':''}" style="width:52px;height:72px;border-radius:12px;background:${w[0]}" data-a="setv" data-k="wall" data-v="${k}" aria-label="${w[1]}"></button>`).join('')}<label class="${SET.wall==='photo'?'on':''}" style="width:52px;height:72px;border-radius:12px;display:grid;place-items:center;background:var(--bub);color:var(--accent);cursor:pointer;border:3px solid ${SET.wall==='photo'?'var(--fg)':'transparent'}" aria-label="Своё фото">${ic('img',22,2)}<input type="file" accept="image/*" data-change="wallPhoto" hidden></label></div></div>
@@ -3886,8 +4163,8 @@ const openChat=async(id,previewChat,thread,topic)=>{
   if(!keep&&!toBottom&&false)return;
   if(!keep&&(audioId||$$('video',box).some(v=>!v.paused))&&!toBottom)return;
   const atBottom=box.scrollHeight-box.scrollTop-box.clientHeight<140;const st=box.scrollTop;
-  {const full=V.msgs,W=V.win||150;let ms=full;if(V.stag&&full)ms=full.filter(m=>stagOf(m.id).includes(V.stag));if(ms&&ms.length>W)ms=ms.slice(-W);V.msgs=ms;try{box.innerHTML=renderMessages(c,V)}finally{V.msgs=full}}V.renderTypingRow();
-  if(toBottom&&V.unreadFrom>=0&&!V.unrJumped){V.unrJumped=true;const us=$('#unrsep',box);box.scrollTop=us?Math.max(0,us.offsetTop-90):box.scrollHeight}else if(toBottom||atBottom)box.scrollTop=box.scrollHeight;else box.scrollTop=st;V.fabUpd&&V.fabUpd();
+  {const full=V.msgs,W=V.win||150;let ms=full;if(V.stag&&full)ms=full.filter(m=>stagOf(m.id).includes(V.stag));if(ms&&ms.length>W)ms=ms.slice(-W);V.msgs=ms;try{box.innerHTML=renderMessages(c,V)}finally{V.msgs=full}V.newId=null}V.renderTypingRow();
+  if(toBottom&&V.unreadFrom>=0&&!V.unrJumped){V.unrJumped=true;const us=$('#unrsep',box);box.scrollTop=us?Math.max(0,us.offsetTop-90):box.scrollHeight}else if(toBottom)box.scrollTop=box.scrollHeight;else if(atBottom){box.scrollTop=st;const tgt=box.scrollHeight-box.clientHeight;if(tgt-st>2){if(SET.anim===false||tgt-st>900)box.scrollTop=tgt;else box.scrollTo({top:tgt,behavior:'smooth'})}}else box.scrollTop=st;V.fabUpd&&V.fabUpd();
   hydrate(box);V.refreshHead();markViews(V);if(c.type==='saved'){const go=()=>{stagDecorate(V,box);stagBar(V)};if(!STG.loaded||STG.uid!==S.me.id){STG.uid=S.me.id;STG.loaded=true;stagLoad().then(go)}else go()}};
  const renderBottom=()=>{const c=chat();const b=$('#cbottom',el);const admin=isAdmin(c);
   if(!c.member){b.innerHTML=`<div class="joinbar"><button class="glass" data-a="joinOpen">${ic('plus',20,2.4)}${c.type==='channel'?'Подписаться':'Вступить в группу'}</button></div>`;return}
@@ -3927,10 +4204,11 @@ const openChat=async(id,previewChat,thread,topic)=>{
   if(V.editMsg){const m=V.editMsg;V.editMsg=null;ta.value='';V.upd();drawReply();if(!text)return;try{const r=await api('PATCH','/api/messages/'+m.id+ctxC(),{text});V.onUpd(r)}catch(e){toast(errMsg(e))}return}
   if(!text)return;if(DICE_E.includes(text)&&!opts.at){ta.value='';V.upd();setDraft(dKey,'');await send({kind:'dice',dice:{e:text}});return}ta.value='';V.upd();setDraft(dKey,'');if(opts.at){schedAdd(V,{kind:'text',text,silent:!!opts.silent,ttl:(SET.ttl||{})[id]||0},opts.at);return}await send({kind:'text',text,silent:!!opts.silent,fx:opts.fx||undefined})};
  V.sendText=sendText;
- const send=async body=>{const r=V.replyTo;V.replyTo=null;drawReply();
+ const send=async body=>{const r=V.replyTo;V.replyTo=null;drawReply();const phId=body._ph;delete body._ph;if(!phId&&SET.haptic!==false&&navigator.vibrate)try{navigator.vibrate(6)}catch(e){}
   const payload={ttl:(SET.ttl||{})[id]||0,...body,quote:r&&r.quote||undefined,reply_to:r?r.id:null,thread_of:thread,topic_id:V.topic};const ob=outboxAdd(id,payload);if(ob){V.onMsg(obMsg(ob));box.scrollTop=box.scrollHeight}
-  try{const msg=await api('POST',`/api/chats/${id}/messages`,payload);if(ob){outboxDone(ob);V.msgs=V.msgs.filter(x=>x.id!==ob.pid)}const arm=msg.autoreply;delete msg.autoreply;V.onMsg(msg);if(ob)V.render(true);if(arm)setTimeout(()=>{if(layers.includes(el)){V.onMsg(arm);box.scrollTop=box.scrollHeight;if(navigator.vibrate)try{navigator.vibrate(6)}catch(_){}}},1200);box.scrollTop=box.scrollHeight;return true}
-  catch(e){if(ob){if(isNetErr(e)){INFL.delete(ob.k);toast('Нет связи — сообщение отправится позже');return false}outboxDone(ob);V.msgs=V.msgs.filter(x=>x.id!==ob.pid);V.render(true)}toast(errMsg(e));if(e.code===403)loadChat(id).then(()=>V.refreshChat());return false}};
+  try{const msg=await api('POST',`/api/chats/${id}/messages`,payload);const arm=msg.autoreply;delete msg.autoreply;if(ob)outboxDone(ob);
+   {const pid=ob?ob.pid:phId;const i=pid!=null?V.msgs.findIndex(x=>x.id===pid):-1;if(i>=0){if(V.msgs.some(x=>x.id===msg.id))V.msgs.splice(i,1);else V.msgs[i]=msg;V.render(true)}else V.onMsg(msg)}if(arm)setTimeout(()=>{if(layers.includes(el)){V.onMsg(arm);box.scrollTop=box.scrollHeight;if(navigator.vibrate)try{navigator.vibrate(6)}catch(_){}}},1200);box.scrollTop=box.scrollHeight;return true}
+  catch(e){if(phId!=null){V.msgs=V.msgs.filter(x=>x.id!==phId);V.render(true)}if(ob){if(isNetErr(e)){INFL.delete(ob.k);toast('Нет связи — сообщение отправится позже');return false}outboxDone(ob);V.msgs=V.msgs.filter(x=>x.id!==ob.pid);V.render(true)}toast(errMsg(e));if(e.code===403)loadChat(id).then(()=>V.refreshChat());return false}};
  V.send=send;
  const sendFile=async f=>sendMedia(V,[f],'',false);
  V.sendFile=sendFile;
@@ -3961,6 +4239,7 @@ const renderMessages=(c,V)=>{const ms=V.msgs;const meId=S.me.id;const channel=c.
   if(V.unreadFrom>=0&&!unrDone&&m.id>V.unreadFrom&&m.user_id!==meId){unrDone=true;html+=`<div class="unreadsep" id="unrsep"><span>Непрочитанные сообщения</span></div>`}
   html+=`<div class="mrow ${side} ${same(prev,m)?'':'gap'}${V.sel&&V.sel.has(m.id)?' picked':''}${V.newId===m.id?' fresh':''}" data-mid="${m.id}">${avs}${msgHTML(c,m,{side,tail,showWho,channelPost:channel&&!V.thread})}</div>`});
  return html};
+const upOv=id=>`<div class="upov" style="--p:3"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2.4"/><circle class="upr" cx="18" cy="18" r="15" fill="none" stroke="#fff" stroke-width="2.4" pathLength="100" stroke-dasharray="100" stroke-linecap="round"/></svg><button data-a="upCancel" data-id="${id}" aria-label="Отменить">${ic('close',16,2.6)}</button></div>`;
 const msgHTML=(c,m,o)=>{const side=o.side;
  const fwdH=m.fwd?`<div class="fwd">${ic('reply',13,2.4)} Переслано от <b>${esc(m.fwd.chat||m.fwd.name||'пользователя')}</b></div>`:'';
  const readMark=m.pending?`<span class="pclock">${ic('clock',13,2.2)}</span>`:side==='me'&&c.type==='dm'?ic((c.peer_read||0)>=m.id?'dcheck':'check',14,2.2):side==='me'?ic('check',14,2.2):'';
@@ -3978,8 +4257,8 @@ const msgHTML=(c,m,o)=>{const side=o.side;
  if(m.kind==='file')return fileHTML(m,o,{who,rq,meta,reH,com,tcls});
  if(m.kind==='call')return callHTML(m,o,{who,rq,meta,reH,com,tcls});
  if(m.kind==='photo'){const w=md.w&&md.h?Math.min(300,md.w):260;const t=m.text;
-  return `<div class="bub media ${t||rq||who||com?'wc':''} ${tcls}" data-long="msg">${who?`<div style="padding:4px 9px 0">${who}</div>`:''}${rq?`<div style="padding:4px 6px 2px">${rq}</div>`:''}<img class="ph" data-a="gal" data-id="${m.id}" data-i="0" src="${esc(M(md))}"${BID(md)} alt="Фото" loading="lazy" style="width:${w}px;${md.w&&md.h?`aspect-ratio:${md.w}/${md.h}`:'height:200px'}">${t?`<div class="cap"><span class="txt">${rich(t)}</span></div>`:''}${meta}${reH?`<div style="padding:0 6px 4px">${reH}</div>`:''}${com?`<div style="padding:0 9px 4px">${com}</div>`:''}</div>`}
- if(m.kind==='video')return `<div class="bub media wc ${tcls}" data-long="msg">${who?`<div style="padding:4px 9px 0">${who}</div>`:''}${rq?`<div style="padding:4px 6px 2px">${rq}</div>`:''}<video class="vid" src="${esc(M(md))}"${BID(md)} controls playsinline preload="metadata" style="width:${Math.min(300,md.w||300)}px"></video>${m.text?`<div class="cap"><span class="txt">${rich(m.text)}</span></div>`:''}<div style="height:18px"></div>${meta}${reH?`<div style="padding:0 6px 4px">${reH}</div>`:''}${com?`<div style="padding:0 9px 4px">${com}</div>`:''}</div>`;
+  return `<div class="bub media ${t||rq||who||com?'wc':''} ${tcls}" data-long="msg">${who?`<div style="padding:4px 9px 0">${who}</div>`:''}${rq?`<div style="padding:4px 6px 2px">${rq}</div>`:''}<img class="ph" data-a="gal" data-id="${m.id}" data-i="0" src="${esc(M(md))}"${BID(md)} alt="Фото" loading="lazy" style="width:${w}px;${md.w&&md.h?`aspect-ratio:${md.w}/${md.h}`:'height:200px'}">${m.uploading?upOv(m.id):''}${t?`<div class="cap"><span class="txt">${rich(t)}</span></div>`:''}${meta}${reH?`<div style="padding:0 6px 4px">${reH}</div>`:''}${com?`<div style="padding:0 9px 4px">${com}</div>`:''}</div>`}
+ if(m.kind==='video')return `<div class="bub media wc ${tcls}" data-long="msg">${who?`<div style="padding:4px 9px 0">${who}</div>`:''}${rq?`<div style="padding:4px 6px 2px">${rq}</div>`:''}<video class="vid" src="${esc(M(md))}"${BID(md)} controls playsinline preload="metadata" style="width:${Math.min(300,md.w||300)}px"></video>${m.uploading?upOv(m.id):''}${m.text?`<div class="cap"><span class="txt">${rich(m.text)}</span></div>`:''}<div style="height:18px"></div>${meta}${reH?`<div style="padding:0 6px 4px">${reH}</div>`:''}${com?`<div style="padding:0 9px 4px">${com}</div>`:''}</div>`;
  if(m.kind==='circle')return `<div class="bub media" data-long="msg" style="padding:0">${who}<div class="circle" data-dur="${md.dur||0}"><video src="${esc(M(md))}"${BID(md)} playsinline preload="metadata"></video><button class="pl" data-a="circ" aria-label="Воспроизвести">${ic('play',40,2,'currentColor')}</button></div>${meta}${reH}${com}</div>`;
  if(m.kind==='voice'){const wave=(md.wave&&md.wave.length?md.wave:Array.from({length:32},(_,j)=>.25+.6*Math.abs(Math.sin((j+1)*1.7+m.id))));
   const bars=resample(wave,36).map(v=>`<i style="height:${Math.round(4+v*22)}px"></i>`).join('');
@@ -4014,7 +4293,7 @@ const pauseAudio=()=>{if(!audio)return;if(audio.paused)audio.play().catch(()=>{}
 const playVoice=async(id,src)=>{id=+id;if(audioId===id&&audio){pauseAudio();return}stopAudio();
  const V=S.open;const mm=V&&(V.msgs.find(x=>x.id===id)||(V.post&&V.post.id===id&&V.post));
  if(!src){if(mm&&mm.media){toast('Загружаю…');src=await murl(mm.media)}if(!src){toast('Не удалось загрузить');return}}
- audio=new Audio(src);audioId=id;audioMeta={chat:V&&V.id,user:mm&&mm.user_id,kind:mm&&mm.kind};audio.playbackRate=SET.vspeed||1;if(VPOS[id])audio.currentTime=VPOS[id];
+ try{if(PMA)pmStop()}catch(e){}audio=new Audio(src);audioId=id;audioMeta={chat:V&&V.id,user:mm&&mm.user_id,kind:mm&&mm.kind};audio.playbackRate=SET.vspeed||1;if(VPOS[id])audio.currentTime=VPOS[id];
  const tick=()=>{if(!audio)return;const bars=$$(`[data-wv="${id}"] i`),lbl=$(`[data-vd="${id}"]`);const d=audio.duration&&isFinite(audio.duration)?audio.duration:0;const k=d?audio.currentTime/d:0;const n=Math.round(k*bars.length);bars.forEach((b,i)=>b.classList.toggle('p',i<n));if(lbl)lbl.textContent=dur(audio.currentTime);
   const mp=$('#miniplayer .mpbar i');if(mp)mp.style.width=(k*100)+'%';raf=requestAnimationFrame(tick)};
  audio.onended=()=>{delete VPOS[id];const cur=S.open;const next=cur&&cur.id===(audioMeta&&audioMeta.chat)&&cur.msgs.find(m=>m.id>id&&m.kind==='voice');stopAudio();if(next)playVoice(next.id,M(next.media))};
@@ -4022,6 +4301,9 @@ const playVoice=async(id,src)=>{id=+id;if(audioId===id&&audio){pauseAudio();retu
  audio.play().then(()=>{tick();syncVoiceBtns();drawMini()}).catch(()=>{toast('Не удалось воспроизвести');stopAudio()})};
 const cycleSpeed=()=>{const i=VSPEEDS.indexOf(SET.vspeed||1);SET.vspeed=VSPEEDS[(i+1)%VSPEEDS.length];saveSet();if(audio)audio.playbackRate=SET.vspeed;syncVoiceBtns();drawMini()};
 const drawMini=()=>{let mp=$('#miniplayer');const show=audio&&audioMeta&&!(S.open&&S.open.id===audioMeta.chat);
+ const pm=!audio&&typeof PMA!=='undefined'&&PMA&&PMA.a&&PMA.a.src&&!$(`.pmcard[data-u="${PMA.uid}"]`);
+ if(pm){if(!mp){mp=document.createElement('div');mp.id='miniplayer';mp.className='miniplayer glass';app.appendChild(mp)}const p=PMA.uid===S.me.id?S.me:U(PMA.uid);
+  mp.innerHTML=`<button data-a="mpPlay" aria-label="${PMA.a.paused?'Играть':'Пауза'}">${ic(PMA.a.paused?'play':'pause',18,2,'currentColor')}</button><button class="mpt" data-a="mpOpen"><b>${esc((p.pm&&p.pm.n)||'Музыка')}</b><small>${ic('music',11,2.2)} ${esc(p.name||'')}</small></button><button data-a="mpClose" aria-label="Закрыть">${ic('close',16,2.4)}</button><span class="mpbar"><i style="width:${PMA.a.duration?PMA.a.currentTime/PMA.a.duration*100:0}%"></i></span>`;return}
  if(!show){mp&&mp.remove();return}
  if(!mp){mp=document.createElement('div');mp.id='miniplayer';mp.className='miniplayer glass';app.appendChild(mp)}
  const c=S.chats[audioMeta.chat];mp.innerHTML=`<button data-a="mpPlay" aria-label="Пауза">${ic(audio.paused?'play':'pause',18,2,'currentColor')}</button><button class="mpt" data-a="mpOpen"><b>${esc(audioMeta.user?U(audioMeta.user).name:'Голосовое')}</b><small>${esc(c?chatTitle(c):'Голосовое сообщение')}</small></button><button class="vspd" data-a="vspeed">${vspeedLabel()}</button><button data-a="mpClose" aria-label="Закрыть">${ic('close',16,2.4)}</button><span class="mpbar"><i></i></span>`};
@@ -4048,11 +4330,13 @@ const Rec={st:null,
    if(kind==='circle'){const ring=$('.circlerec circle.pr');if(ring)ring.style.strokeDashoffset=String(100-Math.min(100,s/60*100))}
    if(kind==='circle'&&s>=60||kind==='voice'&&s>=600)this.stop(true)},100)},
  ui(st){const V=st.V;const comp=$('.composer',V.el);
+  if(comp&&!st.locked){const lk=document.createElement('div');lk.className='reclock';lk.innerHTML=`<span class="lki">${ic('lock',18,2.2)}</span><span class="lka">${ic('up',16,2.4)}</span>`;comp.appendChild(lk);st.lk=lk;requestAnimationFrame(()=>lk.classList.add('on'))}
   if(st.kind==='voice'&&comp){const bar=document.createElement('div');bar.className='recbar glass';bar.innerHTML=`<span class="rd"></span><b class="rectm">0:00,0</b><div class="lv"></div><span class="hint2">${st.locked?'':'‹ влево — отмена'}</span>`;comp.appendChild(bar);st.bar=bar}
   if(st.kind==='circle'){const ov=document.createElement('div');ov.className='circlerec';ov.innerHTML=`<div class="cw"><video autoplay muted playsinline></video><svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="17" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/><circle class="pr" cx="18" cy="18" r="17" fill="none" stroke="var(--accent)" stroke-width="1.6" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" stroke-linecap="round"/></svg></div><div class="cctl"><button data-r="flip" aria-label="Сменить камеру">${ic('flip',22,2.2)}</button><button data-r="big" aria-label="Увеличить">${ic('expand',20,2.2)}</button></div><div class="tm"><i></i><span class="rectm">0:00,0</span></div><div class="hint2">${st.locked?'':'Отпустите — отправить · влево — отмена'}</div><div class="btns" ${st.locked?'':'hidden'}><button data-r="x">${ic('trash',18,2)}Удалить</button><button data-r="ok" class="send2">${ic('send',18,2.4)}Отправить</button></div>`;
    app.appendChild(ov);$('video',ov).srcObject=st.stream;st.ov=ov;ov.addEventListener('click',e=>{const b=e.target.closest('[data-r]');if(b&&b.dataset.r==='flip'){flipCam(st);return}if(b&&b.dataset.r==='big'){ov.classList.toggle('big');return}if(b)this.stop(b.dataset.r==='ok')})}
   const sb=$('#sendb',V.el);if(sb)sb.classList.add('rec')},
  lock(){const st=this.st;if(!st||st.locked)return;st.locked=true;if(navigator.vibrate)try{navigator.vibrate(10)}catch(e){}
+  if(st.lk){st.lk.classList.add('locked');st.lk.style.transform='';const lk=st.lk;setTimeout(()=>{lk.classList.remove('on');setTimeout(()=>lk.remove(),250)},500)}
   if(st.bar){$('.hint2',st.bar).innerHTML=`<button class="x" data-rc="1">Отмена</button><button class="x" data-rpz="1">${ic('pause',16,2,'currentColor')}</button><button class="x" data-rpv="1">Прослушать</button>`;$('[data-rc]',st.bar).onclick=()=>this.stop(false);
    $('[data-rpz]',st.bar).onclick=e=>{const b=e.currentTarget;try{if(st.rec.state==='recording'){st.rec.pause();st.pz=now();b.innerHTML=ic('mic',16,2.2)}else if(st.rec.state==='paused'){st.rec.resume();st.pausedMs=(st.pausedMs||0)+now()-st.pz;st.pz=0;b.innerHTML=ic('pause',16,2,'currentColor')}}catch(x){toast('Пауза не поддерживается')}};
    $('[data-rpv]',st.bar).onclick=()=>this.stop('preview')}
@@ -4063,7 +4347,7 @@ const Rec={st:null,
   try{st.rec.state!=='inactive'?st.rec.stop():this.finish(st)}catch(e){this.finish(st)}},
  async finish(st){if(st.done)return;st.done=true;if(this.st===st)this.st=null;
   clearInterval(st.timer);clearInterval(st.lvT);try{st.src&&st.src.disconnect()}catch(e){}
-  st.stopX&&st.stopX();st.stream&&st.stream.getTracks().forEach(t=>t.stop());const srP=stopSR(st);st.bar&&st.bar.remove();st.ov&&st.ov.remove();
+  st.stopX&&st.stopX();st.stream&&st.stream.getTracks().forEach(t=>t.stop());const srP=stopSR(st);st.bar&&st.bar.remove();st.ov&&st.ov.remove();st.lk&&st.lk.remove();
   const sb=$('#sendb',st.V.el);if(sb){sb.classList.remove('rec');delete sb.dataset.lockSend;st.V.upd&&st.V.upd()}
   if(!st.send)return;const secs=(now()-st.start-(st.pausedMs||0)-(st.pz?now()-st.pz:0))/1e3;if(secs<.8){toast('Слишком коротко');return}
   const type=(st.rec.mimeType||(st.kind==='voice'?'audio/webm':'video/webm')).split(';')[0];
@@ -4078,8 +4362,8 @@ const bindRecordButton=(sb,V,sendText)=>{let downT=0,hold=null,x0=0,y0=0,recordi
  sb.addEventListener('pointerdown',e=>{if(sb.dataset.has||sb.dataset.lockSend)return;e.preventDefault();pid=e.pointerId;try{sb.setPointerCapture(pid)}catch(_){}downT=now();x0=e.clientX;y0=e.clientY;
   hold=setTimeout(()=>{hold=null;recording=true;Rec.start(V.mode,V)},220)});
  sb.addEventListener('pointermove',e=>{if(!recording||!Rec.st||Rec.st.locked)return;const dx=e.clientX-x0,dy=e.clientY-y0;
-  if(dx<-110){recording=false;Rec.stop(false);toast('Запись отменена')}else if(dy<-90){Rec.lock()}
-  else if(Rec.st.bar){Rec.st.bar.style.transform=`translateX(${Math.min(0,dx/3)}px)`}});
+  if(dx<-110){recording=false;Rec.stop(false);toast('Запись отменена')}else if(dy<-70){Rec.lock()}
+  else{if(Rec.st.bar)Rec.st.bar.style.transform=`translateX(${Math.min(0,dx/3)}px)`;if(Rec.st.lk){const k=Math.max(0,Math.min(1,-dy/70));Rec.st.lk.style.transform=`translateY(${-k*26}px)`;Rec.st.lk.style.setProperty('--k',k)}}});
  const up=e=>{if(sb.dataset.lockSend&&Rec.st&&Rec.st.locked){if(recording){recording=false;sb.dataset.skipClick='1'}return}
   if(hold){clearTimeout(hold);hold=null;if(now()-downT<220&&!sb.dataset.has){V.mode=V.mode==='voice'?'circle':'voice';V.upd&&V.upd();toast(V.mode==='voice'?'Голосовое: удерживайте кнопку':'Кружок: удерживайте кнопку')}return}
   if(recording){recording=false;if(Rec.st&&!Rec.st.locked)Rec.stop(true)}};
@@ -4172,26 +4456,30 @@ const openTopics=id=>{const c0=S.chats[id];let list=null;
  const el=push(`<div class="bar"><button class="backb" data-a="back" aria-label="Назад">${ic('back',26,2.4)}</button><button class="t" data-a="chatinfo" style="display:flex;flex-direction:column;align-items:center"><b class="tt"></b><small style="color:var(--fg2);font-size:12.5px;font-weight:400">темы</small></button><span id="tadd" style="min-width:44px"></span></div><div class="scroll" data-key="tp"></div>`,'',el=>draw(el));
  const draw=el=>{const c=S.chats[id]||c0;$('.tt',el).innerHTML=esc(c.title)+(c.verified?vb():'');
   $('#tadd',el).innerHTML=isAdmin(c)?`<button class="round" data-a="newTopic" aria-label="Новая тема">${ic('plus',20,2.4)}</button>`:'';
-  keepScroll(el,()=>{$('.scroll',el).innerHTML=list===null?'<div class="empty"><div class="spin"></div></div>':`<div class="list">${list.map(t=>`<button class="crow" data-a="openTopic" data-id="${t.id===null?'':t.id}" ${t.id!==null&&isAdmin(c)?'data-long="topic"':''}><div class="avw"><div class="av sq" style="width:52px;height:52px;background:${t.id===null?'var(--bub)':grad(hueOf(t.title))};font-size:24px;color:${t.id===null?'var(--fg2)':'#fff'}">${t.id===null?ic('chat',24,2):esc(t.icon||'💬')}</div></div>
+  keepScroll(el,()=>{$('.scroll',el).innerHTML=list===null?'<div class="empty"><div class="spin"></div></div>':`<div class="list">${list.map(t=>`<button class="crow" data-a="openTopic" data-id="${t.id===null?'':t.id}" ${t.id!==null&&isAdmin(c)?'data-long="topic"':''}><div class="avw"><div class="av sq" style="width:52px;height:52px;background:${t.id===null?'var(--bub)':grad(hueOf(t.title))};font-size:24px;color:${t.id===null?'var(--fg2)':'#fff'}">${t.id===null?ic('chat',24,2):t.photo?`<img src="${esc(t.photo)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:esc(t.icon||'💬')}</div></div>
    <div class="mid"><div class="l1"><div class="nm"><span>${esc(t.title)}</span></div><span class="tm">${t.last?shortTime(t.last.t):''}</span></div><div class="l2"><div class="pv">${t.last?(t.last.user_id&&t.last.kind!=='sys'?`<b>${esc(t.last.user_id===S.me.id?'Вы':U(t.last.user_id).name.split(' ')[0])}: </b>`:'')+esc(t.last.text):'Пока нет сообщений'}</div></div></div></button>`).join('')}</div>`})};
- const load=()=>api('GET',`/api/chats/${id}/topics`).then(l=>{list=l;l.forEach(t=>t.last&&t.last.user_id&&!S.users[t.last.user_id]&&addUsers([{id:t.last.user_id}]));el.refresh()}).catch(e=>toast(errMsg(e)));
+ const load=()=>api('GET',`/api/chats/${id}/topics`).then(l=>{list=l;TOPICS[id]=l;l.forEach(t=>t.last&&t.last.user_id&&!S.users[t.last.user_id]&&addUsers([{id:t.last.user_id}]));el.refresh()}).catch(e=>toast(errMsg(e)));
  let lt=null;const prev=S.open;const stub={id,stub:true,el,msgs:[],refreshHead(){},renderTypingRow(){},refreshChat(){el.refresh()},reload(){load()},onMsg(){clearTimeout(lt);lt=setTimeout(load,300)},onUpd(){},onDel(){clearTimeout(lt);lt=setTimeout(load,300)}};
  S.open=stub;el.cleanup=()=>{S.open=prev&&layers.some(l=>l===prev.el)?prev:null};el.reloadTopics=load;
  el.refresh();load();markRead(id)};
-const openNewTopic=()=>{const id=S.open.id;const icons=['💬','📢','😂','🎮','🎵','📚','⚽','💡','❓','🔥','🎨','💻'];let icon='💬';
- const el=push(`<div class="bar"><button class="lnk" data-a="back">Отмена</button><div class="t">Новая тема</div><button class="lnk r" id="tsave">Создать</button></div>
- <div class="scroll"><div class="form"><div class="avpick"><div id="tav"></div></div><div><div class="fgrp"><label><input id="tt" maxlength="64" placeholder="Название темы"></label></div></div>
+const TOPICS={};
+const openNewTopic=(edit)=>{const id=S.open.id;const icons=['💬','📢','😂','🎮','🎵','📚','⚽','💡','❓','🔥','🎨','💻'];let icon=edit&&edit.icon||'💬',photo=edit&&edit.photo||null;
+ const el=push(`<div class="bar"><button class="lnk" data-a="back">Отмена</button><div class="t">${edit?'Изменить тему':'Новая тема'}</div><button class="lnk r" id="tsave">${edit?'Готово':'Создать'}</button></div>
+ <div class="scroll"><div class="form"><div class="avpick"><div id="tav"></div><label>Фото из галереи<input type="file" accept="image/*" id="tfile" hidden></label>${'<button type="button" class="lnkbtn" id="tnoph" style="font-size:14px">Убрать фото</button>'}</div><div><div class="fgrp"><label><input id="tt" maxlength="64" placeholder="Название темы"></label></div></div>
  <div><div class="section" style="padding-top:0">Значок</div><div class="group"><div class="dots" id="ticons">${icons.map(i=>`<button type="button" data-i="${i}" style="font-size:22px;background:var(--bub)">${i}</button>`).join('')}</div></div></div></div></div>`,'modal');
- const draw=()=>{$('#tav',el).innerHTML=`<div class="av sq" style="width:96px;height:96px;font-size:44px;background:${grad(hueOf($('#tt',el).value||'т'))}">${icon}</div>`;$$('#ticons button',el).forEach(b=>b.classList.toggle('on',b.dataset.i===icon))};draw();
- $('#tt',el).oninput=draw;$('#ticons',el).onclick=e=>{const b=e.target.closest('[data-i]');if(b){icon=b.dataset.i;draw()}};
+ const draw=()=>{$('#tav',el).innerHTML=`<div class="av sq" style="width:96px;height:96px;font-size:44px;overflow:hidden;background:${grad(hueOf($('#tt',el).value||'т'))}">${photo?`<img src="${photo}" alt="" style="width:100%;height:100%;object-fit:cover">`:icon}</div>`;$$('#ticons button',el).forEach(b=>b.classList.toggle('on',!photo&&b.dataset.i===icon));$('#tnoph',el).hidden=!photo};
+ if(edit)$('#tt',el).value=edit.title||'';draw();
+ $('#tfile',el).onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const r=await resizeImage(f,192,.8);photo=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=rej;fr.readAsDataURL(r.blob)});if(photo.length>58000){const r2=await resizeImage(f,128,.7);photo=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(r2.blob)})}draw()}catch(ex){toast('Не удалось открыть фото')}};
+ $('#tnoph',el).onclick=()=>{photo=null;draw()};
+ $('#tt',el).oninput=draw;$('#ticons',el).onclick=e=>{const b=e.target.closest('[data-i]');if(b){icon=b.dataset.i;photo=null;draw()}};
  $('#tsave',el).onclick=async e=>{const t=$('#tt',el).value.trim();if(!t){toast('Введите название темы');return}e.target.disabled=true;
-  try{await api('POST',`/api/chats/${id}/topics`,{title:t,icon});pop();const l=layers.find(x=>x.reloadTopics);l&&l.reloadTopics();toast('Тема создана')}catch(ex){e.target.disabled=false;toast(errMsg(ex))}};
+  try{await api('POST',`/api/chats/${id}/topics`,{title:t,icon,photo,tid:edit?edit.id:undefined});pop();const l=layers.find(x=>x.reloadTopics);l&&l.reloadTopics();toast(edit?'Тема изменена':'Тема создана')}catch(ex){e.target.disabled=false;toast(errMsg(ex))}};
  setTimeout(()=>$('#tt',el).focus(),300)};
 
 /* ================= что нового ================= */
-const WHATS_NEW=[['phone','#30b158','Звонки','Аудио и видео прямо из чата или профиля. Звонок защищён шифрованием'],['text','#0a84ff','Цитаты и упоминания','«Цитировать» — ответ на часть сообщения. @ник в группе — человеку придёт уведомление'],['crop','#ff9f0a','Редактор фото','Обрезка, поворот, рисование, текст и фильтры перед отправкой. Можно отправить без сжатия'],['clip','#8e5cf7','Файлы','PDF, документы, архивы до 20 МБ. PDF открывается прямо в приложении'],['mic','#ff2d78','Голосовые 2.0','Скорость 1,5× и 2×, продолжение с места, мини-плеер. Пауза и прослушивание при записи без рук'],['img','#0fa78a','Медиа чата и поиск','Медиа, файлы, ссылки и голосовые в профиле чата. Поиск по сообщениям всех чатов'],['shield','#5b6472','Защита и скрытые чаты','Запрет пересылки и копирования. Скрытые чаты по отдельному коду'],['palette','#ff453a','Оформление чата','Свои обои и цвет для каждого чата, форма сообщений'],['sparkle','#ffb300','Новое знакомство','Слайды при первом запуске и мастер настройки']];
+const WHATS_NEW=[['phone','#0fa78a','Настоящее приложение','YOUCHAT теперь отдельное приложение для Android со встроенной установкой обновлений'],['sparkle','#7d5cf5','Плавнее во всём','Чат с новым сообщением мягко поднимается наверх, переходы и нажатия стали плавнее'],['globe','#0a84ff','Сообщения быстрее','В открытом чате новые сообщения приходят быстрее даже без мгновенного соединения'],['download','#ff9f0a','Маркет','Обновления приходят через встроенный Маркет и проверяются администратором']];
 const openWhatsNew=()=>{const el=push(`<div class="bar"><span style="min-width:70px"></span><div class="t">Что нового</div><button class="lnk r" data-a="back">Готово</button></div>
- <div class="scroll"><div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 24px 6px;text-align:center"><div class="logo" style="width:84px;height:84px;border-radius:24px">${ic('sparkle',42,2)}</div><b style="font-size:26px;letter-spacing:-.02em">YOUCHAT ${VERSION}</b><span style="color:var(--fg2)">Звонки, файлы, редактор фото</span></div>
+ <div class="scroll"><div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 24px 6px;text-align:center"><div class="logo" style="width:84px;height:84px;border-radius:24px">${ic('sparkle',42,2)}</div><b style="font-size:26px;letter-spacing:-.02em">YOUCHAT ${VERSION}</b><span style="color:var(--fg2)">Приложение, плавность и скорость</span></div>
  <div class="group" style="margin-top:16px">${WHATS_NEW.map(([i,c,t,d])=>`<div class="cell ic" style="align-items:flex-start"><span class="sq-ic" style="background:${c};margin-top:12px">${ic(i,17,2.2)}</span><div class="tx"><b style="font-weight:600">${t}</b><small>${d}</small></div></div>`).join('')}</div>
  <div style="padding:20px 16px 40px"><button class="btn" data-a="back">Отлично</button></div></div>`,'modal')};
 
@@ -4365,6 +4653,9 @@ const A={
  addc:async d=>{try{await api('POST','/api/contacts/'+d.u);if(!S.contacts.includes(d.u))S.contacts.push(d.u);toast('Добавлен в контакты');renderAll()}catch(e){toast(errMsg(e))}},
  rmc:async d=>{try{await api('DELETE','/api/contacts/'+d.u);S.contacts=S.contacts.filter(x=>x!==d.u);toast('Удалён из контактов');renderAll()}catch(e){toast(errMsg(e))}},
  shareMe:()=>shareLink(`${ORIGIN}/u/${S.me.nick}`,S.me.name),
+ phoneFind:()=>openPhoneFind(),
+ shareInvite:async()=>{const t=inviteText();if(navigator.share){try{await navigator.share({title:'YOUCHAT',text:t});return}catch(e){if(e&&e.name==='AbortError')return}}copy(t,'Приглашение скопировано — отправьте его другу')},
+ myPhone:()=>promptSheet(PHONE_ME&&PHONE_ME.set?'Новый номер телефона (пусто — отвязать)':'Ваш номер телефона','','+7 900 123-45-67',20,async v=>{try{PHONE_ME=await api(v&&v.trim()?'POST':'DELETE','/api/phone',{phone:v});toast(PHONE_ME.set?'Номер привязан — друзья найдут вас по нему':'Номер отвязан');renderAll()}catch(e){toast(errMsg(e))}},'tel'),
  shareUser:d=>shareLink(`${ORIGIN}/u/${U(d.u).nick}`,U(d.u).name),
  editProfile:()=>openEditProfile(),
  look:()=>openLook(),chatset:()=>openChatSet(),notifset:()=>openNotif(),privacy:()=>openPrivacy(),about:()=>openAbout(),chpass:()=>openPassword(),
@@ -4372,6 +4663,8 @@ const A={
  logout:()=>confirmSheet('Выйти из аккаунта на этом устройстве?','Выйти',async()=>{try{await api('POST','/api/logout')}catch(e){}logoutLocal()}),
  sw:async d=>{if(d.k==='show_seen'){try{const v=S.me.show_seen===false;const r=await api('PATCH','/api/me',{show_seen:v});S.me={...S.me,show_seen:v};renderAll()}catch(e){toast(errMsg(e))}return}
   if(d.k==='sysnotif'&&!SET.sysnotif){if(!('Notification' in window)){toast('Не поддерживается');return}const p=await Notification.requestPermission();if(p!=='granted'){toast('Уведомления не разрешены');return}}
+  if(d.k==='sysnotif'&&!SET.sysnotif)setTimeout(()=>{try{window.YC_SUPA&&YC_SUPA.pushReg(true)}catch(e){}},300);
+  if(d.k==='lite'){SET.lite=!document.documentElement.hasAttribute('data-lite');saveSet();applyLook();renderAll();return}
   SET[d.k]=!SET[d.k];saveSet();applyLook();renderAll()},
  setv:d=>{SET[d.k]=d.num?+d.v:d.v;saveSet();applyLook();renderAll()},
  themeSet:d=>{Object.assign(SET,THEMES[d.k][1]);saveSet();applyLook();renderAll();toast('Тема «'+THEMES[d.k][0]+'»')},
@@ -4390,24 +4683,14 @@ const A={
  leave:d=>leaveChat(d.c),
  mute:d=>prefs(d.c||S.open.id,{notif_off:!(S.chats[d.c||S.open.id]||{}).notif_off}),
  pinC:d=>prefs(d.c,{pinned:!S.chats[d.c].pinned}),
- attach:()=>{const V=S.open;sheet(`<div class="grp attgrid"><button data-s="img"><span class="atic" style="--c:#0a84ff">${ic('img',24,2.1)}</span><small>Фото</small></button><button data-s="vid"><span class="atic" style="--c:#ff375f">${ic('video',24,2.1)}</span><small>Видео</small></button><button data-s="cam"><span class="atic" style="--c:#30b0c7">${ic('cam',24,2.1)}</span><small>Камера</small></button><button data-s="doc"><span class="atic" style="--c:#5e5ce6">${ic('clip',24,2.1)}</span><small>Файл</small></button><button data-s="gif"><span class="atic" style="--c:#ff9f0a"><b>GIF</b></span><small>GIF</small></button><button data-s="poll"><span class="atic" style="--c:#34c759">${ic('chat',24,2.1)}</span><small>Опрос</small></button><button data-s="todo"><span class="atic" style="--c:#af52de">${ic('todo',24,2.1)}</span><small>Список</small></button><button data-s="dice"><span class="atic" style="--c:#ff453a">${ic('dice',24,2.1)}</span><small>Игры</small></button></div><div class="grp"><button data-s="ttl">${ic('fire',22,2)}Автоудаление: ${ttlLabel((SET.ttl||{})[V.id])}</button><button data-s="vrec">${ic('mic',22,2)}${V.mode==='voice'?'Записать кружок вместо голосового':'Записывать голосовые'}</button></div><div class="grp"><button data-s="x" class="c">Отмена</button></div>`,a=>{
-  if(a==='dice')diceSheet(V);
-  if(a==='img')pickFiles({accept:'image/*',multiple:true}).then(fs=>{if(fs.length)openMediaPicker(fs.slice(0,10),V)});
-  if(a==='vid')pickFiles({accept:'video/*',multiple:true}).then(fs=>{if(fs.length)openMediaPicker(fs.slice(0,10),V)});
-  if(a==='poll')openPollEditor2();
-  if(a==='todo')openTodoEditor();
-  if(a==='doc')pickDocs(V);
-  if(a==='ttl')ttlSheet(V.id);
-  if(a==='gif')pickFiles({accept:'image/*'}).then(fs=>{if(fs[0])sendGif(V,fs[0])});
-  if(a==='cam')pickFiles({accept:'image/*',capture:'environment'}).then(fs=>{if(fs[0])V.sendFile(fs[0])});
-  if(a==='vrec'){V.mode=V.mode==='voice'?'circle':'voice';V.upd();toast(V.mode==='voice'?'Голосовое: удерживайте кнопку':'Кружок: удерживайте кнопку')}})},
+ attach:()=>openAttach(S.open),
  cancelReply:()=>{const V=S.open;if(V.editMsg){V.editMsg=null;$('#ta',V.el).value=''}V.replyTo=null;V.upd();V.drawReply()},
  gal:d=>openChatGallery(+d.id,+d.i||0),
  vspeed:()=>cycleSpeed(),
  errlog:()=>{const el0=subPage('Журнал ошибок',()=>{const txt=errText();return `<div style="height:12px"></div><div class="group"><button class="cell ic" id="eltest"><span class="sq-ic" style="background:var(--accent)">${ic('img',17,2.2)}</span><div class="tx">Проверить выбор фото<small>Выберите любое фото — в журнал запишется, что вернул телефон</small></div></button></div><div style="height:12px"></div><div class="group"><div class="cell" style="padding:12px 16px"><pre style="white-space:pre-wrap;font-size:12px;margin:0;user-select:text;-webkit-user-select:text">${esc(txt)}</pre></div></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px"><button class="btn" id="elcopy">Скопировать журнал</button><button class="btn soft" id="elclr">Очистить</button></div>`},el=>{
   $('#elcopy',el).onclick=()=>copy(errText(),'Журнал скопирован');$('#elclr',el).onclick=()=>{ERRLOG.length=0;try{localStorage.removeItem('yc-errlog')}catch(e){}el.refresh()};
   $('#eltest',el).onclick=async()=>{const fs=await pickFiles({accept:'image/*'});if(fs[0]){try{const r=await resizeImage(fs[0],400,.7);logErr('test','фото открылось: '+r.w+'×'+r.h+', '+r.blob.size+' Б');toast('Фото открывается нормально')}catch(e){logErr('test','фото НЕ открылось: '+(e&&(e.error||e.message)||e))}}el.refresh()}})},
- errlogOld:()=>{const txt=['YOUCHAT '+VERSION+(window.YOUCHAT_LOCAL===true?' (локальный)':''),navigator.userAgent,'secure:'+window.isSecureContext+' subtle:'+!!(window.crypto&&crypto.subtle)+' idb:'+!!window.indexedDB,...ERRLOG].join('\n');subPage('Журнал ошибок',()=>`<div style="height:12px"></div><div class="group"><div class="cell" style="padding:12px 16px"><pre style="white-space:pre-wrap;font-size:12.5px;margin:0;user-select:text;-webkit-user-select:text">${esc(txt)}</pre></div></div><div style="padding:14px 16px"><button class="btn" id="elcopy">Скопировать</button></div>`,el=>{$('#elcopy',el).onclick=()=>copy(txt,'Журнал скопирован')})},mpPlay:()=>pauseAudio(),mpClose:()=>stopAudio(),mpOpen:()=>{if(audioMeta&&audioMeta.chat){closeLayers();S.tab='chats';renderAll();openChat(audioMeta.chat)}},
+ errlogOld:()=>{const txt=['YOUCHAT '+VERSION+(window.YOUCHAT_LOCAL===true?' (локальный)':''),navigator.userAgent,'secure:'+window.isSecureContext+' subtle:'+!!(window.crypto&&crypto.subtle)+' idb:'+!!window.indexedDB,...ERRLOG].join('\n');subPage('Журнал ошибок',()=>`<div style="height:12px"></div><div class="group"><div class="cell" style="padding:12px 16px"><pre style="white-space:pre-wrap;font-size:12.5px;margin:0;user-select:text;-webkit-user-select:text">${esc(txt)}</pre></div></div><div style="padding:14px 16px"><button class="btn" id="elcopy">Скопировать</button></div>`,el=>{$('#elcopy',el).onclick=()=>copy(txt,'Журнал скопирован')})},mpPlay:()=>{if(!audio&&PMA){PMA.a.paused?PMA.a.play().catch(()=>{}):PMA.a.pause();return}pauseAudio()},mpClose:()=>{if(!audio&&PMA){pmStop();drawMini();return}stopAudio()},mpOpen:()=>{if(!audio&&PMA){openProfile(PMA.uid);return}if(audioMeta&&audioMeta.chat){closeLayers();S.tab='chats';renderAll();openChat(audioMeta.chat)}},
  fileOpen:d=>openFileMsg(d.id),
  callA:()=>{const c=S.open&&S.chats[S.open.id];if(!c||!c.peer)return;sheet(`<div class="grp"><button data-s="a">${ic('phone',22,2)}Аудиозвонок</button><button data-s="v">${ic('video',22,2)}Видеозвонок</button></div><div class="grp"><button data-s="x" class="c">Отмена</button></div>`,a=>{if(a!=='x')startCall(c.peer.id,a==='v')})},
  callP:d=>sheet(`<div class="grp"><button data-s="a">${ic('phone',22,2)}Аудиозвонок</button><button data-s="v">${ic('video',22,2)}Видеозвонок</button></div><div class="grp"><button data-s="x" class="c">Отмена</button></div>`,a=>{if(a!=='x')startCall(d.u,a==='v')}),
@@ -4452,7 +4735,9 @@ document.addEventListener('pointerdown',e=>{const t=e.target.closest('[data-long
 document.addEventListener('pointermove',e=>{if(lpT&&(Math.abs(e.clientX-lpX)>8||Math.abs(e.clientY-lpY)>8)){clearTimeout(lpT);lpT=null}});
 ['pointerup','pointercancel'].forEach(ev=>document.addEventListener(ev,()=>{clearTimeout(lpT);lpT=null;setTimeout(()=>longFired=false,400)}));
 document.addEventListener('contextmenu',e=>{const t=e.target.closest('[data-long]');if(t){e.preventDefault();runLong(t)}});
-const runLong=t=>{if(navigator.vibrate)try{navigator.vibrate(12)}catch(e){}if(S.open&&S.open.sel&&t.dataset.long==='msg'){const r=t.closest('[data-mid]');if(r)selTap({target:r,preventDefault(){},stopPropagation(){}});return}if(t.dataset.long==='topic'){const id=S.open.id,tid=t.dataset.id;confirmSheet('Удалить тему вместе со всеми сообщениями?','Удалить тему',async()=>{try{await api('DELETE','/api/topics/'+id+'~'+tid);const l=layers.find(x=>x.reloadTopics);l&&l.reloadTopics();toast('Тема удалена')}catch(e){toast(errMsg(e))}});return}if(t.dataset.long==='hidden'){openHidden();return}if(t.dataset.long==='chat')chatMenu(t.dataset.c);else{const r=t.closest('[data-mid]')||t.closest('.threadpost');if(r&&r.dataset.mid)msgMenu(r.dataset.mid);else if(S.open&&S.open.post)msgMenu(S.open.post.id)}};
+const runLong=t=>{if(navigator.vibrate)try{navigator.vibrate(12)}catch(e){}if(S.open&&S.open.sel&&t.dataset.long==='msg'){const r=t.closest('[data-mid]');if(r)selTap({target:r,preventDefault(){},stopPropagation(){}});return}if(t.dataset.long==='topic'){const id=S.open.id,tid=t.dataset.id;sheet(`<div class="grp"><button data-s="ed">${ic('edit',22,2)}Изменить название и фото</button><button data-s="del" class="red">${ic('trash',22,2)}Удалить тему</button></div><div class="grp"><button data-s="x" class="c">Отмена</button></div>`,a=>{
+  if(a==='ed'){const tp=(TOPICS[id]||[]).find(x=>String(x.id)===String(tid));if(tp)openNewTopic(tp)}
+  if(a==='del')confirmSheet('Удалить тему вместе со всеми сообщениями?','Удалить тему',async()=>{try{await api('DELETE','/api/topics/'+id+'~'+tid);const l=layers.find(x=>x.reloadTopics);l&&l.reloadTopics();toast('Тема удалена')}catch(e){toast(errMsg(e))}})});return}if(t.dataset.long==='hidden'){openHidden();return}if(t.dataset.long==='chat')chatMenu(t.dataset.c);else{const r=t.closest('[data-mid]')||t.closest('.threadpost');if(r&&r.dataset.mid)msgMenu(r.dataset.mid);else if(S.open&&S.open.post)msgMenu(S.open.post.id)}};
 document.addEventListener('dblclick',e=>{const r=e.target.closest('.mrow');if(r&&S.open&&!S.open.sel&&+r.dataset.mid>0&&!e.target.closest('button,a,img,video')){const al=allowedReacts(S.chats[S.open.id]);if(al.length)react(r.dataset.mid,al.includes('❤️')?'❤️':al[0])}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const d=$('.dim');if(d){d.click();return}const v=$('.viewer');if(v){v.remove();return}if(Rec.st){Rec.stop(false);return}if(layers.length)pop()}});
 window.addEventListener('popstate',()=>{const d=$('.dim');if(d){d.click();try{history.pushState({yc:1},'')}catch(e){}return}const v=$('.viewer');if(v){v.remove();try{history.pushState({yc:1},'')}catch(e){}return}if(Rec.st){Rec.stop(false);try{history.pushState({yc:1},'')}catch(e){}return}if(layers.length)pop()});
@@ -4466,7 +4751,7 @@ const albumHTML0=m=>{const it=m.items||[];let k=0;const rows=albumRows(it.length
 const chatMedia=()=>{const V=S.open;const out=[];if(!V)return out;const all=[...(V.post?[V.post]:[]),...V.msgs];
  all.forEach(m=>{if(m.kind==='photo'||m.kind==='video'){if(m.media)out.push({md:m.media,mid:m.id,i:0,m})}else if(m.kind==='album')(m.items||[]).forEach((x,i)=>out.push({md:x,mid:m.id,i,m}))});return out};
 const openGallery=(list,start)=>{if(!list.length)return;const g=document.createElement('div');g.className='viewer gal';
- g.innerHTML=`<div class="gtop"><button data-g="x" aria-label="Закрыть">${ic('close',22,2.2)}</button><span class="gc"></span><button data-g="dl" aria-label="Сохранить">${ic('down',21,2.2)}</button></div>
+ g.innerHTML=`<div class="gtop"><button data-g="x" aria-label="Закрыть">${ic('close',22,2.2)}</button><span class="gc"></span>${list.some(x=>isVid(x.md))?`<button data-g="mini" aria-label="Мини-плеер">${ic('copy',20,2.2)}</button>`:''}<button data-g="dl" aria-label="Сохранить">${ic('down',21,2.2)}</button></div>
  <div class="gtrack">${list.map(x=>`<div class="gs">${isVid(x.md)?`<video src="${esc(M(x.md))}"${BID(x.md)} controls playsinline preload="metadata"></video>`:`<img src="${esc(M(x.md))}"${BID(x.md)} alt="Фото">`}</div>`).join('')}</div>
  <div class="gcap"></div>`;
  app.appendChild(g);const tr=$('.gtrack',g),gc=$('.gc',g),cap=$('.gcap',g);let cur=-1;
@@ -4477,7 +4762,26 @@ const openGallery=(list,start)=>{if(!list.length)return;const g=document.createE
  requestAnimationFrame(()=>{tr.scrollLeft=start*tr.clientWidth;upd();hydrate(g)});
  let y0=null;g.addEventListener('pointerdown',e=>{if(e.target.closest('video,button'))return;y0=e.clientY});g.addEventListener('pointerup',e=>{if(y0!=null&&Math.abs(e.clientY-y0)>110)g.remove();y0=null});
  g.addEventListener('click',async e=>{const b=e.target.closest('[data-g]');if(!b)return;if(b.dataset.g==='x'){g.remove();return}
+  if(b.dataset.g==='mini'){const v=tr.children[cur]&&tr.children[cur].querySelector('video');if(!v){toast('Мини-плеер — для видео');return}vMini(v);g.remove();return}
   if(b.dataset.g==='dl'){const x=list[cur];if(!x)return;const u=await murl(x.md);if(!u)return;const a=document.createElement('a');a.href=u;a.download='youchat-'+Date.now()+(isVid(x.md)?'.mp4':'.jpg');document.body.appendChild(a);a.click();a.remove();toast('Сохранено')}})};
+/* видео: продолжение с места + мини-плеер поверх чатов */
+const VVPOS_K='yc-vpos';let VVPOS={};try{VVPOS=JSON.parse(localStorage.getItem(VVPOS_K)||'{}')||{}}catch(e){}
+const vKey=v=>v.dataset.bid||v.getAttribute('data-bid')||'';let vposT=0;
+const vposSave=()=>{clearTimeout(vposT);vposT=setTimeout(()=>{try{const ks=Object.keys(VVPOS);if(ks.length>200)ks.sort((a,b)=>VVPOS[a].t-VVPOS[b].t).slice(0,ks.length-200).forEach(k=>delete VVPOS[k]);localStorage.setItem(VVPOS_K,JSON.stringify(VVPOS))}catch(e){}},800)};
+document.addEventListener('loadedmetadata',e=>{const v=e.target;if(!(v instanceof HTMLVideoElement))return;const k=vKey(v);const p=k&&VVPOS[k];if(p&&v.duration>30&&p.p>5&&p.p<v.duration-5){try{v.currentTime=p.p;toast('Продолжаем с '+dur(Math.floor(p.p)))}catch(_){}}},true);
+document.addEventListener('timeupdate',e=>{const v=e.target;if(!(v instanceof HTMLVideoElement)||!(v.duration>30))return;const k=vKey(v);if(!k)return;const o=VVPOS[k];if(o&&Math.abs(o.p-v.currentTime)<3)return;VVPOS[k]={p:v.currentTime,t:Date.now()};vposSave()},true);
+document.addEventListener('ended',e=>{const v=e.target;if(!(v instanceof HTMLVideoElement))return;const k=vKey(v);if(k&&VVPOS[k]){delete VVPOS[k];vposSave()}},true);
+let VMINI=null;
+const vMini=async v=>{if(document.pictureInPictureEnabled&&v.requestPictureInPicture&&!v.disablePictureInPicture){try{if(v.paused)await v.play().catch(()=>{});
+   /* системная «картинка в картинке»: видео остаётся поверх даже других приложений */
+   const holder=document.createElement('div');holder.style.cssText='position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;left:0';holder.appendChild(v);document.body.appendChild(holder);
+   await v.requestPictureInPicture();v.addEventListener('leavepictureinpicture',()=>{v.pause();holder.remove()},{once:true});return}catch(e){}}
+ if(VMINI)VMINI.remove();const m=document.createElement('div');m.className='vmini';m.innerHTML=`<div class="vmbar"><button data-m="full" aria-label="Во весь экран">${ic('up',16,2.4)}</button><button data-m="x" aria-label="Закрыть">${ic('close',16,2.4)}</button></div>`;
+ v.controls=true;v.playsInline=true;m.prepend(v);app.appendChild(m);VMINI=m;if(v.paused)v.play().catch(()=>{});
+ m.addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;e.stopPropagation();if(b.dataset.m==='x'){v.pause();m.remove();VMINI=null}if(b.dataset.m==='full'){try{(v.requestFullscreen||v.webkitEnterFullscreen||v.webkitRequestFullscreen).call(v)}catch(_){}}});
+ let sx,sy,ox,oy,drag=false;m.addEventListener('pointerdown',e=>{if(e.target.closest('button')||e.target===v&&e.offsetY>v.clientHeight-40)return;drag=true;sx=e.clientX;sy=e.clientY;const r=m.getBoundingClientRect();ox=r.left;oy=r.top;m.setPointerCapture(e.pointerId)});
+ m.addEventListener('pointermove',e=>{if(!drag)return;const x=Math.max(4,Math.min(innerWidth-m.offsetWidth-4,ox+e.clientX-sx)),y=Math.max(4,Math.min(innerHeight-m.offsetHeight-4,oy+e.clientY-sy));m.style.left=x+'px';m.style.top=y+'px';m.style.right='auto';m.style.bottom='auto'});
+ m.addEventListener('pointerup',()=>{drag=false})};
 const openChatGallery=(mid,i)=>{const list=chatMedia();let s=list.findIndex(x=>x.mid===mid&&x.i===i);if(s<0)s=0;openGallery(list,s)};
 
 /* выбор нескольких фото и видео перед отправкой */
@@ -4488,7 +4792,32 @@ const prepFile=async f0=>{const ty=guessType(f0);const f=ty&&ty!==f0.type?new Bl
   if(f0.size>20*1024*1024)throw {error:'Фото больше 20 МБ'};return {type:'photo',blob:f,mime:ty||'image/jpeg',w:0,h:0}}
  if(im){const d=await new Promise(res=>{const u=URL.createObjectURL(f);const i=new Image();i.onload=()=>{res({w:i.naturalWidth,h:i.naturalHeight});URL.revokeObjectURL(u)};i.onerror=()=>{res({});URL.revokeObjectURL(u)};i.src=u});return {type:'photo',blob:f,mime:f.type,...d}}
  if(f.size>20*1024*1024)throw {error:'Видео больше 20 МБ'};const mm=await mediaMeta(f);return {type:'video',blob:f,mime:f.type||'video/mp4',w:mm.w,h:mm.h,dur:mm.dur}};
-const openMediaPicker=(files,V)=>{let list=files.slice(0,10).map(f=>({f,url:URL.createObjectURL(f),vid:guessType(f).startsWith('video/')}));let album=true,raw=false;
+/* меню вложений как в Telegram: недавние фото и видео сверху, разделы снизу */
+const RECENT=[];const recAdd=fs=>{for(const f of [...fs].reverse()){if(!f||!/^(image|video)\//.test(f.type||''))continue;if(RECENT.some(x=>x.f===f||(x.f.name===f.name&&x.f.size===f.size)))continue;RECENT.unshift({f,u:URL.createObjectURL(f)})}while(RECENT.length>30){const r=RECENT.pop();try{URL.revokeObjectURL(r.u)}catch(e){}}};
+const openAttach=V=>{if(!V)return;const sel=[];const d=document.createElement('div');d.className='dim';const s=document.createElement('div');s.className='sheet attp';
+ const tabs=[['gal','img','#0a84ff','Галерея'],['doc','clip','#5e5ce6','Файл'],['poll','chat','#34c759','Опрос'],['todo','todo','#af52de','Список'],['gif','','#ff9f0a','GIF'],['vid','video','#ff375f','Видео'],['dice','dice','#ff453a','Игры']];
+ const draw=()=>{s.innerHTML=`<div class="attbox"><div class="attgrab"></div><div class="attgal"><button class="attcam" data-s="cam">${ic('cam',28,2)}<small>Камера</small></button><button class="attcam" data-s="gal">${ic('img',28,2)}<small>Галерея</small></button>${RECENT.map((r,i)=>{const n=sel.indexOf(i);return `<button class="attth ${n>=0?'on':''}" data-s="r" data-i="${i}">${/^video/.test(r.f.type)?`<video src="${r.u}#t=0.1" muted playsinline preload="metadata"></video><i class="attv">${ic('play',11,2.4,'currentColor')}</i>`:`<img src="${r.u}" alt="" loading="lazy">`}<span class="attck">${n>=0?n+1:''}</span></button>`}).join('')}${RECENT.length?'':'<div class="atthint">Здесь появятся фото и видео, которые вы выбирали недавно</div>'}</div>
+  ${sel.length?`<div class="attsendw"><button class="btn attsend" data-s="send">${ic('send',18,2.2)} Отправить ${sel.length}</button></div>`:`<div class="atttabs">${tabs.map(([k,i,c,l])=>`<button data-s="${k}"><span class="atic" style="--c:${c}">${i?ic(i,24,2.1):'<b>GIF</b>'}</span><small>${l}</small></button>`).join('')}</div>
+  <div class="attopts"><button data-s="ttl">${ic('fire',17,2)}<span>Автоудаление: ${ttlLabel((SET.ttl||{})[V.id])}</span></button><button data-s="vrec">${ic('mic',17,2)}<span>${V.mode==='voice'?'Кнопка записи: кружок':'Кнопка записи: голосовое'}</span></button></div>`}</div>`};
+ const close=()=>{d.remove();s.remove()};d.onclick=close;
+ s.addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(!b)return;const a=b.dataset.s;
+  if(a==='r'){const i=+b.dataset.i;const n=sel.indexOf(i);if(n>=0)sel.splice(n,1);else if(sel.length<10)sel.push(i);else toast('Не больше 10 за раз');draw();return}
+  close();
+  if(a==='send'){openMediaPicker(sel.map(i=>RECENT[i].f),V);return}
+  if(a==='gal'){pickFiles({accept:'image/*,video/*',multiple:true}).then(fs=>{if(fs.length)openMediaPicker(fs.slice(0,10),V)});return}
+  if(a==='vrec'){V.mode=V.mode==='voice'?'circle':'voice';V.upd();toast(V.mode==='voice'?'Голосовое: удерживайте кнопку':'Кружок: удерживайте кнопку');return}
+  if(a==='dice')diceSheet(V);
+  if(a==='img')pickFiles({accept:'image/*',multiple:true}).then(fs=>{if(fs.length)openMediaPicker(fs.slice(0,10),V)});
+  if(a==='vid')pickFiles({accept:'video/*',multiple:true}).then(fs=>{if(fs.length)openMediaPicker(fs.slice(0,10),V)});
+  if(a==='poll')openPollEditor2();
+  if(a==='todo')openTodoEditor();
+  if(a==='doc')pickDocs(V);
+  if(a==='ttl')ttlSheet(V.id);
+  if(a==='gif')pickFiles({accept:'image/*'}).then(fs=>{if(fs[0])sendGif(V,fs[0])});
+  if(a==='cam')pickFiles({accept:'image/*',capture:'environment'}).then(fs=>{if(fs[0])V.sendFile(fs[0])});
+});
+ draw();app.append(d,s)};
+const openMediaPicker=(files,V)=>{try{recAdd(files)}catch(e){}let list=files.slice(0,10).map(f=>({f,url:URL.createObjectURL(f),vid:guessType(f).startsWith('video/')}));let album=true,raw=false;
  if(files.length>10)toast('Можно выбрать до 10 файлов');
  const d=document.createElement('div');d.className='dim';const s=document.createElement('div');s.className='sheet mpick';app.append(d,s);
  const close=()=>{d.remove();s.remove();list.forEach(x=>URL.revokeObjectURL(x.url))};d.onclick=close;
@@ -4508,8 +4837,17 @@ const openMediaPicker=(files,V)=>{let list=files.slice(0,10).map(f=>({f,url:URL.
   if(m==='send'){const text=$('#mpcap',s).value.trim();const fs=list.map(x=>x.f);d.remove();s.remove();(raw?sendDocs(V,fs,text):sendMedia(V,fs,text,album)).finally(()=>list.forEach(x=>URL.revokeObjectURL(x.url)))}});
  draw()};
 const sendMedia=async(V,files,text,album)=>{if(!files.length){toast('Файлы не выбраны');return}logErr('send','отправка '+files.length+' файл(ов), альбом: '+!!album);try{
-  if(files.length===1||!album){for(let i=0;i<files.length;i++){const p=await prepFile(files[i]);toast(files.length>1?`Отправляю ${i+1} из ${files.length}…`:p.type==='video'?'Отправляю видео…':'Отправляю фото…');
-    const up=await upload(p.blob,p.mime);await V.send({kind:p.type,media:{...up,w:p.w,h:p.h,dur:p.dur},text:i===0&&text?text:null})}return}
+  if(files.length===1||!album){
+   /* как в Telegram: фото сразу появляется в чате и загружается у вас на глазах */
+   const jobs=[];for(let i=0;i<files.length;i++){const p=await prepFile(files[i]);const pid=-(8e14+now()%1e9+(++PSEQ));const url=URL.createObjectURL(p.blob);
+    const ph={id:pid,pending:true,uploading:true,chat_id:V.id,user_id:S.me.id,t:now(),kind:p.type,media:{url,w:p.w,h:p.h,dur:p.dur},text:i===0&&text?text:null,reactions:{},thread_of:V.thread||null,topic_id:V.topic||null};
+    V.onMsg(ph);jobs.push({p,pid,url,text:ph.text})}
+   for(const j of jobs){if(!V.msgs.some(x=>x.id===j.pid))continue;
+    window.YC_UPPROG=f=>{const r=$(`[data-mid="${j.pid}"] .upov`,V.el);if(r){r.classList.add('det');r.style.setProperty('--p',Math.round(f*100))}};
+    let up;try{up=await upload(j.p.blob,j.p.mime)}catch(e){window.YC_UPPROG=null;V.msgs=V.msgs.filter(x=>x.id!==j.pid);V.render(true);throw e}
+    window.YC_UPPROG=null;if(up.blob)MCACHE.set(up.blob,j.url);
+    if(!V.msgs.some(x=>x.id===j.pid))continue;
+    await V.send({kind:j.p.type,media:{...up,w:j.p.w,h:j.p.h,dur:j.p.dur},text:j.text,_ph:j.pid})}return}
   const items=[];for(let i=0;i<files.length;i++){toast(`Загружаю ${i+1} из ${files.length}…`);const p=await prepFile(files[i]);const up=await upload(p.blob,p.mime);items.push({...up,w:p.w||0,h:p.h||0,dur:p.dur||0})}
   await V.send({kind:'album',items,text:text||null})}catch(e){logErr('send-media',e);toast(errMsg(e))}};
 
@@ -4954,14 +5292,21 @@ const voicePreview=(V,blob,type,secs,levels)=>{const comp=$('.composer',V.el);if
   if(k==='send'){a.pause();bar.remove();URL.revokeObjectURL(url);try{toast('Отправляю голосовое…');const up=await upload(blob,type);await V.send({kind:'voice',media:{...up,dur:Math.round(secs),wave:resample(levels,48).map(v=>Math.round(v*100)/100)}})}catch(ex){toast(errMsg(ex))}}}};
 
 /* ================= 1.5: звонки ================= */
-const ICE={iceServers:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']}]};
+/* STUN + публичные ретрансляторы TURN: звонок соединяется даже через мобильный интернет, NAT и строгие сети (TCP 443) */
+const ICE={iceServers:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302','stun:stun.cloudflare.com:3478']},
+ {urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turn:openrelay.metered.ca:443?transport=tcp','turns:openrelay.metered.ca:443?transport=tcp'],username:'openrelayproject',credential:'openrelayproject'}],iceCandidatePoolSize:4,bundlePolicy:'max-bundle'};
+/* переподключение без обрыва звонка: новый обмен ключами связи (ICE restart) */
+const callRestart=async C=>{if(CALL!==C||C.state==='ended'||C.restarting)return;C.restarts=(C.restarts||0)+1;if(C.restarts>4){toast('Связь потеряна');endCall('done');return}
+ C.recon=true;callUI();
+ if(C.role!=='out'){sigUpd(`calls/${C.peer}/${C.id}`,{req:now()}).catch(()=>{});return}
+ C.restarting=true;try{const o=await C.pc.createOffer({iceRestart:true});await C.pc.setLocalDescription(o);await sigUpd(`calls/${C.peer}/${C.id}`,{re:JSON.stringify(C.pc.localDescription),rn:C.restarts}).catch(()=>{})}catch(e){}finally{C.restarting=false}};
 let CALL=null;let callsOff=null;
 const ring={t:null,start(kind){this.stop();const play=()=>{const a=getActx();if(!a||!SET.sound)return;try{const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=kind==='in'?620:440;g.gain.setValueAtTime(.0001,a.currentTime);g.gain.exponentialRampToValueAtTime(.1,a.currentTime+.04);g.gain.setValueAtTime(.1,a.currentTime+(kind==='in'?.5:.9));g.gain.exponentialRampToValueAtTime(.0001,a.currentTime+(kind==='in'?.6:1));o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+1.05)}catch(e){}if(kind==='in'&&navigator.vibrate)try{navigator.vibrate([300,200,300])}catch(e){}};play();this.t=setInterval(play,kind==='in'?1500:3000)},stop(){clearInterval(this.t);this.t=null}};
 const watchCalls=()=>{if(callsOff)callsOff();if(!S.me)return;const me=S.me.id;
  callsOff=sigOn(`calls/${me}`,'child_added',(id,v)=>{if(!v||!v.offer||v.from===me||v.end||v.answer)return;if(now()-(v.t||0)>45000)return;if(v.g){meshIncoming(id,v);return}if(!callOk(v.from)){sigUpd(`calls/${v.from}/${id}`,{end:'privacy',t:now()}).catch(()=>{});return}if(CALL){sigUpd(`calls/${v.from}/${id}`,{end:'busy',t:now()}).catch(()=>{});return}incomingCall(id,v)})};
 const callUI=()=>{const C=CALL;if(!C)return;const p=U(C.peer);let el=C.el;if(!el){el=document.createElement('div');el.className='callv';app.appendChild(el);C.el=el}
- const st=C.state;const status=st==='ringing'?(C.role==='in'?(C.video?'Входящий видеозвонок':'Входящий звонок'):'Вызов…'):st==='connecting'?'Соединение…':st==='active'?dur(C.secs||0):st==='ended'?(C.endText||'Звонок завершён'):'';
- el.classList.toggle('video',!!C.video&&st==='active');el.classList.toggle('mini',!!C.mini&&st!=='ended');
+ const st=C.state;const status=C.recon&&st==='active'?'Переподключение…':st==='ringing'?(C.role==='in'?(C.video?'Входящий видеозвонок':'Входящий звонок'):'Вызов…'):st==='connecting'?'Соединение…':st==='active'?dur(C.secs||0):st==='ended'?(C.endText||'Звонок завершён'):'';
+ el.classList.toggle('video',!!C.video&&st==='active');el.classList.toggle('ringing',st==='ringing'||st==='connecting'||!!C.recon);el.classList.toggle('mini',!!C.mini&&st!=='ended');
  el.innerHTML=`<div class="cbg" style="background:${grad(p.hue||hueOf(p.id))}"></div><video class="rv" autoplay playsinline></video><video class="lv" autoplay playsinline muted></video>${st==='active'||st==='connecting'?`<div class="ctop"><button data-cl="min" aria-label="Свернуть"><span style="display:grid;transform:rotate(-90deg)">${ic('back',22,2.4)}</span></button><span class="cq" data-q="${C.q||3}" title="Качество связи"><i></i><i></i><i></i></span></div>`:''}
   <div class="cinfo">${avatarHTML(p,112)}<b>${esc(p.name)}</b><span class="cst">${esc(status)}</span><small>${ic('lock',12,2.4)} Звонок защищён шифрованием</small></div>
   ${st==='active'?`<div class="creact">${CREACT.map(e=>`<button data-cr="${e}">${e}</button>`).join('')}</div>`:''}<div class="cbtns">${st==='ringing'&&C.role==='in'?`<div class="cb2"><button class="red" data-cl="decline">${ic('phonedown',30,2.2)}</button><span>Отклонить</span></div><div class="cb2"><button class="green" data-cl="accept">${ic(C.video?'video':'phone',28,2.2)}</button><span>Принять</span></div>`
@@ -4972,18 +5317,24 @@ const callUI=()=>{const C=CALL;if(!C)return;const p=U(C.peer);let el=C.el;if(!el
   if(a==='mute'){C.muted=!C.muted;C.local&&C.local.getAudioTracks().forEach(t=>t.enabled=!C.muted);callUI()}
   if(a==='cam'){C.camOff=!C.camOff;C.local&&C.local.getVideoTracks().forEach(t=>t.enabled=!C.camOff);callUI()}}};
 const getMedia=async video=>{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw {error:'Звонки не поддерживаются на этом устройстве'};
- try{return await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:video?{facingMode:'user',width:{ideal:640},height:{ideal:480}}:false})}catch(e){throw {error:'Разрешите доступ к '+(video?'камере и микрофону':'микрофону')}}};
+ try{return await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:video?{facingMode:'user',width:{ideal:640,max:960},height:{ideal:480,max:720},frameRate:{ideal:24,max:30}}:false})}catch(e){throw {error:'Разрешите доступ к '+(video?'камере и микрофону':'микрофону')}}};
 const mkPC=()=>{const C=CALL;const pc=new RTCPeerConnection(ICE);C.pc=pc;C.iceN=0;C.iceSeen=0;C.remote=new MediaStream();
  const dcSetup=ch=>{C.dc=ch;ch.onmessage=e=>{try{const o=JSON.parse(e.data);if(o.r&&CREACT.includes(o.r))callReact(o.r,false)}catch(_){}}};if(C.role==='out')try{dcSetup(pc.createDataChannel('yc'))}catch(_){}else pc.ondatachannel=e=>dcSetup(e.channel);
  C.local.getTracks().forEach(t=>pc.addTrack(t,C.local));
  pc.ontrack=e=>{e.streams[0]?e.streams[0].getTracks().forEach(t=>{if(!C.remote.getTracks().includes(t))C.remote.addTrack(t)}):C.remote.addTrack(e.track);const rv=C.el&&$('.rv',C.el);if(rv&&rv.srcObject!==C.remote){rv.srcObject=C.remote;rv.play().catch(()=>{})}};
  pc.onicecandidate=e=>{if(e.candidate&&CALL===C)sigSet(`calls/${C.peer}/${C.id}/ice/${C.iceN++}`,JSON.stringify(e.candidate.toJSON())).catch(()=>{})};
- pc.onconnectionstatechange=()=>{if(CALL!==C)return;const s=pc.connectionState;if(s==='connected'&&C.state!=='active'){C.state='active';C.t0=now();callQual(C);ring.stop();clearInterval(C.tm);C.tm=setInterval(()=>{C.secs=Math.round((now()-C.t0)/1000);const e=C.el&&$('.cst',C.el);if(e)e.textContent=dur(C.secs)},1000);callUI()}
-  if(s==='failed'){toast('Не удалось соединиться');endCall('done')}};
+ pc.onconnectionstatechange=()=>{if(CALL!==C)return;const s=pc.connectionState;
+  if(s==='connected'){clearTimeout(C.discT);if(C.recon){C.recon=false;callUI()}}
+  if(s==='disconnected'){clearTimeout(C.discT);C.discT=setTimeout(()=>{if(CALL===C&&['disconnected','failed'].includes(pc.connectionState))callRestart(C)},2500)}
+  if(s==='connected'&&C.state!=='active'){C.state='active';C.t0=now();callQual(C);ring.stop();clearInterval(C.tm);C.tm=setInterval(()=>{C.secs=Math.round((now()-C.t0)/1000);const e=C.el&&$('.cst',C.el);if(e)e.textContent=dur(C.secs)},1000);callUI()}
+  if(s==='failed'){if(C.state==='active'||C.answered||C.role==='in')callRestart(C);else{toast('Не удалось соединиться');endCall('done')}}};
  return pc};
 const watchMyNode=()=>{const C=CALL;C.offs=C.offs||[];C.offs.push(sigOn(`calls/${S.me.id}/${C.id}`,'value',async(k,v)=>{if(CALL!==C||!v)return;
  if(v.end){const why=v.end;C.peerEnded=true;endCall(why==='declined'?'declined_by_peer':why==='busy'?'busy':why==='privacy'?'privacy':'peer');return}
  try{if(v.answer&&C.role==='out'&&!C.answered){C.answered=true;C.state='connecting';ring.stop();callUI();await C.pc.setRemoteDescription(JSON.parse(v.answer))}
+  if(v.re&&C.role==='in'&&C.pc&&(+v.rn||0)>(C.rnSeen||0)){C.rnSeen=+v.rn;await C.pc.setRemoteDescription(JSON.parse(v.re));const a=await C.pc.createAnswer();await C.pc.setLocalDescription(a);await sigUpd(`calls/${C.peer}/${C.id}`,{rea:JSON.stringify(C.pc.localDescription),rn:C.rnSeen}).catch(()=>{})}
+  if(v.rea&&C.role==='out'&&C.pc&&(+v.rn||0)===(C.restarts||0)&&(C.reaSeen||0)<(+v.rn||0)){C.reaSeen=+v.rn;await C.pc.setRemoteDescription(JSON.parse(v.rea))}
+  if(v.req&&C.role==='out'&&v.req!==C.reqSeen){C.reqSeen=v.req;callRestart(C)}
   if(v.ice&&C.pc&&C.pc.remoteDescription){const keys=Object.keys(v.ice).map(Number).sort((a,b)=>a-b);for(const n of keys){if(n<C.iceSeen)continue;C.iceSeen=n+1;try{await C.pc.addIceCandidate(JSON.parse(v.ice[n]))}catch(e){}}}}catch(e){}}))};
 const startCall=async(peer,video)=>{if(CALL){toast('Уже идёт звонок');return}if(U(peer).bot){toast('Боту нельзя позвонить');return}
  const id='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);CALL={id,peer,video:!!video,role:'out',state:'ringing'};callUI();
@@ -5431,6 +5782,7 @@ setInterval(()=>{if(navigator.onLine!==false&&obRead().some(x=>!INFL.has(x.k)))o
 /* ---------- действия ---------- */
 Object.assign(A,{
  spoil:(d,b)=>{b.classList.add('show')},
+ upCancel:d=>{const V=S.open;if(!V)return;const id=+d.id;V.msgs=V.msgs.filter(x=>x.id!==id);V.render(true);toast('Отправка отменена')},
  pinNext:d=>{const V=S.open;if(!V)return;const c=S.chats[V.id]||{};const L=pinList(c);V.jumpTo(d.id);if(L.length>1){V.pinIdx=((V.pinIdx||0)+1)%L.length;V.renderPin()}},
  pinList:()=>openPinList(),
  unpin:d=>{const V=S.open;if(!V)return;const L=pinList(S.chats[V.id]||{});unpinMsg(+d.id||(L[0]&&L[0].id))},
@@ -6219,6 +6571,8 @@ const openAdmin=()=>{ADM.tab='home';ADM.q='';ADM.users=ADM.chats=ADM.reports=nul
  admEl.classList.add('admpage');admEl.reload=()=>{admLoad('all');srvAdmLoad()};admLoad('home');loadBadges();srvAdmLoad()};
 const admAfter=()=>{const top0=layers[layers.length-1];if(top0&&top0._uid)top0.reload&&top0.reload();admLoad('all')};
 Object.assign(A,{
+ qfHide:b=>{SET.qfSn=Object.assign({},SET.qfSn);SET.qfSn[b.dataset.c]=Date.now()+30*864e5;try{saveSet&&saveSet()}catch(e){}renderAll()},
+ bdHide:()=>{SET.bdHide=dayStr();try{saveSet&&saveSet()}catch(e){}renderAll()},
  banLogout:async()=>{const me0=S.me&&S.me.id;try{await api('POST','/api/logout')}catch(e){}const rest=accList().filter(a=>a.uid!==me0);accSave(rest);try{localStorage.setItem('yc-lo-note','1')}catch(e){}
   if(rest.length&&window.YOUCHAT_LOCAL===true&&window.YC_LOCAL_SWITCH&&window.YC_LOCAL_SWITCH(rest[0].uid)){try{localStorage.setItem('yc-last-uid',rest[0].uid)}catch(e){}setTimeout(()=>location.reload(),150);return}logoutLocal()},
  superPanel:()=>openAdmin(),
@@ -6284,7 +6638,7 @@ setInterval(()=>{if(!document.hidden&&Date.now()-xpLastAct<90000&&S.started)xpAd
 const xpLoad=async()=>{if(!S.me)return;try{XPME=await api('GET','/api/xp/'+S.me.id);if(!XPME||XPME.x==null)XPME={x:0}}catch(e){}try{const r=await api('GET','/api/xp');XPALL=r.all||{};XPALL.__r=r;addUsers(Object.values(r.users||{}))}catch(e){}setTimeout(()=>xpFlush(),1500)};
 setTimeout(xpLoad,2000);setInterval(()=>{api('GET','/api/xp').then(r=>{XPALL={...(r.all||{}),__r:r};addUsers(Object.values(r.users||{}))}).catch(()=>{})},180000);
 const lvlChip=uid=>{const x=uid===S.me.id?(XPME&&XPME.x):(XPALL[uid]&&XPALL[uid].x);if(x==null)return '';const l=lvlOf(x);const t=tierOf(l.L);return `<button class="lvlchip" data-a="rating" data-u="${uid}" style="--c1:${t[2]};--c2:${t[3]}"><i>${l.L}</i><span>${t[1]}</span><em><b style="width:${(l.p*100).toFixed(1)}%"></b></em></button>`};
-const ratingCellHTML=()=>{const l=lvlOf(XPME&&XPME.x||0);const t=tierOf(l.L);return `<div class="group"><button class="cell ic" data-a="rating" data-u="${S.me.id}"><span class="sq-ic" style="background:linear-gradient(135deg,${t[2]},${t[3]})">${ic('star',17,2.2)}</span><div class="tx">Уровень и рейтинг<small>${l.L} уровень · ${t[1]} · ${XPME&&XPME.s?'🔥 '+XPME.s+' '+plural(XPME.s,'день','дня','дней')+' подряд':'заходите каждый день'}</small></div><span class="chev">${ic('chev',18,2.2)}</span></button></div><div style="height:14px"></div>`};
+const ratingCellHTML=()=>{const l=lvlOf(XPME&&XPME.x||0);const t=tierOf(l.L);return `<div class="group"><button class="cell ic" data-a="rating" data-u="${S.me.id}"><span class="sq-ic" style="background-color:${t[2]}">${ic('star',17,2.2)}</span><div class="tx">Уровень и рейтинг<small>${l.L} уровень · ${t[1]} · ${XPME&&XPME.s?'🔥 '+XPME.s+' '+plural(XPME.s,'день','дня','дней')+' подряд':'заходите каждый день'}</small></div><span class="chev">${ic('chev',18,2.2)}</span></button></div><div style="height:14px"></div>`};
 const ringHTML=(L,p,t,big)=>`<div class="lvring ${big?'big':''}" style="--c1:${t[2]};--c2:${t[3]};--p:${p.toFixed(3)}"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg"/></svg><b>${L}</b></div>`;
 const fmtN=n=>(+n||0).toLocaleString('ru-RU');
 const openRating=uid=>{const mine=uid===S.me.id;let rec=mine?XPME:null,lb=XPALL.__r||null;
@@ -6333,15 +6687,114 @@ const relForm=({v,file})=>{const go=(vv,notes,url)=>sheet(`<div class="grp"><div
  const notesStep=vv=>promptSheet('Что нового (коротко)','','Например: исправлены ошибки, новые темы',1500,notes=>{if(file){go(vv,notes,null);return}promptSheet('Ссылка на новый APK','','https://…',500,url=>{url=String(url||'').trim();if(!/^https?:\/\//.test(url)){toast('Без ссылки людям нечего будет скачать — укажите ссылку на APK');return}go(vv,notes,url)})});
  if(file)notesStep(v);else promptSheet('Номер версии в новом APK',v,'например 1.9.9',20,vv=>{if(vv)notesStep(vv)})};
 
+/* ================= Маркет: установка и обновление YOUCHAT ================= */
+let MK=null,MKdl=null,MKel=null,MKpwa=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();MKpwa=e;try{MKel&&MKel.refresh()}catch(_){}});
+const mkUrl=r=>window.YC_SUPA&&window.YC_SUPA.pub&&r&&/^m\/[0-9a-f]{32}$/.test(r.path||'')?window.YC_SUPA.pub(r.path):'';
+const mkName=r=>`YOUCHAT-${r.v}.apk`;
+const mkNative=()=>{try{return !!(window.YCNative&&window.YCNative.installApk)}catch(e){return false}};
+const mkNew=()=>!!(MK&&MK.v&&cmpVer(MK.v,VERSION)>0);
+const mkSize=n=>n>=1048576?(n/1048576).toFixed(1).replace('.',',')+' МБ':Math.max(1,Math.round(n/1024))+' КБ';
+const mkLoad=async()=>{try{MK=await api('GET','/api/market')}catch(e){}return MK};
+const mkHex=buf=>[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+const mkSha=async ab=>{try{if(!crypto.subtle)return null;return mkHex(await crypto.subtle.digest('SHA-256',ab))}catch(e){return null}};
+const mkRedraw=()=>{try{MKel&&MKel.refresh()}catch(e){}};
+const mkRow=()=>MK&&MK.ok&&mkNew()?`<button class="updrow" data-a="market"><span class="ui">${ic('download',20,2.2)}</span><span class="ut"><b>YOUCHAT ${esc(MK.v)} в Маркете</b><small>Проверено администратором · ${mkSize(MK.size||0)}</small></span><span class="ub">Обновить</span></button>`:'';
+/* скачивание и установка */
+const mkInstall=async()=>{const r=MK;if(!r||!r.path){toast('Версия ещё не опубликована');return}
+ if(!r.ok&&!isSuper()){toast('Администратор не подтвердил эту версию — установка недоступна');return}
+ if(MKdl&&MKdl.st==='run')return;const url=mkUrl(r);if(!url){toast('Маркет недоступен в этой сборке');return}
+ MKdl={st:'run',p:0,v:r.v};mkRedraw();
+ if(mkNative()){window.YC_APKPROG=p=>{if(MKdl){MKdl.p=+p||0;mkBar()}};
+  window.YC_APKDONE=s=>{const M={ok:['done','Откроется установщик Android — нажмите «Обновить»'],perm:['run','Разрешите YOUCHAT устанавливать приложения и вернитесь — установка продолжится'],hash:['err','Файл повреждён или подменён: контрольная сумма не совпала. Установка отменена'],net:['err','Не удалось скачать файл. Проверьте интернет'],noinst:['err','На устройстве нет установщика приложений'],bad:['err','Неверная ссылка']}[s]||['err','Ошибка установки'];
+   MKdl={...MKdl,st:M[0]};toast(M[1]);mkRedraw()};
+  try{window.YCNative.installApk(url,r.sha||'',mkName(r))}catch(e){MKdl={st:'err'};toast('Не удалось начать загрузку');mkRedraw()}return}
+ /* браузер и сторонние обёртки: скачиваем сами, сверяем SHA-256, отдаём файл системе */
+ try{const ab=await new Promise((res,rej)=>{const x=new XMLHttpRequest();x.open('GET',url,true);x.responseType='arraybuffer';x.timeout=600000;
+   x.onprogress=e=>{if(e.lengthComputable&&MKdl){MKdl.p=Math.round(e.loaded/e.total*100);mkBar()}};x.onload=()=>x.status===200?res(x.response):rej(new Error('HTTP '+x.status));x.onerror=x.ontimeout=()=>rej(new Error('net'));x.send()});
+  const h=await mkSha(ab);if(h&&r.sha&&h!==r.sha){MKdl={st:'err'};toast('Файл повреждён или подменён: контрольная сумма не совпала. Установка отменена');mkRedraw();return}
+  const blob=new Blob([ab],{type:'application/vnd.android.package-archive'});const bu=URL.createObjectURL(blob);const a=document.createElement('a');a.href=bu;a.download=mkName(r);document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(bu),120000);
+  MKdl={st:'saved',v:r.v,checked:!!h};mkRedraw()}
+ catch(e){MKdl={st:'err'};toast('Не удалось скачать. Попробуйте «Скачать через браузер»');mkRedraw()}};
+const mkBrowser=()=>{const r=MK;const url=mkUrl(r);if(!url)return;const u=url+'?download='+encodeURIComponent(mkName(r));try{if(window.YCNative&&window.YCNative.openUrl){window.YCNative.openUrl(u);return}}catch(e){}window.open(u,'_blank')};
+const mkBar=()=>{const b=MKel&&$('#mkbtn',MKel);if(!b||!MKdl)return;b.style.setProperty('--p',(MKdl.p||0)+'%');const t=$('.mkpct',b);if(t)t.textContent=(MKdl.p||0)+'%'};
+/* страница */
+const mkBtn=r=>{if(!r)return `<button class="mkget off" disabled>Скоро</button>`;
+ if(MKdl&&MKdl.st==='run'&&MKdl.v===r.v)return `<button class="mkget run" id="mkbtn" style="--p:${MKdl.p||0}%" disabled><span class="mkpct">${MKdl.p||0}%</span></button>`;
+ if(!r.ok&&!isSuper())return `<button class="mkget off" disabled>Ждёт проверки</button>`;
+ const nw=mkNew();return `<button class="mkget" data-a="mkGo">${nw?'Обновить':cmpVer(r.v,VERSION)===0?'Переустановить':'Установить'}</button>`};
+const mkTrust=r=>!r?'':r.ok?`<div class="mktrust ok">${ic('shield',18,2.2)}<div><b>Проверено администратором</b><small>Версия подтверждена кодом${r.okt?' · '+new Date(r.okt).toLocaleDateString('ru'):''}. Файл сверяется по контрольной сумме перед установкой</small></div></div>`
+ :`<div class="mktrust bad">${ic('info',18,2.2)}<div><b>Администратор не подтвердил версию</b><small>${isSuper()?'Проверьте файл и подтвердите версию своим кодом — до этого её не смогут установить':'Установка станет доступна после проверки'}</small></div></div>`;
+const tplMarket=()=>{const r=MK;const done=MKdl&&MKdl.st==='saved';
+ return `<div class="mkhero"><div class="logo mkicon">${ic('chat',46,2)}</div><div class="mkhd"><b>YOUCHAT</b><small>Мессенджер</small>${mkBtn(r)}</div></div>
+ ${mkTrust(r)}
+ ${done?`<div class="mktrust ok">${ic('download',18,2.2)}<div><b>Файл ${esc(mkName(r))} скачан</b><small>${MKdl.checked?'Контрольная сумма совпала. ':''}Откройте его в «Загрузках» и нажмите «Установить». Если файл не появился — <a href="#" data-a="mkBrowser">скачайте через браузер</a></small></div></div>`:''}
+ ${r?`<div class="mkstats"><div><small>Версия</small><b>${esc(r.v)}</b></div><div><small>Размер</small><b>${mkSize(r.size||0)}</b></div><div><small>Обновлено</small><b>${new Date(r.t||Date.now()).toLocaleDateString('ru',{day:'numeric',month:'short'})}</b></div><div><small>Система</small><b>Android</b></div></div>
+ ${r.notes?`<div class="section">Что нового</div><div class="group"><div class="mknotes">${esc(r.notes)}</div></div>`:''}`:`<div class="mkempty">Новая версия ещё не опубликована.<br>У вас YOUCHAT ${VERSION}</div>`}
+ <div class="section">Информация</div><div class="group">
+  <div class="cell"><div class="tx">Установлено у вас</div><span class="val">${VERSION}</span></div>
+  ${r&&r.sha?`<button class="cell" data-a="mkSha"><div class="tx">Контрольная сумма<small>SHA-256 · нажмите, чтобы скопировать</small></div><span class="val mono">${esc(r.sha.slice(0,8))}…</span></button>`:''}
+  ${r?`<button class="cell" data-a="mkBrowser"><div class="tx">Скачать APK-файл<small>Через браузер, в «Загрузки»</small></div><span class="chev">${ic('download',18,2)}</span></button>`:''}
+  ${MKpwa?`<button class="cell" data-a="mkPwa"><div class="tx">Установить на рабочий стол<small>YOUCHAT как приложение на компьютере</small></div><span class="chev">${ic('chev',18,2.2)}</span></button>`:''}
+  <button class="cell" id="mkauto"><div class="tx">Автообновление<small>${mkNative()?'Скачивать и предлагать установку новых проверенных версий':'Сообщать о новых проверенных версиях'}</small></div><span class="sw ${SET.mkNoAuto?'':'on'}"></span></button>
+ </div>
+ <div class="mkfoot">Обновление встаёт только поверх YOUCHAT с той же цифровой подписью — подменённый файл Android не установит.</div>
+ ${isSuper()?`<div class="section">Администратор</div><div class="group">
+  <button class="cell ic" data-a="mkUp"><span class="sq-ic" style="background:#0a84ff">${ic('download',17,2.2)}</span><div class="tx">Загрузить новый APK</div><span class="chev">${ic('chev',18,2.2)}</span></button>
+  ${r&&!r.ok?`<button class="cell ic" data-a="mkOk"><span class="sq-ic" style="background:#30b158">${ic('shield',17,2.2)}</span><div class="tx">Подтвердить версию ${esc(r.v)}<small>Нужен ваш код подтверждения</small></div><span class="chev">${ic('chev',18,2.2)}</span></button>`:''}
+  <button class="cell ic" data-a="mkCode"><span class="sq-ic" style="background:#5856d6">${ic('lock',17,2.2)}</span><div class="tx">Сменить код подтверждения</div><span class="chev">${ic('chev',18,2.2)}</span></button>
+  ${r?`<button class="cell ic" data-a="mkDel"><span class="sq-ic" style="background:#ff3b30">${ic('trash',17,2.2)}</span><div class="tx" style="color:var(--danger)">Снять с публикации</div></button>`:''}
+ </div>`:''}<div style="height:40px"></div>`};
+const openMarket=async()=>{if(MKel&&MKel.isConnected){return}
+ MKel=subPage('Маркет',tplMarket,el=>{const a=$('#mkauto',el);if(a)a.onclick=()=>{SET.mkNoAuto=!SET.mkNoAuto;saveSet();el.refresh()}});
+ await mkLoad();mkRedraw()};
+/* админ: загрузка и подтверждение */
+const pickApk=()=>new Promise(res=>{const i=document.createElement('input');i.type='file';i.accept='.apk,application/vnd.android.package-archive';i.onchange=()=>res(i.files[0]||null);i.click()});
+const mkUpload=async()=>{const f=await pickApk();if(!f)return;
+ if(!/\.apk$/i.test(f.name)){toast('Выберите файл .apk');return}if(f.size>50*1024*1024){toast('Файл больше 50 МБ');return}
+ const ab=await f.arrayBuffer();const u8=new Uint8Array(ab,0,4);if(!(u8[0]===0x50&&u8[1]===0x4b)){toast('Это не APK-файл');return}
+ const sha=await mkSha(ab);if(!sha){toast('Не удалось посчитать контрольную сумму');return}
+ const m=/(\d+\.\d+(?:\.\d+){0,2})/.exec(f.name);
+ promptSheet('Номер версии в этом APK',m?m[1]:VERSION,'например 4.2.0',20,vv=>{vv=String(vv||'').trim();if(!/^\d{1,4}(\.\d{1,4}){1,3}$/.test(vv)){toast('Версия в формате 4.2.0');return}
+  promptSheet('Что нового (коротко)','','Что изменилось в версии',1500,async notes=>{
+   toast('Загружаю APK…');window.YC_UPPROG=p=>{MKdl={st:'run',p:Math.round(p*100),v:'up'};const b=MKel&&$('.mkup',MKel);if(b)b.textContent='Загрузка '+Math.round(p*100)+'%'};
+   try{const path=await window.YC_SUPA.upload(new Uint8Array(ab));window.YC_UPPROG=null;MKdl=null;
+    const res=await api('POST','/api/market',{a:'pub',v:vv,notes:notes||'',path,size:f.size,sha});MK=res.rec||MK;mkRedraw();
+    toast('Версия загружена. Теперь подтвердите её кодом');setTimeout(mkConfirm,400)}catch(e){window.YC_UPPROG=null;MKdl=null;toast(errMsg(e)||'Не удалось загрузить');mkRedraw()}})})};
+const mkConfirm=()=>{if(!MK)return;promptSheet(`Код подтверждения версии ${MK.v}`,'','Знаете только вы',64,async code=>{if(!code)return;
+ try{await api('POST','/api/market',{a:'ok',code:String(code),sha:MK.sha});await mkLoad();toast('Версия подтверждена ✓');mkRedraw()}catch(e){toast(errMsg(e))}},'password')};
+const mkCode=()=>promptSheet('Текущий код','','Код подтверждения',64,old=>{if(!old)return;promptSheet('Новый код','','Не короче 6 символов',64,async nw=>{nw=String(nw||'');if(nw.length<6){toast('Сделайте код длиннее — от 6 символов');return}
+ try{await api('POST','/api/market',{a:'code',code:String(old),new:nw});toast('Код изменён')}catch(e){toast(errMsg(e))}},'password')},'password');
+/* автообновление */
+let mkAsked='';
+const mkAuto=async()=>{if(!S.started||!S.me)return;await mkLoad();renderAll();if(!MK||!MK.ok||!mkNew()||SET.mkNoAuto)return;
+ if(mkAsked===MK.v||S.open||layers.length)return;mkAsked=MK.v;
+ if(mkNative()){if(SET.mkAutoV===MK.v)return;SET.mkAutoV=MK.v;saveSet();toast(`Скачиваю обновление YOUCHAT ${MK.v}…`);mkInstall();return}
+ sheet(`<div class="grp updsheet"><div class="ush">${ic('download',34,2)}</div><b>YOUCHAT ${esc(MK.v)} в Маркете</b><small>Проверено администратором · у вас ${VERSION}</small>${MK.notes?`<div class="unotes">${esc(MK.notes)}</div>`:''}</div><div class="grp"><button data-s="go" style="color:var(--accent);font-weight:600;justify-content:center">Открыть Маркет</button><button data-s="x" class="c">Позже</button></div>`,a=>{if(a==='go')openMarket()})};
+setTimeout(mkAuto,8000);setInterval(mkAuto,30*60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.started)setTimeout(mkAuto,1500)});
+Object.assign(A,{market:()=>openMarket(),mkGo:()=>mkInstall(),mkBrowser:()=>mkBrowser(),mkUp:()=>mkUpload(),mkOk:()=>mkConfirm(),mkCode:()=>mkCode(),
+ mkSha:()=>{if(MK&&MK.sha){try{navigator.clipboard.writeText(MK.sha);toast('Контрольная сумма скопирована')}catch(e){toast(MK.sha)}}},
+ mkPwa:async()=>{if(!MKpwa)return;MKpwa.prompt();try{await MKpwa.userChoice}catch(e){}MKpwa=null;mkRedraw()},
+ mkDel:()=>confirmSheet('Снять версию с публикации? Её перестанут предлагать для установки.','Снять',async()=>{try{await api('POST','/api/market',{a:'del'});MK=null;toast('Снято с публикации');mkRedraw();renderAll()}catch(e){toast(errMsg(e))}})});
 /* ---------- Хеллоуин ---------- */
 const EV_START=+new Date(2026,9,19,0,0,0),EV_END=+new Date(2026,10,2,23,59,59);
-const evOn=()=>{const n=Date.now();return n>=EV_START&&n<=EV_END};
+const evOn=()=>false;
 const HP_GOAL=13,HP_DAY=5;
 WALLS.hallo=['radial-gradient(120% 70% at 85% 0%,#ff7a1a33,transparent 60%),radial-gradient(90% 60% at 0% 100%,#7a3cff33,transparent 60%),linear-gradient(170deg,#1a1026,#0d0a14)','Хеллоуин'];
-THEMES.hallo=['Хеллоуин',{theme:'dark',accent:'orange',wall:'hallo',amoled:false}];
-if(!FX.some(f=>f[0]==='halloween'))FX.push(['halloween','🎃','Хеллоуин']);
+if(typeof SET!=='undefined'&&SET.wall==='hallo'){SET.wall='def';try{SET.accent==='orange'&&(SET.accent='mint')}catch(e){}}
 BDEF.h=['Хеллоуин 2026','Знак события «Хеллоуин в YOUCHAT» 2026: за 13 собранных тыкв или от администрации. Остаётся навсегда.'];
 const hpToday=()=>{const x=XPME||{};return x.hd===dayStr()?(x.hn||0):0};
+/* дни рождения друзей: напоминание в списке чатов */
+const bdToday=b=>{if(!b)return false;const d=new Date();return b.slice(5)===String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const bdayRow=()=>{if(SET.bdHide===dayStr())return '';const ids=[...new Set(S.contacts||[])].filter(id=>bdToday(U(id).birthday)).slice(0,5);if(!ids.length)return '';const p=U(ids[0]);
+ return `<div class="bdrow"><button class="bdmain" data-a="${ids.length===1?'dm':'tab'}" data-u="${ids[0]}" data-t="contacts"><span class="bdp">🎂</span><span class="bdt"><b>${ids.length===1?`Сегодня день рождения у ${esc(p.name)}`:`Сегодня дни рождения: ${ids.map(i=>esc(U(i).name.split(' ')[0])).join(', ')}`}</b><small>${ids.length===1?'Нажмите, чтобы поздравить':'Не забудьте поздравить друзей'}</small></span></button><button class="bdx" data-a="bdHide" aria-label="Скрыть">${ic('close',16,2.4)}</button></div>`};
+/* «Тихий друг»: мягко напоминает о близких, с кем давно не переписывались */
+const quietPick=()=>{if(SET.qfOff)return null;const now=Date.now(),sn=SET.qfSn||{},ct=new Set(S.contacts||[]);
+ const c=Object.values(S.chats).filter(c=>c.type==='dm'&&c.peer&&c.last&&c.last.t&&!(SET.archived||{})[c.id]&&!(SET.hidden||{})[c.id]&&!U(c.peer.id).bot&&(ct.has(c.peer.id)||c.pinned)&&!(sn[c.id]>now)&&now-c.last.t>14*864e5&&now-c.last.t<400*864e5);
+ if(!c.length)return null;c.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||a.id.localeCompare(b.id));return c[Math.floor(now/864e5)%c.length]};
+const qfAgo=ms=>{const d=Math.floor(ms/864e5);if(d<30){const w=Math.round(d/7);return w+' '+plural(w,'неделю','недели','недель')}const m=Math.round(d/30);return m+' '+plural(m,'месяц','месяца','месяцев')};
+const quietRow=()=>{const c=quietPick();if(!c)return '';const p=U(c.peer.id);
+ return `<div class="bdrow qfrow"><button class="bdmain" data-a="chat" data-c="${c.id}"><span class="bdp qfav">${avatarHTML(p,40)}</span><span class="bdt"><b>${esc(p.name)}</b><small>Не переписывались ${qfAgo(Date.now()-c.last.t)} · напишите пару слов</small></span></button><button class="bdx" data-a="qfHide" data-c="${c.id}" aria-label="Скрыть">${ic('close',16,2.4)}</button></div>`};
 const evRow=()=>{if(!evOn()||SET.evHide===dayStr())return '';const n=(XPME&&XPME.hp)||0;const done=!!(XPME&&XPME.hw)||!!(BADGES[S.me.id]&&BADGES[S.me.id].h);
  return `<button class="evrow" data-a="hallo"><span class="evp">🎃</span><span class="evt"><b>Хеллоуин в YOUCHAT</b><small>${done?'Знак получен! Ищите тыквы для рейтинга':`Собрано ${n} из ${HP_GOAL} тыкв · осталось ${Math.max(1,Math.ceil((EV_END-Date.now())/864e5))} ${plural(Math.max(1,Math.ceil((EV_END-Date.now())/864e5)),'день','дня','дней')}`}</small></span><span class="evbar"><i style="width:${Math.min(100,n/HP_GOAL*100)}%"></i></span></button>`};
 const pumpkinIcon=s=>`<svg viewBox="0 0 64 64" width="${s}" height="${s}" aria-hidden="true"><path d="M30 12c0-5 4-8 9-8" stroke="#3c7a2a" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="38" rx="15" ry="20" fill="#e8650f"/><ellipse cx="44" cy="38" rx="15" ry="20" fill="#e8650f"/><ellipse cx="32" cy="38" rx="15" ry="22" fill="#ff8a1f"/><path d="M19 32l6 5h-8zM45 32l-6 5h8z" fill="#2a1200"/><path d="M18 46q14 10 28 0l-4 1-3-3-3 4-4-4-3 4-3-3z" fill="#2a1200"/></svg>`;
@@ -6383,7 +6836,7 @@ Object.assign(A,{
  halloDecor:()=>{SET.evDecor=SET.evDecor===false;saveSet();evDecor();layers.forEach(l=>l._hallo&&l.refresh())}
 });
 WHATS_NEW.splice(0,WHATS_NEW.length,
- ['sparkle','#ff7a1a','Хеллоуин 🎃','Собирайте тыквы по всему приложению и получите особый знак'],
+ 
  ['star','#d99a00','Уровни и рейтинг','Опыт за общение и время в YOUCHAT, достижения и топ пользователей'],
  ['download','#30b158','Автообновление','YOUCHAT сам сообщит о новой версии и обновится в одно касание'],
  ['shield','#5b6472','Новая админка','Блокировки, ограничения, жалобы и управление каналами'],
@@ -6399,10 +6852,11 @@ const QR=(()=>{
  const rs=(data,n)=>{const g=genPoly(n);const r=new Array(n).fill(0);for(const d of data){const f=d^r[0];r.shift();r.push(0);if(f)for(let j=0;j<n;j++)r[j]^=mul(g[j+1],f)}return r};
  const utf8=s=>Array.from(new TextEncoder().encode(s));
  const bch=(v,poly,deg)=>{let x=v<<deg;const pd=Math.floor(Math.log2(poly));while(Math.floor(Math.log2(x||1))>=pd&&x){x^=poly<<(Math.floor(Math.log2(x))-pd)}return (v<<deg)|x};
- const make=text=>{const bytes=utf8(text);let ver=0;
-  for(let v=1;v<=10;v++){const cap=EC[v][1].reduce((a,[n,d])=>a+n*d,0);const bits=4+(v<10?8:16)+bytes.length*8;if(bits<=cap*8){ver=v;break}}
+ const ECH={1:[17,[[1,9]]],2:[28,[[1,16]]],3:[22,[[2,13]]],4:[16,[[4,9]]],5:[22,[[2,11],[2,12]]],6:[28,[[4,15]]],7:[26,[[4,13],[1,14]]],8:[26,[[4,14],[2,15]]],9:[24,[[4,12],[4,13]]],10:[28,[[6,15],[2,16]]]};
+ const make=(text,lvl)=>{const ECT=lvl==='H'?ECH:EC;const LB=lvl==='H'?2:0;const bytes=utf8(text);let ver=0;
+  for(let v=1;v<=10;v++){const cap=ECT[v][1].reduce((a,[n,d])=>a+n*d,0);const bits=4+(v<10?8:16)+bytes.length*8;if(bits<=cap*8){ver=v;break}}
   if(!ver)throw new Error('Слишком длинный текст для QR');
-  const [ecn,blocks]=EC[ver];const cap=blocks.reduce((a,[n,d])=>a+n*d,0);
+  const [ecn,blocks]=ECT[ver];const cap=blocks.reduce((a,[n,d])=>a+n*d,0);
   const bits=[];const put=(val,len)=>{for(let i=len-1;i>=0;i--)bits.push((val>>i)&1)};
   put(4,4);put(bytes.length,ver<10?8:16);bytes.forEach(b=>put(b,8));for(let i=0;i<4&&bits.length<cap*8;i++)bits.push(0);while(bits.length%8)bits.push(0);
   const data=[];for(let i=0;i<bits.length;i+=8)data.push(parseInt(bits.slice(i,i+8).join(''),2));for(let p=0;data.length<cap;p++)data.push(p%2?0x11:0xEC);
@@ -6420,7 +6874,7 @@ const QR=(()=>{
   const cw=[];out.forEach(b=>{for(let i=7;i>=0;i--)cw.push((b>>i)&1)});
   let k=0,up=true;for(let c=N-1;c>0;c-=2){if(c===6)c--;for(let t=0;t<N;t++){const r=up?N-1-t:t;for(let x=0;x<2;x++){const cc=c-x;if(F[r][cc])continue;M[r][cc]=k<cw.length?cw[k++]:0}}up=!up}
   const MASKS=[(r,c)=>(r+c)%2===0,(r,c)=>r%2===0,(r,c)=>c%3===0,(r,c)=>(r+c)%3===0,(r,c)=>(Math.floor(r/2)+Math.floor(c/3))%2===0,(r,c)=>(r*c)%2+(r*c)%3===0,(r,c)=>((r*c)%2+(r*c)%3)%2===0,(r,c)=>((r+c)%2+(r*c)%3)%2===0];
-  const fmt=(m,mask)=>{const f=bch(mask,0x537,10)^0x5412;const g=i=>(f>>i)&1;
+  const fmt=(m,mask)=>{const f=bch((LB<<3)|mask,0x537,10)^0x5412;const g=i=>(f>>i)&1;
    for(let i=0;i<=5;i++)m[i][8]=g(i);m[7][8]=g(6);m[8][8]=g(7);m[8][7]=g(8);for(let i=9;i<15;i++)m[8][14-i]=g(i);
    for(let i=0;i<8;i++)m[8][N-1-i]=g(i);for(let i=8;i<15;i++)m[N-15+i][8]=g(i);m[N-8][8]=1};
   const score=m=>{let p=0;for(let r=0;r<N;r++){let run=1;for(let c=1;c<N;c++){if(m[r][c]===m[r][c-1]){run++;if(run===5)p+=3;else if(run>5)p++}else run=1}}
@@ -6576,13 +7030,40 @@ const infoCard=p=>{const rows=[];
  if(p.status&&p.id!==S.me.id)rows.push(`<div class="icell"><div class="iv">${esc(p.status)}</div><small>Статус</small></div>`);
  return `<div class="section">Информация</div><div class="group icard">${rows.join('')}</div><div style="height:14px"></div>`};
 /* ---------- 11. QR-код профиля ---------- */
-const openQR=uid=>{const p=uid===S.me.id?S.me:U(uid);const url=`${ORIGIN}/u/${p.nick}`;const h=p.hue||200;let svg='';try{svg=QR.svg(url,232,'#111','#fff')}catch(e){toast('Не удалось создать QR');return}
- const v=document.createElement('div');v.className='viewer qrv';v.style.setProperty('--h',h);app.appendChild(v);
- v.innerHTML=`<button class="qrx" data-q="x" aria-label="Закрыть">${ic('close',22,2.4)}</button><div class="qrcard"><div class="qrav">${avatarHTML(p,74)}</div><div class="qrcode">${svg}</div><b>@${esc(p.nick)}</b><small>${esc(p.name)}</small></div><p class="qrhint">Покажите этот код — его можно отсканировать камерой телефона, чтобы открыть ваш профиль в YOUCHAT</p>
-  <div class="qrbtns"><button data-q="share">${ic('link',20,2.2)}<span>Поделиться</span></button><button data-q="save">${ic('download',20,2.2)}<span>Сохранить</span></button>${'BarcodeDetector' in window?`<button data-q="scan">${ic('cam',20,2.2)}<span>Сканировать</span></button>`:''}</div>`;
- v.addEventListener('click',async e=>{const b=e.target.closest('[data-q]');if(!b){if(e.target===v)v.remove();return}const a=b.dataset.q;if(a==='x')v.remove();if(a==='share')shareLink(url,p.name);if(a==='scan'){v.remove();scanQR()}
-  if(a==='save'){try{const m=QR.make(url);const N=m.length,sc=12,q=3,W=(N+q*2)*sc;const c=document.createElement('canvas');c.width=W;c.height=W+90;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.fillStyle='#111';for(let r=0;r<N;r++)for(let k=0;k<N;k++)if(m[r][k])x.fillRect((k+q)*sc,(r+q)*sc,sc,sc);x.font='600 34px -apple-system,Roboto,sans-serif';x.textAlign='center';x.fillText('@'+p.nick,W/2,W+50);
-   const a2=document.createElement('a');a2.href=c.toDataURL('image/png');a2.download=`youchat-${p.nick}.png`;document.body.appendChild(a2);a2.click();a2.remove();toast('Картинка с QR-кодом сохранена')}catch(ex){toast('Не удалось сохранить')}}})};
+/* личный QR-код: карточка с логотипом, темы и узоры из эмодзи, сохранение картинкой */
+const QRTH=[['Графит','linear-gradient(170deg,#3a3a3e,#1c1c1f 60%,#111113)','#111'],['Мята','linear-gradient(160deg,#2fd3a3,#0a8f74 55%,#064d3f)','#0a6b56'],['Океан','linear-gradient(160deg,#4facfe,#2563eb 55%,#1e1b6b)','#1d3fae'],['Закат','linear-gradient(160deg,#ff9a62,#ff4f7b 50%,#7a2c91)','#c2275f'],['Лаванда','linear-gradient(160deg,#b9a6ff,#7c5cff 55%,#3b2a8f)','#5b3fd6'],['Лес','linear-gradient(160deg,#a8e063,#3c9a47 55%,#174d2a)','#2a7a37'],['Золото','linear-gradient(160deg,#f6d365,#e0962b 55%,#7a4a12)','#9a5c12'],['Ночь','linear-gradient(170deg,#141e30,#243b55)','#1a2a40']];
+const QREMO=['','❤️','🔥','⭐','🎉','😎','🌸','🐱','⚽','🎮','💎','🚀'];
+const qrFancy=(text,col)=>{const m=QR.make(text,'H');const N=m.length,q=1,W=N+q*2;const R=N*0.17;const cx=N/2,cy=N/2;
+ const inF=(r,c)=>(r<7&&c<7)||(r<7&&c>=N-7)||(r>=N-7&&c<7);let d='';
+ for(let r=0;r<N;r++)for(let c=0;c<N;c++){if(!m[r][c]||inF(r,c))continue;if(Math.hypot(c+.5-cx,r+.5-cy)<R+.6)continue;d+=`<rect x="${c+q-.02}" y="${r+q-.02}" width="1.04" height="1.04" rx=".24"/>`}
+ const fin=(r,c)=>`<rect x="${c+q+.5}" y="${r+q+.5}" width="6" height="6" rx=".25" fill="none" stroke="${col}" stroke-width="1"/><rect x="${c+q+2}" y="${r+q+2}" width="3" height="3" rx=".1" fill="${col}"/>`;
+ const lg=R*1.55;
+ return `<svg viewBox="0 0 ${W} ${W}" xmlns="http://www.w3.org/2000/svg"><g fill="${col}">${d}</g>${fin(0,0)}${fin(0,N-7)}${fin(N-7,0)}
+  <circle cx="${cx+q}" cy="${cy+q}" r="${lg/2}" fill="${col}"/><g transform="translate(${cx+q-lg*.3} ${cy+q-lg*.3}) scale(${lg*.6/24})"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l1.9-5.4A8.5 8.5 0 1 1 21 11.5z" fill="#fff"/></g></svg>`};
+const openQR=uid=>{const p=uid===S.me.id?S.me:U(uid);const url=`${ORIGIN}/u/${p.nick}`;let th=+SET.qrTh||0,em=SET.qrEm||'';if(!QRTH[th])th=0;
+ const v=document.createElement('div');v.className='viewer qrv2';app.appendChild(v);
+ const emo=()=>em?`<div class="qrpat">${Array.from({length:42},(_,i)=>`<span style="--r:${(i*37)%40-20}deg;--s:${.8+((i*13)%7)/10}">${em}</span>`).join('')}</div>`:'';
+ const draw=()=>{let svg='';try{svg=qrFancy(url,QRTH[th][2])}catch(e){svg='<p>Не удалось создать QR</p>'}
+  v.style.background=QRTH[th][1];
+  v.innerHTML=`${emo()}<div class="qrtop"><button class="qrr" data-q="x" aria-label="Закрыть">${ic('close',22,2.4)}</button>${'BarcodeDetector' in window?`<button class="qrpill" data-q="scan">${ic('qr',20,2.2)}<span>Сканировать QR-код</span></button>`:''}</div>
+  <div class="qrmid"><div class="qrc2"><div class="qrsvg">${svg}</div><b style="color:${QRTH[th][2]}">@${esc(String(p.nick||'').toUpperCase())}</b></div><p class="qrh2">${uid===S.me.id?'Покажите код — друг отсканирует его камерой и сразу попадёт в ваш профиль':esc(p.name||'')}</p></div>
+  <div class="qrbot"><button class="qrr" data-q="share" aria-label="Поделиться"><span style="display:grid;transform:scaleX(-1)">${ic('reply',22,2.2)}</span></button>${uid===S.me.id?`<div class="qrpills"><button data-q="th" aria-label="Цвет">${ic('palette',22,2.1)}</button><button data-q="em" aria-label="Узор">${ic('smile',22,2.1)}</button></div>`:'<span></span>'}<button class="qrr" data-q="save" aria-label="Сохранить">${ic('download',22,2.2)}</button></div>
+  <div class="qrsel" hidden></div>`};
+ draw();
+ const sel=html=>{const b=$('.qrsel',v);b.innerHTML=html;b.hidden=false};
+ v.addEventListener('click',async e=>{const b=e.target.closest('[data-q]');if(!b){const sb=$('.qrsel',v);if(sb&&!sb.hidden&&!e.target.closest('.qrsel'))sb.hidden=true;return}const a=b.dataset.q;
+  if(a==='x')v.remove();if(a==='share')shareLink(url,p.name);if(a==='scan'){v.remove();scanQR()}
+  if(a==='th')sel(`<div class="qrsw">${QRTH.map((t,i)=>`<button data-q="t${i}" class="${i===th?'on':''}" style="background:${t[1]}" aria-label="${t[0]}"></button>`).join('')}</div>`);
+  if(a==='em')sel(`<div class="qrem">${QREMO.map(x=>`<button data-q="e${x||'0'}" class="${x===em?'on':''}">${x||ic('close',18,2.2)}</button>`).join('')}</div>`);
+  if(/^t\d+$/.test(a)){th=+a.slice(1);SET.qrTh=th;saveSet();draw()}
+  if(a[0]==='e'&&a.length>1&&a!=='em'){em=a==='e0'?'':a.slice(1);SET.qrEm=em;saveSet();draw()}
+  if(a==='save'){try{const W=1080,H=1920;const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+    const cols=(QRTH[th][1].match(/#[0-9a-f]{6}/gi)||['#222','#111']);const g=x.createLinearGradient(0,0,W*.4,H);cols.forEach((cc,i)=>g.addColorStop(i/Math.max(1,cols.length-1),cc));x.fillStyle=g;x.fillRect(0,0,W,H);
+    if(em){x.globalAlpha=.16;x.font='64px serif';x.textAlign='center';for(let r=0;r<12;r++)for(let k=0;k<6;k++){x.save();x.translate(90+k*180+(r%2)*90,80+r*170);x.rotate(((r*6+k)*37%40-20)*Math.PI/180);x.fillText(em,0,0);x.restore()}x.globalAlpha=1}
+    const cw=760,ch=900,cx0=(W-cw)/2,cy0=(H-ch)/2;x.fillStyle='#fff';x.beginPath();(x.roundRect?x.roundRect(cx0,cy0,cw,ch,70):x.rect(cx0,cy0,cw,ch));x.fill();
+    const img=new Image();await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(qrFancy(url,QRTH[th][2]))});
+    x.drawImage(img,cx0+90,cy0+80,cw-180,cw-180);x.fillStyle=QRTH[th][2];x.font='800 76px -apple-system,Roboto,Arial,sans-serif';x.textAlign='center';x.fillText('@'+String(p.nick).toUpperCase(),W/2,cy0+ch-80);
+    const a2=document.createElement('a');a2.href=c.toDataURL('image/png');a2.download=`youchat-${p.nick}.png`;document.body.appendChild(a2);a2.click();a2.remove();toast('QR-код сохранён')}catch(ex){toast('Не удалось сохранить')}}})};
 const scanQR=async(cb)=>{if(!('BarcodeDetector' in window)){toast('Сканирование не поддерживается на этом устройстве');return}let stream;try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}})}catch(e){toast('Нет доступа к камере');return}
  const v=document.createElement('div');v.className='viewer qrscan';v.innerHTML=`<video playsinline muted autoplay></video><div class="qrframe"></div><p>Наведите камеру на QR-код YOUCHAT</p><button class="qrx" aria-label="Закрыть">${ic('close',22,2.4)}</button>`;app.appendChild(v);const vid=$('video',v);vid.srcObject=stream;
  const det=new BarcodeDetector({formats:['qr_code']});let on=true;const stop=()=>{on=false;stream.getTracks().forEach(t=>t.stop());v.remove()};$('.qrx',v).onclick=()=>{stop();if(cb)cb(null)};
@@ -6601,16 +7082,17 @@ const showEdit=()=>{const p=S.me;const {all}=showItems({...p,show:null});let sel
   if(sel.has(k))sel.delete(k);else if(sel.size<8)sel.add(k);else toast('Не больше 8');open()});open()};
 /* ---------- 14. музыка профиля ---------- */
 let PMA=null;
-const pmStop=()=>{if(PMA){try{PMA.a.pause()}catch(e){}PMA=null}$$('.pmcard').forEach(c=>c.classList.remove('on'))};
+const pmStop=()=>{if(PMA){try{PMA.a.onpause=null;PMA.a.pause()}catch(e){}PMA=null}$$('.pmcard').forEach(c=>c.classList.remove('on'));try{drawMini()}catch(e){}};
 const pmPlay=async(uid,btn)=>{const p=uid===S.me.id?S.me:U(uid);if(!p.pm)return;if(PMA&&PMA.uid===uid){if(PMA.a.paused){PMA.a.play().catch(()=>{});btn&&btn.closest('.pmcard').classList.add('on')}else{PMA.a.pause();btn&&btn.closest('.pmcard').classList.remove('on')}return}
- pmStop();const a=new Audio();a.loop=true;PMA={uid,a};const u=await murl({blob:p.pm.blob,key:p.pm.key,iv:p.pm.iv,mime:p.pm.mime});if(!PMA||PMA.uid!==uid)return;a.src=u;a.volume=.8;a.play().then(()=>{$$(`.pmcard[data-u="${uid}"]`).forEach(c=>c.classList.add('on'))}).catch(()=>{})};
+ pmStop();if(audio)stopAudio();const a=new Audio();a.loop=true;PMA={uid,a};a.onplay=a.onpause=()=>{drawMini();$$(`.pmcard[data-u="${uid}"]`).forEach(c=>c.classList.toggle('on',!a.paused))};const u=await murl({blob:p.pm.blob,key:p.pm.key,iv:p.pm.iv,mime:p.pm.mime});if(!PMA||PMA.uid!==uid)return;a.src=u;a.volume=.8;a.play().then(()=>{$$(`.pmcard[data-u="${uid}"]`).forEach(c=>c.classList.add('on'))}).catch(()=>{})};
 const pmCard=p=>{const own=p.id===S.me.id;if(!p.pm)return own?`<div class="group"><button class="cell ic" data-a="pmSet"><span class="sq-ic" style="background:#ff2d55">${ic('music',17,2.2)}</span><div class="tx">Музыка профиля<small>Трек, который играет в вашем профиле</small></div><span class="chev">${ic('plus',18,2.4)}</span></button></div><div style="height:14px"></div>`:'';
  const on=PMA&&PMA.uid===p.id&&!PMA.a.paused;return `<div class="pmcard ${on?'on':''}" data-u="${p.id}"><button class="pmplay" data-a="pmPlay" data-u="${p.id}" aria-label="Играть">${ic('play',18,2,'currentColor')}<i>${ic('pause',18,2.4)}</i></button><div class="pmt"><b>${esc(p.pm.n)}</b><small>Музыка профиля</small></div><span class="eq"><i></i><i></i><i></i><i></i></span>${own?`<button class="pmed" data-a="pmSet" aria-label="Изменить">${ic('edit',16,2.2)}</button>`:''}</div><div style="height:14px"></div>`};
 const pmSet=()=>{const p=S.me;sheet(`<div class="grp"><div class="prev">Музыка профиля</div><button data-s="pick">${ic('music',22,2)}${p.pm?'Выбрать другой трек':'Выбрать трек'}</button>${p.pm?`<button data-s="del" class="red">${ic('trash',22,2)}Убрать музыку</button>`:''}</div><div class="grp"><button data-s="x" class="c">Отмена</button></div>`,async k=>{
  if(k==='del'){try{pmStop();const r=await api('PATCH','/api/me',{pm:null});S.me={...S.me,...r};renderAll();toast('Музыка убрана')}catch(e){toast(errMsg(e))}}
  if(k==='pick'){const i=document.createElement('input');i.type='file';i.accept='audio/*';i.onchange=async()=>{const f=i.files[0];if(!f)return;if(f.size>(isPrem(S.me.id)?15:6)*1024*1024){toast(`Файл больше ${isPrem(S.me.id)?15:6} МБ — выберите трек покороче`);return}toast('Загружаю трек…');
   try{const up=await uploadBlob(f,f.type||'audio/mpeg');const r=await api('PATCH','/api/me',{pm:{n:f.name.replace(/\.[a-z0-9]{2,4}$/i,'').slice(0,80),blob:up.blob,key:up.key,iv:up.iv,mime:f.type||'audio/mpeg'}});S.me={...S.me,...r};pmStop();renderAll();toast('🎵 Музыка профиля установлена')}catch(e){toast(errMsg(e)||'Не удалось загрузить')}};i.click()}})};
-document.addEventListener('click',e=>{if(e.target.closest('[data-a="back"]')||e.target.closest('.tab'))setTimeout(()=>{if(PMA&&!$(`.pmcard[data-u="${PMA.uid}"]`))pmStop()},500)},true);
+document.addEventListener('click',e=>{if(e.target.closest('[data-a="back"]')||e.target.closest('.tab'))setTimeout(drawMini,350)},true);
+setInterval(()=>{if(!audio&&PMA&&!PMA.a.paused){const i=$('#miniplayer .mpbar i');if(i&&PMA.a.duration)i.style.width=PMA.a.currentTime/PMA.a.duration*100+'%'}},500);
 Object.assign(A,{
  botCmd:d=>{const c=Object.values(S.chats).find(x=>x.type==='bot'&&x.peer&&x.peer.id===d.u&&!(x.bot&&x.bot.inbox));const go=cid=>{openChat(cid);setTimeout(()=>{if(S.open&&S.open.send)S.open.send({kind:'text',text:'/'+d.c})},700)};if(c)go(c.id);else api('POST','/api/dm/'+d.u).then(ch=>{S.chats[ch.id]=ch;closeLayers();S.tab='chats';renderAll();go(ch.id)}).catch(e=>toast(errMsg(e)))},
  copyNick:d=>copy('@'+d.n,'Имя пользователя скопировано'),
@@ -6625,7 +7107,7 @@ WHATS_NEW.splice(0,WHATS_NEW.length,
  ['bot','#5856d6','Боты 2.0','Магазин, запись, викторина, команды и меню, картинки, кнопки-ссылки и рассылки'],
  ['play','#30b158','Проверка бота','Пообщайтесь с ботом прямо в конструкторе, ничего не отправляя'],
  ['users','#0a84ff','Новый профиль','Карточка «Информация», QR-код, витрина знаков и музыка профиля'],
- ['sparkle','#ff7a1a','Хеллоуин 🎃','Собирайте тыквы по всему приложению и получите особый знак'],
+ 
  ['star','#d99a00','Уровни и рейтинг','Опыт за общение и время в YOUCHAT, достижения и топ пользователей']);
 
 /* ================= 2.0: реклама ================= */
@@ -6698,7 +7180,7 @@ WHATS_NEW.splice(0,WHATS_NEW.length,
  ['bot','#5856d6','Боты 2.0','Магазин, запись, викторина, команды и меню, картинки, кнопки-ссылки и рассылки'],
  ['users','#0a84ff','Новый профиль','Карточка «Информация», QR-код, витрина знаков и музыка профиля'],
  ['mega','#ff9f0a','Реклама','Ненавязчивые объявления в списке чатов и каналах — помогают YOUCHAT оставаться бесплатным'],
- ['sparkle','#ff7a1a','Хеллоуин 🎃','Собирайте тыквы по всему приложению и получите особый знак'],
+ 
  ['star','#d99a00','Уровни и рейтинг','Опыт за общение и время в YOUCHAT, достижения и топ пользователей']);
 
 /* ================= 2.1: YOUCHAT Premium, реклама от пользователей ================= */
@@ -6769,7 +7251,7 @@ WHATS_NEW.splice(0,WHATS_NEW.length,
  ['mega','#ff9f0a','Реклама для всех','Расскажите о своём канале, группе или боте — подайте объявление в настройках'],
  ['bot','#5856d6','Боты 2.0','Магазин, запись, викторина, команды и меню, картинки, кнопки-ссылки и рассылки'],
  ['users','#0a84ff','Новый профиль','Карточка «Информация», QR-код, витрина знаков и музыка профиля'],
- ['sparkle','#ff7a1a','Хеллоуин 🎃','Собирайте тыквы по всему приложению и получите особый знак']);
+ );
 
 /* ================= 2.2: мини-приложения ================= */
 const MA_ICONS=['🧩','🎮','🛒','📅','🧮','🎲','📚','🎵','🍕','💬','🌤','⚡','🎨','🧠','🏆','🔥'];
@@ -7298,9 +7780,9 @@ WHATS_NEW.splice(0,WHATS_NEW.length,
  ['img','#ff9f0a','Фото и альбомы','Яркость, контраст, тепло, стикеры и толщина кисти. Порядок фото в альбоме — перетаскиванием'],
  ['send','#0fa78a','Новая панель ввода','Свежий дизайн, сетка вложений и отложенная отправка в одно касание']);
 /* ================= 3.1: конфиденциальность ================= */
-const PRIV_K=[['seen','Время входа и «в сети»','Кто видит, когда вы были в сети',['all','contacts','nobody']],['photo','Фото профиля','Кто видит вашу аватарку',['all','contacts','nobody']],['calls','Звонки','Кто может вам звонить',['all','contacts','nobody']],['groups','Добавление в группы','Кто может добавлять вас в группы и каналы',['all','contacts']]];
+const PRIV_K=[['seen','Время входа и «в сети»','Кто видит, когда вы были в сети',['all','contacts','nobody']],['photo','Фото профиля','Кто видит вашу аватарку',['all','contacts','nobody']],['calls','Звонки','Кто может вам звонить',['all','contacts','nobody']],['groups','Добавление в группы','Кто может добавлять вас в группы и каналы',['all','contacts']],['bday','День рождения','Кто видит дату вашего рождения',['all','contacts','nobody']],['bio','О себе','Кто видит текст «О себе»',['all','contacts','nobody']],['phone','Номер телефона','Кто может найти вас по номеру из своих контактов',['all','contacts','nobody']]];
 const PRIV_L={all:'Все',contacts:'Мои контакты',nobody:'Никто'};
-const myPriv=()=>({seen:'all',photo:'all',calls:'all',groups:'all',...((S.me&&S.me.priv)||{}),...(S.me&&S.me.show_seen===false&&!(S.me.priv&&S.me.priv.seen)?{seen:'nobody'}:{})});
+const myPriv=()=>({seen:'all',photo:'all',calls:'all',groups:'all',bday:'contacts',bio:'all',phone:'contacts',...((S.me&&S.me.priv)||{}),...(S.me&&S.me.show_seen===false&&!(S.me.priv&&S.me.priv.seen)?{seen:'nobody'}:{})});
 const privHTML=()=>{const p=myPriv();return `<div class="section">Кто может</div><div class="group">${PRIV_K.map(([k,t])=>`<button class="cell" data-a="privSet" data-k="${k}"><div class="tx">${t}</div><span class="val">${PRIV_L[p[k]]}</span><span class="chev">${ic('chev',18,2.2)}</span></button>`).join('')}</div><div class="note">Если вы скрываете время входа, вы тоже не будете видеть его у других. Ограничения применяются сразу на всех устройствах.</div>`};
 const privSet=k=>{const d=PRIV_K.find(x=>x[0]===k);if(!d)return;const p=myPriv();sheet(`<div class="grp"><div class="prev">${d[2]}</div>${d[3].map(v=>`<button data-s="${v}">${ic(v==='all'?'globe':v==='contacts'?'users':'lock',22,2)}${PRIV_L[v]}${p[k]===v?' ✓':''}</button>`).join('')}</div><div class="grp"><button data-s="x" class="c">Отмена</button></div>`,async v=>{if(v==='x')return;const np={...p,[k]:v};
  try{const r=await api('PATCH','/api/me',{priv:np});S.me={...S.me,priv:r.priv||np,show_seen:r.show_seen};toast(`${d[1]}: ${PRIV_L[v].toLowerCase()}`);{const l=layers[layers.length-1];l&&l.refresh&&l.refresh()}}catch(e){toast(errMsg(e))}})};

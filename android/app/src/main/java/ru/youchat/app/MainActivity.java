@@ -34,6 +34,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -49,6 +53,7 @@ public class MainActivity extends Activity {
     ValueCallback<Uri[]> fileCb;
     PermissionRequest pendingPerm;
     String pendingCid;
+    File pendingApk;
     boolean loaded = false;
 
     @Override
@@ -235,6 +240,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (pendingApk != null && Build.VERSION.SDK_INT >= 26 && getPackageManager().canRequestPackageInstalls()) { File f = pendingApk; web.postDelayed(() -> { if (pendingApk == f) launchInstall(); }, 400); }
         foreground = true;
         if (web != null) web.evaluateJavascript("window.dispatchEvent&&window.dispatchEvent(new Event('online'))", null);
     }
@@ -281,6 +287,28 @@ public class MainActivity extends Activity {
         }
     }
 
+    void apkJs(String fn, String arg) {
+        runOnUiThread(() -> { if (web != null) web.evaluateJavascript("window." + fn + "&&" + fn + "(" + JSONObject.quote(arg) + ")", null); });
+    }
+
+    void launchInstall() {
+        if (pendingApk == null || !pendingApk.exists()) return;
+        if (Build.VERSION.SDK_INT >= 26 && !getPackageManager().canRequestPackageInstalls()) {
+            apkJs("YC_APKDONE", "perm");
+            startActivity(new Intent(android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:" + getPackageName())));
+            return;
+        }
+        Uri u = apkUri(pendingApk);
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setDataAndType(u, "application/vnd.android.package-archive");
+        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+        try { startActivity(i); pendingApk = null; apkJs("YC_APKDONE", "ok"); } catch (Exception e) { apkJs("YC_APKDONE", "noinst"); }
+    }
+
+    Uri apkUri(File f) {
+        return YCFiles.uriFor(this, f);
+    }
+
     /** Мост для страницы: window.YCNative */
     class Bridge {
         @JavascriptInterface
@@ -289,8 +317,69 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
+        public String getContacts() {
+            if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                runOnUiThread(() -> requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 14));
+                return "[]";
+            }
+            org.json.JSONArray out = new org.json.JSONArray();
+            try (android.database.Cursor c = getContentResolver().query(android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    new String[]{android.provider.ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, android.provider.ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null)) {
+                if (c != null) while (c.moveToNext() && out.length() < 3000) {
+                    JSONObject o = new JSONObject();
+                    o.put("name", c.getString(0) == null ? "" : c.getString(0));
+                    o.put("tel", c.getString(1) == null ? "" : c.getString(1));
+                    out.put(o);
+                }
+            } catch (Exception e) { return "[]"; }
+            return out.toString();
+        }
+
+        @JavascriptInterface
         public String version() {
-            return "1";
+            return "2";
+        }
+
+        /** Версия установленного APK (versionName) */
+        @JavascriptInterface
+        public String appVersion() {
+            try { return getPackageManager().getPackageInfo(getPackageName(), 0).versionName; } catch (Exception e) { return ""; }
+        }
+
+        /** Маркет: скачать APK, сверить SHA-256 и открыть системный установщик Android */
+        @JavascriptInterface
+        public void installApk(final String url, final String sha, final String name) {
+            if (url == null || !url.startsWith("https://")) { apkJs("YC_APKDONE", "bad"); return; }
+            new Thread(() -> {
+                try {
+                    File dir = new File(getCacheDir(), "apk");
+                    if (!dir.exists()) dir.mkdirs();
+                    File[] old = dir.listFiles();
+                    if (old != null) for (File f : old) f.delete();
+                    String fname = (name == null ? "youchat.apk" : name.replaceAll("[^\\w.\\-]", "_"));
+                    if (!fname.endsWith(".apk")) fname += ".apk";
+                    File out = new File(dir, fname);
+                    HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
+                    c.setConnectTimeout(20000); c.setReadTimeout(60000);
+                    if (c.getResponseCode() != 200) throw new Exception("http " + c.getResponseCode());
+                    long total = c.getContentLengthLong(), got = 0; int last = -1;
+                    MessageDigest md = MessageDigest.getInstance("SHA-256");
+                    try (InputStream in = c.getInputStream(); FileOutputStream os = new FileOutputStream(out)) {
+                        byte[] buf = new byte[65536]; int n;
+                        while ((n = in.read(buf)) > 0) {
+                            os.write(buf, 0, n); md.update(buf, 0, n); got += n;
+                            if (total > 0) { int p = (int) (got * 100 / total); if (p != last) { last = p; apkJs("YC_APKPROG", String.valueOf(p)); } }
+                        }
+                    }
+                    StringBuilder hx = new StringBuilder();
+                    for (byte b : md.digest()) hx.append(String.format("%02x", b));
+                    if (sha != null && !sha.isEmpty() && !hx.toString().equalsIgnoreCase(sha)) { out.delete(); apkJs("YC_APKDONE", "hash"); return; }
+                    pendingApk = out;
+                    runOnUiThread(MainActivity.this::launchInstall);
+                } catch (Exception e) {
+                    apkJs("YC_APKDONE", "net");
+                }
+            }).start();
         }
 
         @JavascriptInterface
