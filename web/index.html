@@ -181,9 +181,32 @@ img{display:block}
 .ok-ic{width:72px;height:72px;border-radius:50%;background:var(--accent);color:var(--on);display:grid;place-items:center;margin:6px auto 14px}
 .foot{display:flex;justify-content:center;margin:34px 0 0;opacity:.35}
 .foot img{height:22px}
+
+#splash{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;animation:spOut .38s ease 1.18s forwards}
+#splash .sp-logo{position:relative;width:min(64vw,300px);aspect-ratio:1754/353;animation:spZoom 1.6s cubic-bezier(.2,.8,.2,1) both}
+#splash .sp-logo img{position:absolute;inset:0;width:100%;height:100%}
+#splash .sp-a{clip-path:inset(0 61.4% 0 0);transform-origin:20% 50%;animation:spMark .62s cubic-bezier(.2,1.35,.35,1) both}
+#splash .sp-b{clip-path:inset(0 0 0 38.6%);animation:spText .5s cubic-bezier(.25,.8,.25,1) .26s both}
+#splash .sp-shine{position:absolute;inset:0;-webkit-mask:url(logo-full-black.png) center/100% 100% no-repeat;mask:url(logo-full-black.png) center/100% 100% no-repeat;background:linear-gradient(105deg,transparent 38%,var(--spshine) 50%,transparent 62%);background-size:320% 100%;background-position:100% 0;animation:spShine .62s ease-in-out .66s both}
+#splash .sp-line{width:min(64vw,300px);height:3px;border-radius:2px;background:color-mix(in srgb,var(--text) 10%,transparent);overflow:hidden}
+#splash .sp-line i{display:block;height:100%;width:100%;background:var(--text);transform-origin:left;animation:spLine .95s cubic-bezier(.6,0,.2,1) .15s both}
+#splash .sp-lab{font-size:12px;font-weight:700;letter-spacing:.42em;color:var(--sub);margin-top:-6px;animation:spLab .5s ease .55s both}
+:root{--spshine:rgba(255,255,255,.9)}
+@media (prefers-color-scheme:dark){#splash .sp-logo img{filter:invert(1)}:root{--spshine:rgba(0,0,0,.55)}}
+@keyframes spMark{0%{opacity:0;transform:translateX(-22%) skewX(-14deg) scale(.6);filter:blur(8px)}60%{opacity:1;filter:blur(0)}100%{opacity:1;transform:none;filter:none}}
+@keyframes spText{0%{opacity:0;clip-path:inset(0 100% 0 38.6%);transform:translateX(-5%)}100%{opacity:1;clip-path:inset(0 0 0 38.6%);transform:none}}
+@keyframes spShine{from{background-position:100% 0}to{background-position:0 0}}
+@keyframes spZoom{0%{transform:scale(.94)}75%{transform:scale(1)}100%{transform:scale(1.05)}}
+@keyframes spLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes spLab{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes spOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}
+@media (prefers-reduced-motion:reduce){#splash,#splash *{animation-duration:.01s!important;animation-delay:0s!important}}
 </style>
 </head>
 <body>
+<div id="splash" aria-hidden="true"><div class="sp-logo"><img class="sp-a" src="logo-full-black.png" alt=""><img class="sp-b" src="logo-full-black.png" alt=""><div class="sp-shine"></div></div><div class="sp-line"><i></i></div></div>
+<script>(function(){var s=document.getElementById("splash");try{if(sessionStorage.getItem("bsp")){s.remove();return}sessionStorage.setItem("bsp","1")}catch(e){}setTimeout(function(){s&&s.remove()},1650)})();</script>
+
 <div class="app"><div id="view"></div></div>
 <nav class="tabbar" id="tabbar"></nav>
 <div class="layer" id="admin"><div class="dim"></div><div class="pane" id="adminPane"></div></div>

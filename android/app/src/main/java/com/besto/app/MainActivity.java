@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
                 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
 
         web = new WebView(this);
-        web.setBackgroundColor(Color.parseColor("#F5F5F7"));
+        web.setBackgroundColor(getResources().getColor(R.color.splash_bg, getTheme()));
         setContentView(web);
 
         WebSettings s = web.getSettings();
