@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2F2F7">
+<title>Besto</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#F2F2F7;--card:#FFF;--text:#111114;--sub:#8A8A93;--line:rgba(60,60,67,.12);--accent:#FF5A1F;--accent2:#FF8A3D;--ok:#34C759;--danger:#FF3B30;--r:22px;--shadow:0 8px 30px rgba(0,0,0,.07)}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--card:#1C1C1E;--text:#F5F5F7;--sub:#8E8E93;--line:rgba(235,235,245,.12);--shadow:0 8px 30px rgba(0,0,0,.5)}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
+input,textarea,select{font:inherit;color:var(--text)}
+img{display:block}
+.app{max-width:600px;margin:0 auto;min-height:100vh;padding:0 16px calc(120px + env(safe-area-inset-bottom))}
+.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);margin:0 -16px;padding:calc(12px + env(safe-area-inset-top)) 16px 10px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:28px;letter-spacing:-.8px;min-width:0}
+.logo span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lg{width:36px;height:36px;border-radius:11px;flex:none;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:20px;overflow:hidden;box-shadow:0 4px 14px color-mix(in srgb,var(--accent) 35%,transparent)}
+.lg img{width:100%;height:100%;object-fit:cover}
+.h1{font-size:32px;font-weight:800;letter-spacing:-.8px;margin:4px 0 2px}
+.muted{color:var(--sub)}
+.search{display:flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--sub) 14%,transparent);border-radius:12px;padding:9px 12px;margin-top:10px}
+.search input{border:0;background:none;outline:none;flex:1;font-size:16px;min-width:0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar,.hs::-webkit-scrollbar,.banners::-webkit-scrollbar,.gal::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:8px 14px;border-radius:999px;background:var(--card);font-size:14px;font-weight:600;box-shadow:0 1px 0 var(--line)}
+.chip.on{background:var(--text);color:var(--bg)}
+.promo{margin-top:10px;border-radius:14px;padding:10px 14px;font-size:14px;font-weight:600;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
+.banners{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:12px -16px 0;padding:0 16px;scrollbar-width:none}
+.bn{flex:0 0 100%;scroll-snap-align:center;border-radius:var(--r);min-height:150px;padding:20px;color:#fff;position:relative;overflow:hidden;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;background-size:cover;background-position:center}
+.bn b{font-size:23px;letter-spacing:-.4px;position:relative;text-shadow:0 1px 8px rgba(0,0,0,.15)}
+.bn span{opacity:.95;font-size:14px;position:relative;margin-top:2px}
+.bn.img:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,0) 65%)}
+.bn:not(.img):after{content:"";position:absolute;right:-30px;top:-30px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.17)}
+.bdots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.bdots i{width:6px;height:6px;border-radius:3px;background:color-mix(in srgb,var(--sub) 40%,transparent);transition:.25s}
+.bdots i.on{width:18px;background:var(--accent)}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin:20px 2px 10px}
+.sec h2{font-size:21px;margin:0;letter-spacing:-.4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.pc{background:var(--card);border-radius:var(--r);overflow:hidden;text-align:left;position:relative;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.pc>button:first-child{text-align:left;display:block;width:100%}
+.thumb{aspect-ratio:1/1;width:100%;display:grid;place-items:center;font-size:56px;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.pc .info{padding:10px 12px 12px}
+.price{font-weight:800;font-size:17px;letter-spacing:-.3px}
+.old{color:var(--sub);text-decoration:line-through;font-size:13px;margin-left:6px;font-weight:500}
+.ttl{font-size:14px;line-height:1.3;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.heart{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);display:grid;place-items:center;font-size:17px}
+.badge{position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:8px}
+.empty{text-align:center;padding:50px 20px;color:var(--sub)}
+.empty .e{font-size:54px;margin-bottom:8px}
+.list{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.row:last-child{border-bottom:0}
+.mini{width:56px;height:56px;border-radius:14px;flex:none;display:grid;place-items:center;font-size:28px;overflow:hidden}
+.mini img{width:100%;height:100%;object-fit:cover}
+.grow{flex:1;min-width:0}
+.grow>div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{color:var(--sub);font-size:20px}
+.step{display:flex;align-items:center;gap:10px;background:color-mix(in srgb,var(--sub) 14%,transparent);border-radius:999px;padding:4px}
+.step button{width:28px;height:28px;border-radius:50%;background:var(--card);font-weight:700}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:16px;background:var(--accent);color:#fff;font-weight:700;font-size:16px}
+.btn.soft{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
+.btn.dark{background:var(--text);color:var(--bg)}
+.btn.red{background:color-mix(in srgb,var(--danger) 11%,transparent);color:var(--danger)}
+.btn.small{width:auto;padding:9px 14px;font-size:14px;border-radius:12px}
+.btn:disabled{opacity:.5}
+.field{display:block;margin-bottom:12px}
+.field>span{display:block;font-size:13px;color:var(--sub);margin:0 0 6px 4px}
+.field input:not([type=checkbox]):not([type=color]),.field textarea,.field select{width:100%;border:0;outline:none;background:var(--card);border-radius:14px;padding:13px 14px;font-size:16px;box-shadow:0 1px 0 var(--line)}
+.field textarea{min-height:90px;resize:vertical}
+.two{display:flex;gap:10px}.two>*{flex:1;min-width:0}
+.sw{display:flex;align-items:center;justify-content:space-between;background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:12px;font-weight:600}
+.sw input{width:22px;height:22px;accent-color:var(--accent)}
+.colors{display:flex;gap:10px}
+.colors label{flex:1;display:flex;align-items:center;gap:10px;background:var(--card);border-radius:14px;padding:8px 12px}
+.colors input{width:38px;height:38px;border:0;border-radius:10px;background:none;padding:0}
+.seg{display:flex;background:color-mix(in srgb,var(--sub) 16%,transparent);border-radius:11px;padding:2px;margin:10px 0 14px;overflow-x:auto;scrollbar-width:none}
+.seg button{flex:1;padding:8px 10px;border-radius:9px;font-weight:600;font-size:13.5px;white-space:nowrap}
+.seg button.on{background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.note{background:color-mix(in srgb,var(--accent) 10%,transparent);border-radius:14px;padding:11px 14px;font-size:13.5px;margin:10px 0;line-height:1.4}
+.tot{display:flex;justify-content:space-between;font-size:18px;font-weight:800;margin:16px 4px}
+.tag{display:inline-block;padding:3px 9px;border-radius:8px;font-size:12px;font-weight:700;background:color-mix(in srgb,var(--sub) 18%,transparent)}
+.tag.new{background:#FFF0E8;color:#E2470F}.tag.go{background:#E8F1FF;color:#1E6FE0}.tag.done{background:#E7F8EC;color:#1E9A44}.tag.cancel{background:#FDECEC;color:#D42A20}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));width:calc(100% - 28px);max-width:540px;z-index:20;display:flex;justify-content:space-around;padding:8px 6px;border-radius:30px;background:color-mix(in srgb,var(--card) 78%,transparent);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);box-shadow:0 10px 40px rgba(0,0,0,.16),inset 0 0 0 1px var(--line)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:22px;color:var(--sub);font-size:10.5px;font-weight:600;position:relative;transition:.2s}
+.tab svg{width:24px;height:24px}
+.tab.on{color:var(--accent);background:color-mix(in srgb,var(--accent) 11%,transparent)}
+.tab .cnt{position:absolute;top:2px;left:calc(50% + 6px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--danger);color:#fff;font-size:11px;display:grid;place-items:center}
+.layer{position:fixed;inset:0;pointer-events:none}
+.layer .dim{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .3s}
+.layer .pane{position:absolute;left:0;right:0;bottom:0;top:calc(26px + env(safe-area-inset-top));max-width:600px;margin:0 auto;background:var(--bg);border-radius:28px 28px 0 0;transform:translateY(105%);transition:transform .38s cubic-bezier(.2,.9,.25,1);overflow-y:auto;overscroll-behavior:contain}
+.layer.open{pointer-events:auto}.layer.open .dim{opacity:1}.layer.open .pane{transform:none}
+#sheet{z-index:40}#admin{z-index:30}#modal{z-index:50}
+#modal .pane{top:auto;max-height:90vh;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+.grab{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.grab.clear{background:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.grab b{font-size:17px}
+.round{width:36px;height:36px;border-radius:50%;flex:none;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(10px);display:grid;place-items:center;font-size:16px;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:-60px;scrollbar-width:none}
+.gal>div{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:1/1;display:grid;place-items:center;font-size:120px;overflow:hidden}
+.gal img{width:100%;height:100%;object-fit:cover}
+.pbody{padding:18px 16px 140px}
+.pbody .price{font-size:28px}
+.pbody h3{font-size:21px;margin:6px 0 10px;letter-spacing:-.3px;line-height:1.25}
+.desc{font-size:15px;line-height:1.5;white-space:pre-wrap;opacity:.88}
+.hs{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
+.hs .pc{flex:0 0 150px}
+.buybar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));width:calc(100% - 28px);max-width:540px;display:flex;gap:10px;z-index:45;padding:8px;border-radius:26px;background:color-mix(in srgb,var(--card) 80%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 10px 40px rgba(0,0,0,.18)}
+.buybar .btn{border-radius:20px}
+.buybar .fv{flex:none;width:54px;border-radius:20px;background:color-mix(in srgb,var(--sub) 14%,transparent);font-size:22px}
+.photos{display:flex;gap:8px;flex-wrap:wrap}
+.photos>div{width:78px;height:78px;border-radius:14px;overflow:hidden;position:relative;background:var(--card)}
+.photos img{width:100%;height:100%;object-fit:cover}
+.photos button.x{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:12px}
+.addph{width:78px;height:78px;border-radius:14px;border:2px dashed var(--line);display:grid;place-items:center;color:var(--sub);font-size:26px}
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-100px);background:var(--text);color:var(--bg);padding:11px 18px;border-radius:14px;font-size:14px;font-weight:600;z-index:70;transition:transform .3s;max-width:90%;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.ord{background:var(--card);border-radius:var(--r);padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.ord .hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+.ord small{color:var(--sub)}
+.stsel{border:0;border-radius:10px;padding:7px 10px;background:color-mix(in srgb,var(--sub) 14%,transparent);font-weight:600}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.cat{background:var(--card);border-radius:18px;padding:16px;text-align:left;box-shadow:var(--shadow);font-weight:700}
+.cat em{display:block;font-style:normal;font-size:30px;margin-bottom:6px}
+.prof{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-top:6px}
+.ava{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff;font-size:24px;font-weight:800;flex:none}
+.menu{margin-top:14px}
+.menu .row{font-weight:600}
+.menu .ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:17px;flex:none;background:color-mix(in srgb,var(--accent) 13%,transparent)}
+.ad{padding:0 16px calc(40px + env(safe-area-inset-bottom))}
+.logo-edit{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:18px;padding:14px;margin-bottom:12px}
+.logo-edit .lg{width:64px;height:64px;border-radius:18px;font-size:32px}
+.skel{background:linear-gradient(90deg,color-mix(in srgb,var(--sub) 10%,transparent),color-mix(in srgb,var(--sub) 20%,transparent),color-mix(in srgb,var(--sub) 10%,transparent));background-size:200% 100%;animation:sk 1.2s infinite;border-radius:var(--r)}
+@keyframes sk{to{background-position:-200% 0}}
+.spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="app"><div id="view"></div></div>
+<nav class="tabbar" id="tabbar"></nav>
+<div class="layer" id="admin"><div class="dim"></div><div class="pane" id="adminPane"></div></div>
+<div class="layer" id="sheet"><div class="dim" data-a="closeSheet"></div><div class="pane" id="pane"></div></div>
+<div class="layer" id="modal"><div class="dim" data-a="closeModal"></div><div class="pane" id="modalPane"></div></div>
+<div id="buy"></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="file" accept="image/*" hidden>
+
+<script>
+(function(){
+const SB_URL="https://nkpjncbdorvhfetmpiwy.supabase.co";
+const SB_KEY="sb_publishable_q-7V-ivgprZeErOybcRtqg_TPXGQGk-";
+const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,storageKey:"besto-auth"}});
+const STATUSES=[["Новый","new"],["В работе","go"],["Доставлен","done"],["Отменён","cancel"]];
+const GRADS=["#FFE4D6,#FFC7A8","#E3ECFF,#C3D5FF","#E4F7E9,#BFEBCB","#F6E6FF,#E2C2FF","#FFF4D1,#FFE39A","#E0F7F8,#B4E9EC"];
+const DEF={brand:{name:"Besto",slogan:"Лучшее — рядом",logo_url:null,logo_letter:"B",color:"#FF5A1F",color2:"#FF8A3D"},home:{section_title:"Для вас",promo_text:"",show_promo:false},contacts:{phone:"",telegram:"",about:""}};
+
+function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+const cache=load("besto_cache",null);
+const S={tab:"home",cat:null,q:"",loaded:!!cache,
+  set:cache?cache.set:JSON.parse(JSON.stringify(DEF)),banners:cache?cache.banners:[],cats:cache?cache.cats:[],products:cache?cache.products:[],
+  cart:load("besto_cart",{}),fav:load("besto_fav",[]),user:null,isAdmin:false,hasAdmin:true,myOrders:[],orders:[],
+  sheet:null,adm:null,modal:null,form:null};
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rub=n=>(Number(n)||0).toLocaleString("ru-RU")+" ₽";
+const gradOf=id=>{let h=0;for(const c of String(id))h=(h*31+c.charCodeAt(0))>>>0;const g=GRADS[h%GRADS.length].split(",");return `background:linear-gradient(135deg,${g[0]},${g[1]})`};
+const safeUrl=u=>typeof u==="string"&&/^https:\/\//.test(u)?u:"";
+const pic=p=>{const u=safeUrl((p.photos||[])[0]);return u?`<img src="${esc(u)}" alt="" loading="lazy">`:`<span>${esc(p.emoji||"🛍️")}</span>`};
+function toast(t){const el=$("toast");el.textContent=t;el.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("show"),2400)}
+const byId=id=>S.products.find(p=>p.id===id);
+const catOf=id=>S.cats.find(c=>c.id===id);
+const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
+const visible=()=>S.products.filter(p=>p.active!==false);
+const B=()=>S.set.brand||DEF.brand;
+const errMsg=e=>(e&&(e.message||e.error_description))||"Ошибка";
+
+/* ---------- brand ---------- */
+function applyBrand(){
+  const b=B();const r=document.documentElement.style;
+  if(/^#[0-9a-f]{6}$/i.test(b.color||""))r.setProperty("--accent",b.color);
+  if(/^#[0-9a-f]{6}$/i.test(b.color2||""))r.setProperty("--accent2",b.color2);
+  document.title=b.name||"Besto";
+}
+function logoHTML(b){b=b||B();const u=safeUrl(b.logo_url);return `<div class="lg">${u?`<img src="${esc(u)}" alt="">`:esc((b.logo_letter||b.name||"B").slice(0,2))}</div>`}
+
+/* ---------- views ---------- */
+function card(p){
+  const fav=S.fav.includes(p.id);const sale=p.old_price&&Number(p.old_price)>Number(p.price);
+  return `<div class="pc"><button data-a="open" data-id="${p.id}"><div class="thumb" style="${gradOf(p.id)}">${pic(p)}</div>
+    ${sale?`<div class="badge">−${Math.round(100-p.price/p.old_price*100)}%</div>`:""}
+    <div class="info"><div class="price">${rub(p.price)}${sale?`<span class="old">${rub(p.old_price)}</span>`:""}</div><div class="ttl">${esc(p.title)}</div></div></button>
+    <button class="heart" data-a="fav" data-id="${p.id}">${fav?"❤️":"🤍"}</button></div>`;
+}
+const grid=l=>l.length?`<div class="grid">${l.map(card).join("")}</div>`:`<div class="empty"><div class="e">🔍</div>Ничего не найдено</div>`;
+const skel=()=>`<div class="grid">${Array(4).fill('<div class="skel" style="aspect-ratio:.78"></div>').join("")}</div>`;
+function filtered(){const q=S.q.trim().toLowerCase();return visible().filter(p=>(!S.cat||p.category_id===S.cat)&&(!q||(p.title+" "+(p.description||"")).toLowerCase().includes(q)))}
+
+function bannersHTML(){
+  const bs=S.banners.filter(b=>b.active!==false);if(!bs.length)return "";
+  return `<div class="banners" id="bnr">${bs.map(b=>{const u=safeUrl(b.image_url);const bg=/^#[0-9a-f]{6}$/i.test(b.bg||"")?b.bg:"#FF5A1F";
+    return `<button class="bn ${u?"img":""}" ${b.product_id?`data-a="open" data-id="${esc(b.product_id)}"`:""} style="${u?`background-image:url('${esc(u)}')`:`background:linear-gradient(135deg,${bg},color-mix(in srgb,${bg} 55%,#fff))`}">
+      ${b.title?`<b>${esc(b.title)}</b>`:""}${b.subtitle?`<span>${esc(b.subtitle)}</span>`:""}</button>`}).join("")}</div>
+    ${bs.length>1?`<div class="bdots" id="bdots">${bs.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>`:""}`;
+}
+function vHome(){
+  const b=B(),h=S.set.home||DEF.home;
+  const chips=[`<button class="chip ${!S.cat?"on":""}" data-a="cat" data-id="">Все</button>`,...S.cats.map(c=>`<button class="chip ${S.cat===c.id?"on":""}" data-a="cat" data-id="${c.id}">${esc(c.emoji||"")} ${esc(c.name)}</button>`)].join("");
+  const title=S.cat?(catOf(S.cat)||{}).name:(h.section_title||"Для вас");
+  return `<div class="top"><div class="brand"><div class="logo">${logoHTML()}<span>${esc(b.name||"Besto")}</span></div><button class="round" data-a="tab" data-id="profile">👤</button></div>
+    <label class="search">🔎<input id="q" placeholder="Искать в ${esc(b.name||"Besto")}" value="${esc(S.q)}" autocomplete="off"></label>
+    <div class="chips">${chips}</div></div>
+    ${!S.cat&&!S.q?bannersHTML():""}
+    ${h.show_promo&&h.promo_text&&!S.q?`<div class="promo">${esc(h.promo_text)}</div>`:""}
+    <div class="sec"><h2>${esc(title)}</h2><span class="muted">${S.loaded?filtered().length+" шт.":""}</span></div>
+    <div id="results">${S.loaded?grid(filtered()):skel()}</div>`;
+}
+function vCatalog(){
+  return `<div class="top"><div class="h1">Каталог</div><label class="search">🔎<input id="q" placeholder="Товары, категории" value="${esc(S.q)}" autocomplete="off"></label></div>
+    ${S.q?`<div class="sec"><h2>Результаты</h2></div><div id="results">${grid(filtered())}</div>`:
+    `<div class="cats">${S.cats.map(c=>`<button class="cat" data-a="cat" data-id="${c.id}" data-go="1"><em>${esc(c.emoji||"📦")}</em>${esc(c.name)}<div class="muted" style="font-weight:500;font-size:13px">${visible().filter(p=>p.category_id===c.id).length} шт.</div></button>`).join("")}</div>`}`;
+}
+function vFav(){const l=visible().filter(p=>S.fav.includes(p.id));return `<div class="top"><div class="h1">Избранное</div></div>${l.length?grid(l):`<div class="empty"><div class="e">🤍</div>Нажмите на сердечко у товара, чтобы сохранить его здесь</div>`}`}
+function vCart(){
+  const items=Object.entries(S.cart).map(([id,q])=>({p:byId(id),q})).filter(x=>x.p);
+  if(!items.length)return `<div class="top"><div class="h1">Корзина</div></div><div class="empty"><div class="e">🛒</div>Корзина пуста<br><br><button class="btn small" data-a="tab" data-id="home" style="margin:0 auto">За покупками</button></div>`;
+  const total=items.reduce((s,x)=>s+x.p.price*x.q,0);const c=load("besto_contact",{});
+  return `<div class="top"><div class="h1">Корзина</div></div>
+   <div class="list">${items.map(({p,q})=>`<div class="row"><button class="mini" style="${gradOf(p.id)}" data-a="open" data-id="${p.id}">${pic(p)}</button>
+     <div class="grow"><div style="font-weight:600">${esc(p.title)}</div><div class="muted">${rub(p.price)}</div></div>
+     <div class="step"><button data-a="dec" data-id="${p.id}">−</button><b>${q}</b><button data-a="inc" data-id="${p.id}">+</button></div></div>`).join("")}</div>
+   <div class="tot"><span>Итого</span><span>${rub(total)}</span></div>
+   <div class="sec"><h2>Оформление</h2></div>
+   <form id="order">
+    <label class="field"><span>Имя</span><input name="name" required maxlength="80" value="${esc(c.name||"")}"></label>
+    <label class="field"><span>Телефон или Telegram</span><input name="phone" required maxlength="80" value="${esc(c.phone||"")}"></label>
+    <label class="field"><span>Адрес доставки</span><input name="addr" maxlength="300" value="${esc(c.addr||"")}"></label>
+    <label class="field"><span>Комментарий</span><textarea name="comment" maxlength="1000"></textarea></label>
+    ${S.user?"":`<div class="note">Можно оформить без входа. Войдите в профиле, чтобы видеть историю заказов.</div>`}
+    <button class="btn" type="submit">Оформить заказ · ${rub(total)}</button></form>`;
+}
+const stTag=s=>{const f=STATUSES.find(x=>x[0]===s)||STATUSES[0];return `<span class="tag ${f[1]}">${esc(f[0])}</span>`};
+function orderCard(o,admin){
+  return `<div class="ord"><div class="hd"><b>Заказ #${esc(o.id.slice(0,6).toUpperCase())}</b>${admin?`<select class="stsel" data-a="status" data-id="${o.id}">${STATUSES.map(s=>`<option ${s[0]===o.status?"selected":""}>${s[0]}</option>`).join("")}</select>`:stTag(o.status)}</div>
+    ${admin?`<div style="font-weight:600">${esc(o.name)} · ${esc(o.phone)}</div>${o.address?`<div class="muted">📍 ${esc(o.address)}</div>`:""}${o.comment?`<div class="muted">💬 ${esc(o.comment)}</div>`:""}`:""}
+    <div class="muted" style="margin:8px 0">${(o.items||[]).map(i=>esc(i.title)+" × "+Number(i.qty)).join("<br>")}</div>
+    <div class="hd"><small>${new Date(o.created_at).toLocaleString("ru-RU")}</small><b>${rub(o.total)}</b></div>
+    ${admin?`<button class="btn small red" data-a="delOrder" data-id="${o.id}" style="margin-top:6px">Удалить</button>`:""}</div>`;
+}
+function vProfile(){
+  const c=S.set.contacts||{};const b=B();
+  let h=`<div class="top"><div class="h1">Профиль</div></div>`;
+  if(!S.user){
+    h+=`<div class="prof"><div class="ava">👤</div><div class="grow"><div style="font-weight:700;font-size:17px">Вы не вошли</div><div class="muted">Войдите, чтобы видеть заказы</div></div></div>
+      <button class="btn" data-a="auth" style="margin-top:12px">Войти или зарегистрироваться</button>`;
+  }else{
+    h+=`<div class="prof"><div class="ava">${esc((S.user.email||"?")[0].toUpperCase())}</div><div class="grow"><div style="font-weight:700;font-size:17px;overflow:hidden;text-overflow:ellipsis">${esc(S.user.email||"")}</div><div class="muted">${S.isAdmin?"Администратор":"Покупатель"}</div></div></div>
+      <div class="list menu">
+        ${S.isAdmin?`<button class="row" data-a="admin"><span class="ic">⚙️</span><span class="grow">Админ-панель</span><span class="chev">›</span></button>`:""}
+        ${!S.isAdmin&&!S.hasAdmin?`<button class="row" data-a="claim"><span class="ic">👑</span><span class="grow">Стать администратором магазина</span><span class="chev">›</span></button>`:""}
+        <button class="row" data-a="logout"><span class="ic">🚪</span><span class="grow">Выйти</span></button>
+      </div>
+      <div class="sec"><h2>Мои заказы</h2></div>${S.myOrders.length?S.myOrders.map(o=>orderCard(o,false)).join(""):`<div class="empty"><div class="e">📦</div>Здесь появятся ваши заказы</div>`}`;
+  }
+  if(c.about||c.phone||c.telegram)h+=`<div class="sec"><h2>О магазине</h2></div><div class="ord">${c.about?`<div style="line-height:1.5">${esc(c.about)}</div>`:""}
+    ${c.phone?`<div style="margin-top:8px">📞 ${esc(c.phone)}</div>`:""}${c.telegram?`<div style="margin-top:4px">✈️ ${esc(c.telegram)}</div>`:""}</div>`;
+  return h;
+}
+
+/* ---------- tab bar ---------- */
+const ICONS={
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+ catalog:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>',
+ fav:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.2-9A5 5 0 0 1 12 6a5 5 0 0 1 9.2 5C19 15.6 12 20 12 20z"/></svg>',
+ cart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14l-1.2 11.1a2 2 0 0 1-2 1.9H8.2a2 2 0 0 1-2-1.9z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>',
+ profile:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>'};
+const TABS=[["home","Главная"],["catalog","Каталог"],["fav","Избранное"],["cart","Корзина"],["profile","Профиль"]];
+function renderTabs(){$("tabbar").innerHTML=TABS.map(([k,l])=>{const c=k==="cart"?cartCount():0;return `<button class="tab ${S.tab===k?"on":""}" data-a="tab" data-id="${k}">${ICONS[k]}${l}${c?`<span class="cnt">${c}</span>`:""}</button>`}).join("")}
+
+let bTimer=null;
+function render(){
+  applyBrand();
+  const f={home:vHome,catalog:vCatalog,fav:vFav,cart:vCart,profile:vProfile}[S.tab];
+  const focused=document.activeElement&&document.activeElement.id==="q";
+  $("view").innerHTML=f();renderTabs();
+  if(focused){const q=$("q");if(q){q.focus();const n=q.value.length;q.setSelectionRange(n,n)}}
+  if(S.sheet)renderProduct(S.sheet,false);
+  if(S.adm)renderAdmin();
+  setupBanners();
+}
+function setupBanners(){
+  clearInterval(bTimer);const el=$("bnr");if(!el)return;const dots=$("bdots");const n=el.children.length;
+  const upd=()=>{const i=Math.round(el.scrollLeft/el.clientWidth);if(dots)[...dots.children].forEach((d,j)=>d.classList.toggle("on",j===i))};
+  el.addEventListener("scroll",()=>requestAnimationFrame(upd),{passive:true});
+  if(n>1)bTimer=setInterval(()=>{if(!document.body.contains(el))return clearInterval(bTimer);const i=Math.round(el.scrollLeft/el.clientWidth);el.scrollTo({left:((i+1)%n)*(el.clientWidth+10),behavior:"smooth"})},4500);
+}
+
+/* ---------- product sheet ---------- */
+function similar(p){const o=visible().filter(x=>x.id!==p.id);return [...o.filter(x=>x.category_id===p.category_id),...o.filter(x=>x.category_id!==p.category_id)].slice(0,10)}
+function renderProduct(id,scroll){
+  const p=byId(id);if(!p){closeSheet();return}
+  const ph=(p.photos||[]).map(safeUrl).filter(Boolean);const photos=ph.length?ph:[null];
+  const fav=S.fav.includes(p.id),inCart=S.cart[p.id]||0,sale=p.old_price&&Number(p.old_price)>Number(p.price),cat=catOf(p.category_id);
+  $("pane").innerHTML=`<div class="grab clear"><button class="round" data-a="closeSheet">✕</button><button class="round" data-a="share" data-id="${p.id}">↗</button></div>
+   <div class="gal" style="${gradOf(p.id)}">${photos.map(u=>`<div>${u?`<img src="${esc(u)}" alt="">`:esc(p.emoji||"🛍️")}</div>`).join("")}</div>
+   <div class="pbody"><div class="price">${rub(p.price)}${sale?`<span class="old" style="font-size:16px">${rub(p.old_price)}</span>`:""}</div>
+     <h3>${esc(p.title)}</h3>
+     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">${cat?`<span class="tag">${esc(cat.emoji||"")} ${esc(cat.name)}</span>`:""}<span class="tag ${p.stock>0?"done":"cancel"}">${p.stock>0?"В наличии: "+p.stock:"Нет в наличии"}</span></div>
+     ${p.description?`<div class="desc">${esc(p.description)}</div>`:""}
+     <div class="sec"><h2>Похожие товары</h2></div><div class="hs">${similar(p).map(card).join("")||`<span class="muted">Пока нет</span>`}</div></div>`;
+  $("buy").innerHTML=`<div class="buybar"><button class="btn fv" data-a="fav" data-id="${p.id}">${fav?"❤️":"🤍"}</button>
+    ${inCart?`<button class="btn dark" data-a="goCart">В корзине · ${inCart} шт. →</button>`:`<button class="btn" data-a="add" data-id="${p.id}" ${p.stock>0?"":"disabled"}>${p.stock>0?"В корзину":"Нет в наличии"}</button>`}</div>`;
+  if(scroll)$("pane").scrollTop=0;
+}
+function openSheet(id){S.sheet=id;renderProduct(id,true);$("sheet").classList.add("open");try{history.replaceState(null,"","#p-"+id)}catch(e){}}
+function closeSheet(){S.sheet=null;$("sheet").classList.remove("open");$("buy").innerHTML="";try{history.replaceState(null,"",location.pathname)}catch(e){}}
+
+/* ---------- modal (auth / confirm) ---------- */
+function openModal(html){$("modalPane").innerHTML=`<div class="grab"><span></span><button class="round" data-a="closeModal">✕</button></div><div style="padding:0 18px">${html}</div>`;$("modal").classList.add("open")}
+function closeModal(){$("modal").classList.remove("open");S.modal=null}
+function confirmBox(text,cb){S.modal=cb;openModal(`<div style="font-size:18px;font-weight:700;margin-bottom:16px">${esc(text)}</div><button class="btn red" data-a="confirmYes">Да, удалить</button><button class="btn soft" data-a="closeModal" style="margin-top:10px">Отмена</button>`)}
+function authBox(mode){
+  S.authMode=mode||"login";
+  openModal(`<div class="h1" style="font-size:26px;margin-bottom:14px">${S.authMode==="login"?"Вход":"Регистрация"}</div>
+   <form id="authForm"><label class="field"><span>Email</span><input name="email" type="email" required autocomplete="email"></label>
+   <label class="field"><span>Пароль</span><input name="pass" type="password" required minlength="6" autocomplete="${S.authMode==="login"?"current-password":"new-password"}"></label>
+   <button class="btn" type="submit" id="authBtn">${S.authMode==="login"?"Войти":"Создать аккаунт"}</button></form>
+   <button class="btn soft" data-a="authMode" style="margin-top:10px">${S.authMode==="login"?"Нет аккаунта? Регистрация":"Уже есть аккаунт? Войти"}</button>`);
+}
+
+/* ---------- admin ---------- */
+const SECS=[["brand","Бренд"],["banners","Баннеры"],["products","Товары"],["cats","Категории"],["orders","Заказы"],["texts","Тексты"]];
+function openAdmin(){S.adm={sec:"brand",edit:null};$("admin").classList.add("open");loadOrders();renderAdmin()}
+function closeAdmin(){S.adm=null;S.form=null;$("admin").classList.remove("open")}
+function renderAdmin(){
+  const a=S.adm;if(!a)return;let body="";
+  if(a.edit)body=editForm();
+  else body=`<div class="seg">${SECS.map(([k,l])=>`<button class="${a.sec===k?"on":""}" data-a="sec" data-id="${k}">${l}</button>`).join("")}</div>`+({brand:aBrand,banners:aBanners,products:aProducts,cats:aCats,orders:aOrders,texts:aTexts}[a.sec])();
+  const title=a.edit?(a.edit.id?"Редактирование":"Новый"):"Админ-панель";
+  const keep=$("adminPane").scrollTop;const same=renderAdmin.last===title+a.sec;
+  $("adminPane").innerHTML=`<div class="grab"><button class="round" data-a="${a.edit?"admBack":"closeAdmin"}">${a.edit?"‹":"✕"}</button><b>${title}</b><span style="width:36px"></span></div><div class="ad">${body}</div>`;
+  if(same)$("adminPane").scrollTop=keep;renderAdmin.last=title+a.sec;
+}
+function aBrand(){
+  const b=S.form&&S.form.kind==="brand"?S.form:(S.form={kind:"brand",...B()});
+  return `<form id="brandForm">
+   <div class="logo-edit">${logoHTML(b)}<div class="grow"><div style="font-weight:700">Логотип</div><div class="muted" style="font-size:13px">Квадратная картинка, PNG или JPG</div>
+     <div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn small" data-a="upLogo">Загрузить</button>${b.logo_url?`<button type="button" class="btn small red" data-a="rmLogo">Убрать</button>`:""}</div></div></div>
+   <label class="field"><span>Название магазина</span><input name="name" maxlength="40" value="${esc(b.name||"")}"></label>
+   <label class="field"><span>Слоган</span><input name="slogan" maxlength="80" value="${esc(b.slogan||"")}"></label>
+   <label class="field"><span>Буква логотипа (если нет картинки)</span><input name="logo_letter" maxlength="2" value="${esc(b.logo_letter||"")}"></label>
+   <div class="field"><span>Фирменные цвета</span><div class="colors"><label><input type="color" name="color" value="${esc(b.color||"#FF5A1F")}">Основной</label><label><input type="color" name="color2" value="${esc(b.color2||"#FF8A3D")}">Второй</label></div></div>
+   <button class="btn" type="submit">Сохранить бренд</button></form>`;
+}
+function aTexts(){
+  const h=S.set.home||{},c=S.set.contacts||{};
+  return `<form id="textsForm">
+   <label class="field"><span>Заголовок раздела на главной</span><input name="section_title" maxlength="40" value="${esc(h.section_title||"")}"></label>
+   <label class="field"><span>Промо-строка (под баннером)</span><input name="promo_text" maxlength="120" value="${esc(h.promo_text||"")}"></label>
+   <label class="sw">Показывать промо-строку<input type="checkbox" name="show_promo" ${h.show_promo?"checked":""}></label>
+   <label class="field"><span>О магазине</span><textarea name="about" maxlength="1000">${esc(c.about||"")}</textarea></label>
+   <div class="two"><label class="field"><span>Телефон</span><input name="phone" maxlength="40" value="${esc(c.phone||"")}"></label><label class="field"><span>Telegram</span><input name="telegram" maxlength="60" value="${esc(c.telegram||"")}"></label></div>
+   <button class="btn" type="submit">Сохранить тексты</button></form>`;
+}
+function aBanners(){
+  return `<button class="btn" data-a="new" data-id="banner" style="margin-bottom:12px">＋ Добавить баннер</button><div class="list">${S.banners.map(b=>{const u=safeUrl(b.image_url);
+    return `<button class="row" data-a="edit" data-k="banner" data-id="${b.id}"><div class="mini" style="${u?"":"background:"+esc(b.bg||"#ccc")}">${u?`<img src="${esc(u)}" alt="">`:""}</div><div class="grow"><div style="font-weight:600">${esc(b.title||"Без текста")}</div><div class="muted">${b.active?"Показывается":"Скрыт"} · порядок ${Number(b.sort)||0}</div></div><span class="chev">›</span></button>`}).join("")||`<div class="empty">Баннеров нет</div>`}</div>`;
+}
+function aProducts(){
+  return `<button class="btn" data-a="new" data-id="product" style="margin-bottom:12px">＋ Добавить товар</button><div class="list">${S.products.map(p=>`<button class="row" data-a="edit" data-k="product" data-id="${p.id}"><div class="mini" style="${gradOf(p.id)}">${pic(p)}</div><div class="grow"><div style="font-weight:600">${esc(p.title)}</div><div class="muted">${rub(p.price)} · ${p.stock} шт.${p.active===false?" · скрыт":""}</div></div><span class="chev">›</span></button>`).join("")||`<div class="empty">Товаров нет</div>`}</div>`;
+}
+function aCats(){
+  return `<button class="btn" data-a="new" data-id="cat" style="margin-bottom:12px">＋ Добавить категорию</button><div class="list">${S.cats.map(c=>`<button class="row" data-a="edit" data-k="cat" data-id="${c.id}"><div class="mini" style="background:color-mix(in srgb,var(--accent) 12%,transparent)">${esc(c.emoji||"📦")}</div><div class="grow"><div style="font-weight:600">${esc(c.name)}</div><div class="muted">${S.products.filter(p=>p.category_id===c.id).length} товаров</div></div><span class="chev">›</span></button>`).join("")||`<div class="empty">Категорий нет</div>`}</div>`;
+}
+function aOrders(){return S.orders.length?S.orders.map(o=>orderCard(o,true)).join(""):`<div class="empty"><div class="e">📭</div>Заказов пока нет</div>`}
+
+function startEdit(kind,id){
+  let src={};
+  if(kind==="product")src=id?{...byId(id)}:{title:"",price:"",old_price:"",category_id:S.cats[0]?S.cats[0].id:null,description:"",emoji:"🛍️",stock:1,active:true,photos:[]};
+  if(kind==="banner")src=id?{...S.banners.find(b=>b.id===id)}:{title:"",subtitle:"",bg:B().color||"#FF5A1F",image_url:null,product_id:null,sort:S.banners.length+1,active:true};
+  if(kind==="cat")src=id?{...S.cats.find(c=>c.id===id)}:{name:"",emoji:"📦",sort:S.cats.length+1};
+  if(kind==="product")src.photos=[...(src.photos||[])];
+  S.form={kind,...src};S.adm.edit={kind,id:id||null};renderAdmin();$("adminPane").scrollTop=0;
+}
+function editForm(){
+  const f=S.form,k=f.kind;
+  if(k==="product")return `<form id="editForm">
+    <div class="field"><span>Фото (до 6, первое — обложка)</span><div class="photos">${f.photos.map((u,i)=>`<div><img src="${esc(safeUrl(u))}" alt=""><button type="button" class="x" data-a="rmPhoto" data-id="${i}">✕</button></div>`).join("")}${f.photos.length<6?`<button type="button" class="addph" data-a="upPhoto">＋</button>`:""}</div></div>
+    <label class="field"><span>Название</span><input name="title" required maxlength="140" value="${esc(f.title)}"></label>
+    <div class="two"><label class="field"><span>Цена, ₽</span><input name="price" type="number" min="0" step="1" required value="${esc(f.price)}"></label><label class="field"><span>Старая цена</span><input name="old_price" type="number" min="0" step="1" value="${esc(f.old_price||"")}"></label></div>
+    <div class="two"><label class="field"><span>Категория</span><select name="category_id"><option value="">Без категории</option>${S.cats.map(c=>`<option value="${c.id}" ${c.id===f.category_id?"selected":""}>${esc(c.name)}</option>`).join("")}</select></label><label class="field"><span>В наличии</span><input name="stock" type="number" min="0" value="${esc(f.stock)}"></label></div>
+    <label class="field"><span>Эмодзи (если нет фото)</span><input name="emoji" maxlength="4" value="${esc(f.emoji||"")}"></label>
+    <label class="field"><span>Описание</span><textarea name="description" maxlength="4000">${esc(f.description||"")}</textarea></label>
+    <label class="sw">Показывать в магазине<input type="checkbox" name="active" ${f.active!==false?"checked":""}></label>
+    <button class="btn" type="submit">Сохранить</button>${S.adm.edit.id?`<button type="button" class="btn red" data-a="delItem" style="margin-top:10px">Удалить товар</button>`:""}</form>`;
+  if(k==="banner"){const u=safeUrl(f.image_url);return `<form id="editForm">
+    <div class="bn ${u?"img":""}" style="margin-bottom:12px;${u?`background-image:url('${esc(u)}')`:`background:linear-gradient(135deg,${esc(f.bg)},color-mix(in srgb,${esc(f.bg)} 55%,#fff))`}"><b>${esc(f.title)}</b><span>${esc(f.subtitle)}</span></div>
+    <div style="display:flex;gap:8px;margin-bottom:12px"><button type="button" class="btn small" data-a="upBanner">${u?"Заменить картинку":"Загрузить картинку"}</button>${u?`<button type="button" class="btn small red" data-a="rmBanner">Убрать</button>`:""}</div>
+    <label class="field"><span>Заголовок</span><input name="title" maxlength="60" value="${esc(f.title)}"></label>
+    <label class="field"><span>Подзаголовок</span><input name="subtitle" maxlength="100" value="${esc(f.subtitle)}"></label>
+    <div class="two"><div class="field"><span>Цвет фона</span><div class="colors"><label><input type="color" name="bg" value="${esc(f.bg||"#FF5A1F")}">Фон</label></div></div><label class="field"><span>Порядок</span><input name="sort" type="number" value="${esc(f.sort||0)}"></label></div>
+    <label class="field"><span>Ведёт на товар</span><select name="product_id"><option value="">Никуда</option>${S.products.map(p=>`<option value="${p.id}" ${p.id===f.product_id?"selected":""}>${esc(p.title)}</option>`).join("")}</select></label>
+    <label class="sw">Показывать<input type="checkbox" name="active" ${f.active!==false?"checked":""}></label>
+    <button class="btn" type="submit">Сохранить</button>${S.adm.edit.id?`<button type="button" class="btn red" data-a="delItem" style="margin-top:10px">Удалить баннер</button>`:""}</form>`}
+  return `<form id="editForm"><div class="two"><label class="field" style="flex:3"><span>Название</span><input name="name" required maxlength="40" value="${esc(f.name)}"></label><label class="field"><span>Эмодзи</span><input name="emoji" maxlength="4" value="${esc(f.emoji||"")}"></label></div>
+    <label class="field"><span>Порядок</span><input name="sort" type="number" value="${esc(f.sort||0)}"></label>
+    <button class="btn" type="submit">Сохранить</button>${S.adm.edit.id?`<button type="button" class="btn red" data-a="delItem" style="margin-top:10px">Удалить категорию</button>`:""}</form>`;
+}
+function syncForm(){const fm=$("editForm")||$("brandForm");if(!fm||!S.form)return;const fd=new FormData(fm);for(const [k,v] of fd.entries())S.form[k]=v;fm.querySelectorAll("input[type=checkbox]").forEach(c=>S.form[c.name]=c.checked)}
+
+/* ---------- uploads ---------- */
+function compress(file,max,keepAlpha){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{const s=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);const png=keepAlpha&&/png|webp|svg/.test(file.type);c.toBlob(b=>b?res({blob:b,ext:png?"png":"jpg",type:png?"image/png":"image/jpeg"}):rej(new Error("Не удалось обработать фото")),png?"image/png":"image/jpeg",.82)};img.onerror=()=>rej(new Error("Не удалось открыть фото"));img.src=url})}
+async function upload(file,folder,max,keepAlpha){
+  const {blob,ext,type}=await compress(file,max,keepAlpha);
+  const path=`${folder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+  const {error}=await sb.storage.from("besto").upload(path,blob,{contentType:type,cacheControl:"31536000"});
+  if(error)throw error;
+  return sb.storage.from("besto").getPublicUrl(path).data.publicUrl;
+}
+let pickCb=null;
+function pick(cb){pickCb=cb;$("file").click()}
+$("file").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f||!pickCb)return;const cb=pickCb;pickCb=null;toast("Загружаем…");try{await cb(f)}catch(err){toast(errMsg(err))}});
+
+/* ---------- data ---------- */
+async function loadAll(){
+  const [s,b,c,p]=await Promise.all([sb.from("besto_settings").select("key,value"),sb.from("besto_banners").select("*").order("sort"),sb.from("besto_categories").select("*").order("sort"),sb.from("besto_products").select("*").order("created_at",{ascending:false})]);
+  const err=s.error||b.error||c.error||p.error;if(err)throw err;
+  const set=JSON.parse(JSON.stringify(DEF));for(const r of s.data)set[r.key]={...(set[r.key]||{}),...r.value};
+  Object.assign(S,{set,banners:b.data,cats:c.data,products:p.data.map(x=>({...x,price:Number(x.price),old_price:x.old_price==null?null:Number(x.old_price)})),loaded:true});
+  if(!S.isAdmin)save("besto_cache",{set,banners:S.banners,cats:S.cats,products:S.products});
+  for(const id of Object.keys(S.cart))if(!byId(id))delete S.cart[id];save("besto_cart",S.cart);
+}
+async function loadMine(){if(!S.user){S.myOrders=[];return}const {data}=await sb.from("besto_orders").select("*").eq("user_id",S.user.id).order("created_at",{ascending:false}).limit(50);S.myOrders=data||[]}
+async function loadOrders(){if(!S.isAdmin)return;const {data,error}=await sb.from("besto_orders").select("*").order("created_at",{ascending:false}).limit(200);if(!error){S.orders=data;if(S.adm)renderAdmin()}}
+async function refreshRole(){
+  if(S.user){const [a,h]=await Promise.all([sb.rpc("besto_is_admin"),sb.rpc("besto_has_admin")]);S.isAdmin=!!a.data;S.hasAdmin=h.data!==false}
+  else{S.isAdmin=false;if(S.adm)closeAdmin()}
+  await Promise.all([loadMine(),S.isAdmin?loadAll():null]);render();
+}
+async function reload(){try{await loadAll()}catch(e){toast("Нет связи с сервером")}render()}
+
+async function saveSetting(key,value){const {error}=await sb.from("besto_settings").upsert({key,value,updated_at:new Date().toISOString()});if(error)throw error;S.set[key]=value}
+
+/* ---------- events ---------- */
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("[data-a]");if(!t)return;const a=t.dataset.a,id=t.dataset.id;
+  try{switch(a){
+   case "tab":S.tab=id;if(S.sheet)closeSheet();if(id!=="home"&&id!=="catalog")S.q="";render();window.scrollTo(0,0);if(id==="profile"&&S.user)loadMine().then(()=>S.tab==="profile"&&render());break;
+   case "cat":S.cat=id||null;if(t.dataset.go){S.tab="home";S.q=""}render();break;
+   case "open":if(byId(id))openSheet(id);break;
+   case "closeSheet":closeSheet();break;
+   case "fav":e.stopPropagation();S.fav=S.fav.includes(id)?S.fav.filter(x=>x!==id):[...S.fav,id];save("besto_fav",S.fav);render();break;
+   case "add":S.cart[id]=(S.cart[id]||0)+1;save("besto_cart",S.cart);toast("Добавлено в корзину");render();break;
+   case "goCart":closeSheet();S.tab="cart";render();break;
+   case "inc":{const p=byId(id);if(p&&S.cart[id]>=p.stock){toast("Больше нет в наличии");break}S.cart[id]++;save("besto_cart",S.cart);render();break}
+   case "dec":S.cart[id]--;if(S.cart[id]<=0)delete S.cart[id];save("besto_cart",S.cart);render();break;
+   case "share":{const url=location.origin+location.pathname+"#p-"+id;try{if(navigator.share)await navigator.share({title:byId(id).title,url});else{await navigator.clipboard.writeText(url);toast("Ссылка скопирована")}}catch(x){}break}
+   case "auth":authBox("login");break;
+   case "authMode":authBox(S.authMode==="login"?"register":"login");break;
+   case "closeModal":closeModal();break;
+   case "confirmYes":{const cb=S.modal;closeModal();if(cb)await cb();break}
+   case "logout":await sb.auth.signOut();toast("Вы вышли");break;
+   case "claim":{const {data,error}=await sb.rpc("besto_claim_admin");if(error)throw error;if(data){toast("Теперь вы администратор");await refreshRole();openAdmin()}else{S.hasAdmin=true;toast("Администратор уже назначен");render()}break}
+   case "admin":openAdmin();break;
+   case "closeAdmin":closeAdmin();render();break;
+   case "sec":S.adm.sec=id;S.form=null;renderAdmin();break;
+   case "admBack":S.adm.edit=null;S.form=null;renderAdmin();break;
+   case "new":startEdit(id,null);break;
+   case "edit":startEdit(t.dataset.k,id);break;
+   case "upLogo":syncForm();pick(async f=>{S.form.logo_url=await upload(f,"logo",512,true);renderAdmin();toast("Логотип загружен — нажмите «Сохранить»")});break;
+   case "rmLogo":syncForm();S.form.logo_url=null;renderAdmin();break;
+   case "upBanner":syncForm();pick(async f=>{S.form.image_url=await upload(f,"banners",1600,false);renderAdmin();toast("Картинка загружена")});break;
+   case "rmBanner":syncForm();S.form.image_url=null;renderAdmin();break;
+   case "upPhoto":syncForm();pick(async f=>{S.form.photos.push(await upload(f,"products",1200,false));renderAdmin();toast("Фото загружено")});break;
+   case "rmPhoto":syncForm();S.form.photos.splice(Number(id),1);renderAdmin();break;
+   case "delItem":{const k=S.adm.edit.kind,iid=S.adm.edit.id;const tbl={product:"besto_products",banner:"besto_banners",cat:"besto_categories"}[k];
+     confirmBox(k==="product"?"Удалить товар?":k==="banner"?"Удалить баннер?":"Удалить категорию?",async()=>{const {error}=await sb.from(tbl).delete().eq("id",iid);if(error)return toast(errMsg(error));S.adm.edit=null;S.form=null;await reload();toast("Удалено")});break}
+   case "delOrder":confirmBox("Удалить заказ?",async()=>{const {error}=await sb.from("besto_orders").delete().eq("id",id);if(error)return toast(errMsg(error));await loadOrders();toast("Удалено")});break;
+  }}catch(err){toast(errMsg(err))}
+});
+document.addEventListener("change",async e=>{const t=e.target;if(t.dataset&&t.dataset.a==="status"){const {error}=await sb.from("besto_orders").update({status:t.value}).eq("id",t.dataset.id);toast(error?errMsg(error):"Статус: "+t.value);if(!error){const o=S.orders.find(x=>x.id===t.dataset.id);if(o)o.status=t.value}}});
+document.addEventListener("input",e=>{
+  if(e.target.id==="q"){S.q=e.target.value;const r=$("results");if(r&&S.tab==="home")r.innerHTML=grid(filtered());else render();return}
+  if(e.target.closest("#brandForm")){syncForm();const lg=document.querySelector(".logo-edit");if(lg)lg.querySelector(".lg").outerHTML=logoHTML(S.form);}
+});
+document.addEventListener("submit",async e=>{
+  e.preventDefault();const fm=e.target,fd=new FormData(fm);const btn=fm.querySelector("button[type=submit]");const label=btn&&btn.innerHTML;
+  const busy=on=>{if(btn){btn.disabled=on;btn.innerHTML=on?'<span class="spin"></span>':label}};
+  busy(true);
+  try{
+    if(fm.id==="authForm"){
+      const email=fd.get("email").trim(),password=fd.get("pass");
+      if(S.authMode==="login"){const {error}=await sb.auth.signInWithPassword({email,password});if(error)throw new Error(error.message==="Invalid login credentials"?"Неверный email или пароль":error.message);closeModal();toast("Добро пожаловать!")}
+      else{const {data,error}=await sb.auth.signUp({email,password});if(error)throw error;closeModal();toast(data.session?"Аккаунт создан":"Проверьте почту и подтвердите регистрацию")}
+    }
+    if(fm.id==="order"){
+      const items=Object.entries(S.cart).map(([id,qty])=>({id,qty}));
+      save("besto_contact",{name:fd.get("name"),phone:fd.get("phone"),addr:fd.get("addr")});
+      const {error}=await sb.rpc("besto_place_order",{p_items:items,p_name:fd.get("name"),p_phone:fd.get("phone"),p_address:fd.get("addr"),p_comment:fd.get("comment")});
+      if(error)throw error;
+      S.cart={};save("besto_cart",S.cart);await reload();
+      openModal(`<div style="text-align:center;padding:10px 0 6px"><div style="font-size:60px">🎉</div><div class="h1" style="font-size:24px">Заказ оформлен!</div><div class="muted" style="margin:6px 0 18px">Мы скоро свяжемся с вами</div><button class="btn" data-a="closeModal">Отлично</button></div>`);
+      if(S.user)loadMine();return;
+    }
+    if(fm.id==="brandForm"){syncForm();const f=S.form;await saveSetting("brand",{name:f.name.trim()||"Besto",slogan:f.slogan,logo_url:f.logo_url||null,logo_letter:f.logo_letter,color:f.color,color2:f.color2});S.form=null;render();toast("Бренд обновлён")}
+    if(fm.id==="textsForm"){await saveSetting("home",{section_title:fd.get("section_title"),promo_text:fd.get("promo_text"),show_promo:fm.show_promo.checked});await saveSetting("contacts",{about:fd.get("about"),phone:fd.get("phone"),telegram:fd.get("telegram")});render();toast("Сохранено")}
+    if(fm.id==="editForm"){
+      syncForm();const f=S.form,k=f.kind,iid=S.adm.edit.id;let row,tbl;
+      if(k==="product"){tbl="besto_products";row={title:f.title.trim(),price:Math.max(0,Number(f.price)||0),old_price:Number(f.old_price)>0?Number(f.old_price):null,category_id:f.category_id||null,stock:Math.max(0,parseInt(f.stock)||0),emoji:f.emoji||"🛍️",description:f.description,active:!!f.active,photos:f.photos}}
+      if(k==="banner"){tbl="besto_banners";row={title:f.title,subtitle:f.subtitle,bg:f.bg,sort:parseInt(f.sort)||0,product_id:f.product_id||null,image_url:f.image_url||null,active:!!f.active}}
+      if(k==="cat"){tbl="besto_categories";row={name:f.name.trim(),emoji:f.emoji||"📦",sort:parseInt(f.sort)||0}}
+      const q=iid?sb.from(tbl).update(row).eq("id",iid):sb.from(tbl).insert(row);const {error}=await q;if(error)throw error;
+      S.adm.edit=null;S.form=null;await reload();toast("Сохранено");return;
+    }
+  }catch(err){toast(errMsg(err))}
+  busy(false);
+});
+window.bestoBack=function(){
+  if($("modal").classList.contains("open")){closeModal();return true}
+  if(S.sheet){closeSheet();return true}
+  if(S.adm){if(S.adm.edit){S.adm.edit=null;S.form=null;renderAdmin()}else{closeAdmin();render()}return true}
+  if(S.tab!=="home"||S.cat||S.q){S.tab="home";S.cat=null;S.q="";render();return true}
+  return false;
+};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")window.bestoBack()});
+
+/* ---------- start ---------- */
+render();
+sb.auth.onAuthStateChange((ev,session)=>{const u=session?session.user:null;if((u&&u.id)!==(S.user&&S.user.id)){S.user=u;refreshRole()}});
+reload().then(()=>{const m=location.hash.match(/^#p-([0-9a-f-]{36})$/);if(m&&byId(m[1]))openSheet(m[1])});
+})();
+</script>
+</body>
+</html>

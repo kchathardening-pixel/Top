@@ -1,0 +1,45 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.besto.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.besto.app"
+        minSdk 24
+        targetSdk 34
+        versionCode((System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger())
+        versionName "1.0." + (System.getenv("GITHUB_RUN_NUMBER") ?: "0")
+    }
+
+    // Ключ подписи берётся из секретов репозитория (BESTO_KEYSTORE_B64, BESTO_KEYSTORE_PASS).
+    // Если секретов нет — APK подписывается отладочным ключом.
+    def ksFile = file("../release.keystore")
+    def ksPass = System.getenv("BESTO_KEYSTORE_PASS")
+    signingConfigs {
+        if (ksFile.exists() && ksPass) {
+            besto {
+                storeFile ksFile
+                storePassword ksPass
+                keyAlias "besto"
+                keyPassword ksPass
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig (ksFile.exists() && ksPass) ? signingConfigs.besto : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.11.0'
+}

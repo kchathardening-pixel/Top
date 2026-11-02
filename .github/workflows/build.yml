@@ -1,0 +1,53 @@
+name: Besto APK
+
+on:
+  push:
+    branches: [besto]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: besto-apk
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+      - name: Положить сайт внутрь приложения
+        run: |
+          mkdir -p android/app/src/main/assets/www
+          cp -r web/* android/app/src/main/assets/www/
+      - name: Ключ подписи (если задан в секретах)
+        env:
+          KS: ${{ secrets.BESTO_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KS" ]; then echo "$KS" | base64 -d > android/release.keystore; fi
+      - name: Собрать APK
+        env:
+          BESTO_KEYSTORE_PASS: ${{ secrets.BESTO_KEYSTORE_PASS }}
+        run: gradle -p android :app:assembleRelease --no-daemon --stacktrace
+      - run: cp android/app/build/outputs/apk/release/app-release.apk Besto.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Besto-apk
+          path: Besto.apk
+      - name: Опубликовать релиз с APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: besto-${{ github.run_number }}
+          target_commitish: besto
+          name: Besto ${{ github.run_number }}
+          files: Besto.apk
+          make_latest: false
+
