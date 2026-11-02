@@ -30,7 +30,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig (ksFile.exists() && ksPass) ? signingConfigs.besto : signingConfigs.debug
+            signingConfig = (ksFile.exists() && ksPass) ? signingConfigs.besto : signingConfigs.debug
         }
     }
 
