@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="description" content="KAL — ИИ-ассистент KCSTAR THE LLM. Работает прямо в браузере.">
+<title>KAL</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='23' fill='%23111214'/%3E%3Cpath d='M30 26v48M30 52l24-26M38 44l20 30' stroke='%23fff' stroke-width='9' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='71' cy='68' r='7' fill='%230A84FF'/%3E%3C/svg%3E">
+<style>
+:root{--accent:#007AFF;--red:#FF3B30;--green:#34C759;--bg:#FFFFFF;--bg2:#F2F2F7;--card:#FFFFFF;--fill:rgba(120,120,128,.12);--fill2:rgba(120,120,128,.2);
+  --label:#000;--label2:rgba(60,60,67,.62);--label3:rgba(60,60,67,.3);--sep:rgba(60,60,67,.16);--bubble:#F0F0F4;
+  --glass:rgba(255,255,255,.66);--glass-hi:rgba(255,255,255,.88);--glass-line:rgba(255,255,255,.8);--glass-edge:rgba(0,0,0,.07);
+  --shadow:0 8px 28px rgba(0,0,0,.10),0 1px 3px rgba(0,0,0,.06);--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+  --ease:cubic-bezier(.32,.72,0,1);--spring:cubic-bezier(.3,1.3,.6,1);color-scheme:light}
+[data-theme=dark]{--accent:#0A84FF;--red:#FF453A;--green:#30D158;--bg:#000;--bg2:#000;--card:#1C1C1E;--fill:rgba(120,120,128,.24);--fill2:rgba(120,120,128,.36);
+  --label:#fff;--label2:rgba(235,235,245,.62);--label3:rgba(235,235,245,.3);--sep:rgba(84,84,88,.5);--bubble:#1C1C1E;
+  --glass:rgba(36,36,38,.58);--glass-hi:rgba(50,50,52,.86);--glass-line:rgba(255,255,255,.13);--glass-edge:rgba(0,0,0,.3);--shadow:0 8px 30px rgba(0,0,0,.45),0 1px 2px rgba(0,0,0,.3);color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--label);font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Roboto","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;overflow:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;outline:none}
+input,textarea{font:inherit;color:inherit;outline:none;border:0;background:none}
+.ic{width:22px;height:22px;flex:none;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.hidden{display:none!important}
+.glass{background:var(--glass);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:.5px solid var(--glass-line);
+  box-shadow:var(--shadow),inset 0 .5px 0 var(--glass-line),inset 0 -.5px 0 var(--glass-edge)}
+.press{transition:transform .35s var(--spring),opacity .2s}.press:active{transform:scale(.93);opacity:.85}
+.btn{height:52px;padding:0 26px;border-radius:999px;font-size:17px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.pri{background:var(--accent);color:#fff}.btn.sec{background:var(--fill);color:var(--accent)}.btn.wide{width:100%}
+.btn:disabled{opacity:.4}
+.logo{width:72px;height:72px;border-radius:20px;flex:none}
+
+/* ---------- App shell ---------- */
+#app{position:fixed;inset:0;display:flex;flex-direction:column}
+#top{position:absolute;left:0;right:0;top:0;z-index:10;padding:calc(var(--st) + 8px) 12px 8px;display:flex;align-items:center;gap:8px;pointer-events:none}
+#top>*{pointer-events:auto}
+.nbtn{height:42px;min-width:42px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 14px;font-weight:600;font-size:16px}
+.nbtn.circle{padding:0;width:42px}
+#title{flex:1;display:flex;justify-content:center}
+#title button{height:42px;padding:0 16px;border-radius:999px;display:flex;align-items:center;gap:6px;font-weight:700;font-size:17px}
+#title small{font-weight:500;color:var(--label2);font-size:13px}
+#title .ic{width:14px;height:14px;color:var(--label2);stroke-width:2.4}
+#scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:calc(var(--st) + 70px) 0 calc(var(--sb) + 150px);scroll-behavior:auto;overscroll-behavior:contain}
+#msgs{max-width:760px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:18px}
+
+/* empty */
+.hello{display:flex;flex-direction:column;align-items:center;text-align:center;padding:12vh 8px 0;gap:10px}
+.hello h1{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-top:8px}
+.hello p{color:var(--label2);font-size:15px;max-width:340px}
+.sugg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;width:100%;max-width:520px}
+.sugg button{text-align:left;padding:14px;border-radius:20px;background:var(--fill);font-size:15px;line-height:1.3;display:flex;flex-direction:column;gap:4px}
+.sugg button b{font-weight:600}.sugg button span{color:var(--label2);font-size:13px}
+
+/* messages */
+.m-user{align-self:flex-end;max-width:85%;background:var(--accent);color:#fff;padding:10px 15px;border-radius:22px 22px 6px 22px;white-space:pre-wrap;word-wrap:break-word;user-select:text}
+.m-ai{align-self:stretch;user-select:text;word-wrap:break-word}
+.m-ai .who{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--label2);margin-bottom:6px}
+.m-ai .who svg{width:22px;height:22px;border-radius:7px}
+.md>*+*{margin-top:10px}
+.md h1,.md h2,.md h3{font-size:19px;font-weight:700;margin-top:16px}
+.md ul,.md ol{padding-left:22px}.md li+li{margin-top:4px}
+.md code{font:14px/1.4 ui-monospace,"SF Mono",Menlo,Consolas,monospace;background:var(--fill);padding:2px 6px;border-radius:6px}
+.md pre{background:var(--bubble);border-radius:16px;padding:12px 14px;overflow-x:auto;position:relative}
+.md pre code{background:none;padding:0;font-size:13.5px;display:block;white-space:pre}
+.md a{color:var(--accent);text-decoration:none}
+.md blockquote{border-left:3px solid var(--sep);padding-left:12px;color:var(--label2)}
+.md table{border-collapse:collapse;font-size:15px;display:block;overflow-x:auto}
+.md th,.md td{border:.5px solid var(--sep);padding:6px 10px;text-align:left}
+.cite{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--fill2);color:var(--label);font-size:11px;font-weight:700;vertical-align:2px;margin:0 1px;text-decoration:none!important}
+.caret{display:inline-block;width:8px;height:17px;background:var(--label);border-radius:2px;vertical-align:-3px;animation:blink 1s steps(2) infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.status{display:flex;align-items:center;gap:8px;color:var(--label2);font-size:15px}
+.dots{display:inline-flex;gap:4px}.dots i{width:6px;height:6px;border-radius:50%;background:var(--label3);animation:dot 1.2s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.think{border-radius:16px;background:var(--fill);margin-bottom:10px;overflow:hidden}
+.think summary{list-style:none;cursor:pointer;padding:10px 14px;font-size:14px;font-weight:600;color:var(--label2);display:flex;align-items:center;gap:8px}
+.think summary::-webkit-details-marker{display:none}
+.think summary .ic{width:16px;height:16px;transition:transform .3s}
+.think[open] summary .ic{transform:rotate(90deg)}
+.think .tb{padding:0 14px 12px;font-size:14px;color:var(--label2);white-space:pre-wrap}
+.srcs{display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:2px;scrollbar-width:none}
+.srcs::-webkit-scrollbar{display:none}
+.src{flex:none;max-width:220px;padding:8px 12px;border-radius:14px;background:var(--fill);font-size:13px;text-decoration:none;color:var(--label);display:flex;flex-direction:column;gap:1px}
+.src b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.src span{color:var(--label2);font-size:12px}
+.acts{display:flex;gap:2px;margin-top:8px;color:var(--label2)}
+.acts button{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.acts button:active{background:var(--fill)}
+.acts .ic{width:18px;height:18px}
+.acts .on{color:var(--accent)}
+.acts .on.down{color:var(--red)}
+.err{color:var(--red);font-size:15px}
+
+/* composer */
+#composer{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:0 10px calc(var(--sb) + 10px);pointer-events:none}
+#composer .box{pointer-events:auto;max-width:760px;margin:0 auto;border-radius:28px;padding:8px 8px 8px 14px;display:flex;flex-direction:column;gap:6px}
+#inp{width:100%;resize:none;max-height:160px;min-height:26px;font-size:17px;line-height:1.4;padding:6px 4px 0}
+#inp::placeholder{color:var(--label2)}
+.crow{display:flex;align-items:center;gap:6px}
+.tog{height:34px;padding:0 12px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--label2);background:var(--fill)}
+.tog .ic{width:17px;height:17px}
+.tog.on{color:#fff;background:var(--accent)}
+.crow .sp{flex:1}
+#send{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .35s var(--spring)}
+#send:disabled{opacity:.3}
+#send .ic{width:20px;height:20px;stroke-width:2.4}
+#send.stop{background:var(--label)}#send.stop .ic{color:var(--bg)}
+#note{text-align:center;font-size:11px;color:var(--label2);margin-top:6px;pointer-events:none}
+
+/* setup */
+#setup{position:fixed;inset:0;z-index:40;background:var(--bg);overflow-y:auto;padding:calc(var(--st) + 50px) 20px calc(var(--sb) + 24px);display:flex;flex-direction:column;align-items:center}
+#setup .inner{width:100%;max-width:460px;display:flex;flex-direction:column;align-items:center;text-align:center}
+#setup h1{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-top:18px}
+#setup .lead{color:var(--label2);font-size:15px;margin-top:6px}
+.models{width:100%;margin-top:26px;display:flex;flex-direction:column;gap:10px}
+.mopt{width:100%;text-align:left;padding:14px 16px;border-radius:22px;background:var(--fill);display:flex;align-items:center;gap:12px;border:2px solid transparent;transition:border-color .2s}
+.mopt.on{border-color:var(--accent);background:var(--card)}
+.mopt div{flex:1}.mopt b{font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px}
+.mopt span{font-size:14px;color:var(--label2)}
+.mopt .tag{font-size:11px;font-weight:700;color:var(--accent);background:rgba(0,122,255,.12);padding:2px 8px;border-radius:999px}
+.mopt .sz{font-size:14px;color:var(--label2);font-variant-numeric:tabular-nums}
+.mopt .rad{width:22px;height:22px;border-radius:50%;border:2px solid var(--label3);flex:none;display:flex;align-items:center;justify-content:center}
+.mopt.on .rad{border-color:var(--accent);background:var(--accent)}
+.mopt.on .rad::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.mopt .cached{font-size:12px;color:var(--green);font-weight:600}
+.prog{width:100%;margin-top:22px}
+.bar{height:8px;border-radius:4px;background:var(--fill);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:4px;transition:width .3s}
+.prog p{font-size:13px;color:var(--label2);margin-top:8px;min-height:18px}
+.finep{font-size:12px;color:var(--label2);margin-top:16px;max-width:380px}
+.warn{margin-top:20px;padding:14px 16px;border-radius:18px;background:var(--fill);font-size:15px;text-align:left;width:100%}
+.warn b{display:block;margin-bottom:4px}
+
+/* sheets */
+#scrim{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .35s}
+#scrim.on{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;bottom:0;left:0;width:min(86vw,340px);z-index:51;transform:translateX(-105%);transition:transform .45s var(--ease);
+  border-radius:0 30px 30px 0;display:flex;flex-direction:column;padding:calc(var(--st) + 14px) 10px calc(var(--sb) + 12px);background:var(--card);box-shadow:var(--shadow)}
+#drawer.in{transform:none}
+#drawer h2{font-size:28px;font-weight:700;padding:4px 10px 10px}
+#chats{flex:1;overflow-y:auto;scrollbar-width:none}
+.chatrow{width:100%;text-align:left;padding:11px 12px;border-radius:16px;display:flex;align-items:center;gap:10px;font-size:16px}
+.chatrow.on{background:var(--fill)}
+.chatrow span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chatrow .x{opacity:.5;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.chatrow .x .ic{width:16px;height:16px}
+.dgroup{font-size:13px;color:var(--label2);padding:12px 12px 4px;font-weight:600}
+.drow{display:flex;gap:8px;padding-top:8px}
+.drow button{flex:1}
+.sheet{position:fixed;left:8px;right:8px;bottom:calc(8px + var(--sb));z-index:52;border-radius:34px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;
+  transform:translateY(calc(100% + 40px));transition:transform .5s var(--ease);background:var(--glass-hi)}
+.sheet.in{transform:none}
+@media(min-width:700px){.sheet{left:50%;right:auto;width:520px;margin-left:-260px}}
+.sh-h{display:flex;align-items:center;padding:14px 14px 8px}
+.sh-h b{flex:1;text-align:center;font-size:17px;font-weight:600}
+.sh-b{overflow-y:auto;padding:0 12px 14px;scrollbar-width:none}
+.ghead{padding:14px 14px 6px;font-size:13px;color:var(--label2);text-transform:uppercase;letter-spacing:.02em}
+.group{background:var(--fill);border-radius:20px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;min-height:50px;padding:0 16px;width:100%;text-align:left;position:relative;font-size:16px}
+.row+.row::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.row .rt{flex:1}.row .rv{color:var(--label2)}
+.row.danger{color:var(--red)}.row.link{color:var(--accent)}
+.row .ck{color:var(--accent)}
+.memrow{padding:10px 16px;min-height:44px}
+.memrow .rt{font-size:15px}
+.memadd{display:flex;gap:8px;padding:10px 12px}
+.memadd input{flex:1;min-width:0;height:40px;border-radius:12px;background:var(--bg);padding:0 12px;font-size:15px}
+.memadd button{height:40px;padding:0 14px;border-radius:12px;background:var(--accent);color:#fff;font-weight:600;font-size:15px}
+.about{font-size:14px;color:var(--label2);padding:12px 16px}
+#toast{position:fixed;left:50%;top:calc(var(--st) + 12px);z-index:90;transform:translate(-50%,-150%);transition:transform .5s var(--spring);
+  min-height:44px;border-radius:999px;display:flex;align-items:center;gap:8px;padding:0 18px;font-size:15px;font-weight:500;max-width:92vw}
+#toast.in{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+<symbol id="i-new" viewBox="0 0 24 24"><path d="M12 20h8M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></symbol>
+<symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/></symbol>
+<symbol id="i-retry" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7L20 8.5"/><path d="M20 4v4.5h-4.5"/></symbol>
+<symbol id="i-like" viewBox="0 0 24 24"><path d="M7 11v9H4.5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1zM7 11l4-7.5a2 2 0 0 1 3.4 1.6L14 9h5a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.8 20H7"/></symbol>
+<symbol id="i-dislike" viewBox="0 0 24 24"><path d="M17 13V4h2.5a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1zM17 13l-4 7.5a2 2 0 0 1-3.4-1.6L10 15H5a2 2 0 0 1-2-2.3l1.2-7A2 2 0 0 1 6.2 4H17"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 6.5h16M9.5 6.5V4.5h5v2M6 6.5l1 12.5a2 2 0 0 0 2 1.8h6a2 2 0 0 0 2-1.8l1-12.5"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4A8 8 0 1 1 20 12z"/></symbol>
+<symbol id="logo" viewBox="0 0 100 100"><rect width="100" height="100" rx="23" fill="#111214"/><path d="M30 26v48M30 52l24-26M38 44l20 30" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="71" cy="68" r="7" fill="#0A84FF"/></symbol>
+</defs></svg>
+
+<div id="app">
+  <div id="top">
+    <button class="nbtn circle glass press" data-a="drawer" aria-label="Чаты"><svg class="ic"><use href="#i-menu"/></svg></button>
+    <div id="title"><button class="glass press" data-a="model"><span>KAL</span><small id="mname"></small><svg class="ic"><use href="#i-down"/></svg></button></div>
+    <button class="nbtn circle glass press" data-a="new" aria-label="Новый чат"><svg class="ic"><use href="#i-new"/></svg></button>
+  </div>
+  <div id="scroll"><div id="msgs"></div></div>
+  <div id="composer">
+    <div class="box glass">
+      <textarea id="inp" rows="1" placeholder="Спросите KAL" enterkeyhint="send"></textarea>
+      <div class="crow">
+        <button class="tog press" id="t-search" data-a="t-search"><svg class="ic"><use href="#i-globe"/></svg>Поиск</button>
+        <button class="tog press" id="t-think" data-a="t-think"><svg class="ic"><use href="#i-bulb"/></svg>Думать</button>
+        <div class="sp"></div>
+        <button id="send" class="press" data-a="send" aria-label="Отправить" disabled><svg class="ic"><use href="#i-up"/></svg></button>
+      </div>
+    </div>
+    <div id="note">KAL может ошибаться. Проверяйте важное.</div>
+  </div>
+</div>
+
+<div id="setup" class="hidden">
+  <div class="inner">
+    <svg class="logo"><use href="#logo"/></svg>
+    <h1>KAL</h1>
+    <p class="lead">ИИ-ассистент KCSTAR THE LLM. Работает прямо на вашем устройстве — разговоры никуда не отправляются.</p>
+    <div id="setup-body"></div>
+  </div>
+</div>
+
+<div id="scrim"></div>
+<aside id="drawer">
+  <h2>Чаты</h2>
+  <div id="chats"></div>
+  <div class="drow">
+    <button class="btn sec press" data-a="settings" style="height:46px"><svg class="ic"><use href="#i-gear"/></svg>Настройки</button>
+    <button class="btn pri press" data-a="new" style="height:46px"><svg class="ic"><use href="#i-new"/></svg>Новый</button>
+  </div>
+</aside>
+<div id="toast" class="glass"></div>
+
+<script type="module">
+/* =========================================================
+   KAL · KCSTAR THE LLM · v1.0.0
+   ========================================================= */
+const APP={name:'KAL',version:'1.0.0',company:'KCSTAR THE LLM'};
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const ic=n=>`<svg class="ic"><use href="#i-${n}"/></svg>`;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const LS={get(k,d){try{const v=localStorage.getItem('kal_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('kal_'+k,JSON.stringify(v))}catch(e){}}};
+const MOCK=new URLSearchParams(location.search).has('mock');
+
+const MODELS=[
+  {key:'0.6B',name:'KAL Лайт',size:'≈ 0,5 ГБ',desc:'Быстрый, для простых вопросов. Для слабых телефонов.'},
+  {key:'1.7B',name:'KAL',size:'≈ 1,2 ГБ',desc:'Оптимальный баланс скорости и ума.',rec:true},
+  {key:'4B',name:'KAL Про',size:'≈ 2,5 ГБ',desc:'Самый умный. Для мощного телефона или компьютера.'}];
+const modelId=(key,f16)=>`Qwen3-${key}-${f16?'q4f16_1':'q4f32_1'}-MLC`;
+
+const S={chats:LS.get('chats',[]),cur:LS.get('cur',null),mem:LS.get('mem',[]),search:LS.get('search',true),think:LS.get('think',false),
+  model:LS.get('model','1.7B'),theme:LS.get('theme','auto'),engine:null,busy:false,f16:true,layers:[]};
+const save=()=>{LS.set('chats',S.chats.slice(0,60));LS.set('cur',S.cur)};
+const curChat=()=>S.chats.find(c=>c.id===S.cur);
+
+/* ---------- Theme ---------- */
+const mq=matchMedia('(prefers-color-scheme: dark)');
+function applyTheme(){const t=S.theme==='auto'?(mq.matches?'dark':'light'):S.theme;document.documentElement.dataset.theme=t;$('meta[name=theme-color]').content=t==='dark'?'#000000':'#FFFFFF'}
+mq.addEventListener&&mq.addEventListener('change',applyTheme);applyTheme();
+
+/* ---------- Toast ---------- */
+let tT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('in');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('in'),2200)}
+
+/* ---------- Engine ---------- */
+let webllm=null;
+async function gpuInfo(){if(MOCK)return{ok:true,f16:true};if(!('gpu' in navigator))return{ok:false};try{const a=await navigator.gpu.requestAdapter();if(!a)return{ok:false};return{ok:true,f16:a.features.has('shader-f16')}}catch(e){return{ok:false}}}
+async function isCached(id){try{if(!webllm)webllm=await import('https://esm.run/@mlc-ai/web-llm@0.2.88');return webllm.hasModelInCache?await webllm.hasModelInCache(id):false}catch(e){return false}}
+async function loadEngine(key,onP){
+  if(MOCK){for(let i=0;i<=10;i++){onP(i/10,'Загрузка');await new Promise(r=>setTimeout(r,60))}return mockEngine()}
+  if(!webllm)webllm=await import('https://esm.run/@mlc-ai/web-llm@0.2.88');
+  const id=modelId(key,S.f16);
+  if(S.engine){try{await S.engine.unload()}catch(e){}}
+  return await webllm.CreateMLCEngine(id,{initProgressCallback:r=>onP(r.progress||0,r.text||'')})}
+function mockEngine(){let stop=false;return{interruptGenerate(){stop=true},unload(){},chat:{completions:{async create(o){stop=false;const think=o.extra_body&&o.extra_body.enable_thinking;
+  const ans=(think?'<think>Пользователь спрашивает. Нужно ответить кратко и по делу, опираясь на источники.</think>\n\n':'<think>\n\n</think>\n\n')+
+  'Конечно! Вот короткий ответ.\n\n**Байкал** — самое глубокое озеро на планете [1]. Основные факты:\n\n- глубина — 1642 м;\n- возраст — около 25 млн лет [2];\n- в нём около 20% пресной воды мира.\n\n```js\nconsole.log("KAL")\n```\n\nЕсли нужно, расскажу подробнее.';
+  const parts=ans.match(/[\s\S]{1,6}/g);return{async*[Symbol.asyncIterator](){for(const p of parts){if(stop)return;await new Promise(r=>setTimeout(r,12));yield{choices:[{delta:{content:p}}]}}}}}}}}}
+
+/* ---------- Setup screen ---------- */
+async function showSetup(reason){const s=$('#setup');s.classList.remove('hidden');const b=$('#setup-body');
+  const g=await gpuInfo();S.f16=g.f16!==false;
+  if(!g.ok){b.innerHTML=`<div class="warn"><b>Нужен браузер с WebGPU</b>KAL работает прямо на устройстве и использует видеоядро. Откройте страницу в свежем Chrome или Edge (версия 121 и новее) на Android или компьютере. На iPhone нужен iOS 26 и Safari.</div>
+    <p class="finep">Если браузер уже свежий — проверьте, что аппаратное ускорение включено в настройках браузера.</p>`;return}
+  const cached={};await Promise.all(MODELS.map(async m=>{cached[m.key]=await isCached(modelId(m.key,S.f16))}));
+  b.innerHTML=`<div class="models">${MODELS.map(m=>`<button class="mopt press${m.key===S.model?' on':''}" data-m="${m.key}"><span class="rad"></span><div><b>${m.name}${m.rec?'<span class="tag">Рекомендуем</span>':''}</b><span>${m.desc}</span></div><div style="flex:none;text-align:right"><div class="sz">${m.size}</div>${cached[m.key]?'<div class="cached">Загружена</div>':''}</div></button>`).join('')}</div>
+    <div class="prog hidden" id="prog"><div class="bar"><i></i></div><p></p></div>
+    <button class="btn pri wide press" style="margin-top:22px" id="go" data-a="go">${cached[S.model]?'Начать':'Скачать и начать'}</button>
+    ${reason==='switch'?'<button class="btn sec wide press" style="margin-top:10px" data-a="setup-cancel">Отмена</button>':''}
+    <p class="finep">Модель скачивается один раз и сохраняется в браузере. Лучше скачивать по Wi‑Fi. KAL основан на открытой модели Qwen3 и настроен командой KCSTAR.</p>`;
+  b.onclick=e=>{const m=e.target.closest('[data-m]');if(!m)return;S.model=m.dataset.m;$$('.mopt',b).forEach(x=>x.classList.toggle('on',x===m));$('#go').textContent=cached[S.model]?'Начать':'Скачать и начать'};return cached}
+async function startModel(){const go=$('#go');go.disabled=true;$$('.mopt').forEach(b=>b.disabled=true);const pr=$('#prog');pr.classList.remove('hidden');
+  try{S.engine=await loadEngine(S.model,(p,t)=>{$('i',pr).style.width=Math.round(p*100)+'%';
+      const m=t.match(/(\d+)MB/);$('p',pr).textContent=p>=1?'Готово':(t.includes('cache')||t.includes('Loading')?`Загрузка модели… ${Math.round(p*100)}%`:`Подготовка… ${Math.round(p*100)}%`)});
+    LS.set('model',S.model);LS.set('ready',1);$('#setup').classList.add('hidden');updateTitle();renderChat()}
+  catch(e){console.error(e);$('p',pr).textContent='';go.disabled=false;$$('.mopt').forEach(b=>b.disabled=false);
+    $('#setup-body').insertAdjacentHTML('beforeend',`<div class="warn"><b>Не удалось запустить модель</b>${esc(String(e&&e.message||e)).slice(0,240)}<br><br>Попробуйте модель поменьше или закройте другие вкладки.</div>`)}}
+function updateTitle(){const m=MODELS.find(x=>x.key===S.model);$('#mname').textContent=m?m.name.replace('KAL','').trim():''}
+
+/* ---------- Search (Wikipedia) ---------- */
+const STOP=new Set('что кто как где когда почему зачем какой какая какие каков сколько ли это такое такой расскажи расскажите объясни объясните скажи скажите про о об мне пожалуйста можно ты вы есть был была были будет и в во на с со по к из у за для от до а но или же бы же ли'.split(' '));
+function toQuery(t){const w=t.toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu,' ').split(/\s+/).filter(x=>x&&!STOP.has(x));return w.slice(0,8).join(' ')||t.slice(0,80)}
+async function wiki(q,lang='ru'){const base=`https://${lang}.wikipedia.org/w/api.php`;
+  const s=await fetch(`${base}?action=query&list=search&srsearch=${encodeURIComponent(q)}&srlimit=3&format=json&origin=*`).then(r=>r.json());
+  const ids=(s.query&&s.query.search||[]).map(x=>x.pageid);if(!ids.length)return[];
+  const e=await fetch(`${base}?action=query&prop=extracts|info&inprop=url&exintro=1&explaintext=1&exchars=1400&pageids=${ids.join('|')}&format=json&origin=*`).then(r=>r.json());
+  return ids.map(id=>e.query.pages[id]).filter(p=>p&&p.extract).map(p=>({title:p.title,url:p.fullurl,text:p.extract.replace(/\s+/g,' ').trim()}))}
+async function webSearch(text){if(MOCK)return[{title:'Байкал',url:'https://ru.wikipedia.org/wiki/Байкал',text:'Байкал — озеро тектонического происхождения…'},{title:'Озёра России',url:'https://ru.wikipedia.org/wiki/Озёра_России',text:'…'}];
+  const q=toQuery(text);let r=[];try{r=await wiki(q)}catch(e){}
+  if(!r.length){const short=q.split(' ').slice(0,3).join(' ');if(short&&short!==q){try{r=await wiki(short)}catch(e){}}}
+  return r}
+
+/* ---------- Prompt ---------- */
+function systemPrompt(){const d=new Date();const date=d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',weekday:'long'});
+  let s=`Ты — KAL, ИИ-ассистент российской IT-компании KCSTAR THE LLM. Твоё имя — KAL. Ты дружелюбный, точный и полезный.
+Правила:
+- Отвечай на языке пользователя, по умолчанию на русском. Пиши грамотно и естественно.
+- Отвечай по существу. Короткий вопрос — короткий ответ. Используй списки и заголовки Markdown, когда это помогает.
+- Если не знаешь ответа или не уверен — честно скажи об этом. Не выдумывай факты, цифры и ссылки.
+- На вопрос «кто ты» отвечай: «Я KAL — ИИ-ассистент KCSTAR THE LLM».
+- Сегодня ${date}.`;
+  if(S.mem.length)s+=`\nЧто известно о пользователе (учитывай, когда уместно):\n${S.mem.map(m=>'- '+m.t).join('\n')}`;
+  return s}
+function buildMessages(chat,upto,sources){const msgs=[{role:'system',content:systemPrompt()}];
+  const hist=chat.msgs.slice(0,upto).filter(m=>!m.err);let budget=6000;const keep=[];
+  for(let i=hist.length-1;i>=0;i--){const m=hist[i];const c=m.role==='assistant'?m.text:m.text;budget-=c.length;if(budget<0&&keep.length>=2)break;keep.unshift({role:m.role,content:c})}
+  if(sources&&sources.length&&keep.length){const last=keep[keep.length-1];
+    last.content=`Результаты поиска:\n${sources.map((s,i)=>`[${i+1}] ${s.title}: ${s.text}`).join('\n\n')}\n\nИспользуй результаты поиска для ответа и ставь ссылки вида [1], [2] после фактов из них. Если в результатах нет ответа — так и скажи и ответь из своих знаний, предупредив об этом.\n\nВопрос: ${last.content}`}
+  return msgs.concat(keep)}
+
+/* ---------- Markdown ---------- */
+function md(src,sources){const blocks=[];let s=String(src).replace(/```([\w+-]*)\n?([\s\S]*?)(```|$)/g,(m,lang,code)=>{blocks.push(`<pre><code>${esc(code.replace(/\n$/,''))}</code></pre>`);return`\u0000${blocks.length-1}\u0000`});
+  const inline=t=>esc(t).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|[^*])\*([^*\n]+)\*/g,'$1<i>$2</i>')
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/\[(\d{1,2})\]/g,(m,n)=>{const s=sources&&sources[n-1];return s?`<a class="cite" href="${esc(s.url)}" target="_blank" rel="noopener">${n}</a>`:m});
+  const lines=s.split('\n');let out='',list=null,para=[],table=[];
+  const flushP=()=>{if(para.length){out+=`<p>${para.map(inline).join('<br>')}</p>`;para=[]}};
+  const flushL=()=>{if(list){out+=`<${list.t}>${list.items.map(i=>`<li>${inline(i)}</li>`).join('')}</${list.t}>`;list=null}};
+  const flushT=()=>{if(table.length){const rows=table.filter(r=>!/^\s*\|?\s*:?-{2,}/.test(r)).map(r=>r.trim().replace(/^\||\|$/g,'').split('|'));
+      out+=`<table>${rows.map((r,i)=>`<tr>${r.map(c=>`<${i?'td':'th'}>${inline(c.trim())}</${i?'td':'th'}>`).join('')}</tr>`).join('')}</table>`;table=[]}};
+  for(const ln of lines){let m;
+    if(/^\u0000\d+\u0000$/.test(ln.trim())){flushP();flushL();flushT();out+=ln.trim();continue}
+    if(/^\s*\|.*\|\s*$/.test(ln)){flushP();flushL();table.push(ln);continue}else flushT();
+    if((m=ln.match(/^(#{1,4})\s+(.*)/))){flushP();flushL();out+=`<h3>${inline(m[2])}</h3>`;continue}
+    if((m=ln.match(/^\s*[-*•]\s+(.*)/))){flushP();if(!list||list.t!=='ul'){flushL();list={t:'ul',items:[]}}list.items.push(m[1]);continue}
+    if((m=ln.match(/^\s*\d+[.)]\s+(.*)/))){flushP();if(!list||list.t!=='ol'){flushL();list={t:'ol',items:[]}}list.items.push(m[1]);continue}
+    if((m=ln.match(/^>\s?(.*)/))){flushP();flushL();out+=`<blockquote>${inline(m[1])}</blockquote>`;continue}
+    if(!ln.trim()){flushP();flushL();continue}
+    flushL();para.push(ln)}
+  flushP();flushL();flushT();return out.replace(/\u0000(\d+)\u0000/g,(m,i)=>blocks[+i])}
+function splitThink(t){if(t.startsWith('<think>')){const e=t.indexOf('</think>');if(e<0)return{think:t.slice(7),answer:'',thinking:true};return{think:t.slice(7,e).trim(),answer:t.slice(e+8).replace(/^\s+/,''),thinking:false}}return{think:'',answer:t,thinking:false}}
+
+/* ---------- Render ---------- */
+const sc=$('#scroll');let stick=true;sc.addEventListener('scroll',()=>{stick=sc.scrollHeight-sc.scrollTop-sc.clientHeight<80},{passive:true});
+const toBottom=(force)=>{if(force||stick)sc.scrollTop=sc.scrollHeight};
+function aiHTML(m,i,live){const {think,answer,thinking}=splitThink(m.raw||m.text||'');let h=`<div class="who"><svg><use href="#logo"/></svg>KAL</div>`;
+  if(m.status&&!answer&&!think)h+=`<div class="status"><span class="dots"><i></i><i></i><i></i></span>${esc(m.status)}</div>`;
+  if(think)h+=`<details class="think"${thinking?' open':''}><summary>${ic('chev')}${thinking?'Размышляет…':'Размышления'}</summary><div class="tb">${esc(think)}</div></details>`;
+  if(answer)h+=`<div class="md">${md(answer,m.sources)}${live?'<span class="caret"></span>':''}</div>`;
+  if(m.err)h+=`<div class="err">${esc(m.err)}</div>`;
+  if(m.sources&&m.sources.length&&!live)h+=`<div class="srcs">${m.sources.map((s,k)=>`<a class="src" href="${esc(s.url)}" target="_blank" rel="noopener"><b>${k+1}. ${esc(s.title)}</b><span>${esc(new URL(s.url).hostname.replace('www.',''))}</span></a>`).join('')}</div>`;
+  if(!live&&(answer||m.err))h+=`<div class="acts"><button data-act="copy" data-i="${i}" aria-label="Копировать">${ic('copy')}</button><button data-act="retry" data-i="${i}" aria-label="Повторить">${ic('retry')}</button><button data-act="up" data-i="${i}" class="${m.rate===1?'on':''}" aria-label="Хороший ответ">${ic('like')}</button><button data-act="down" data-i="${i}" class="${m.rate===-1?'on down':''}" aria-label="Плохой ответ">${ic('dislike')}</button></div>`;
+  return h}
+function renderChat(){const c=curChat();const box=$('#msgs');
+  if(!c||!c.msgs.length){box.innerHTML=`<div class="hello"><svg class="logo"><use href="#logo"/></svg><h1>Чем могу помочь?</h1><p>Спросите что угодно. Включите «Поиск», чтобы KAL нашёл свежие факты, или «Думать» — для сложных задач.</p>
+    <div class="sugg">${[['Объясни просто','как работает нейросеть'],['Помоги написать','поздравление коллеге'],['Составь план','подготовки к экзамену за неделю'],['Расскажи факты','о Байкале']].map(([a,b])=>`<button class="press" data-sugg="${esc(a+' '+b)}"><b>${a}</b><span>${b}</span></button>`).join('')}</div></div>`;return}
+  box.innerHTML=c.msgs.map((m,i)=>m.role==='user'?`<div class="m-user">${esc(m.text)}</div>`:`<div class="m-ai" data-i="${i}">${aiHTML(m,i,false)}</div>`).join('');toBottom(true)}
+function updateLive(i){const c=curChat();const el=$(`.m-ai[data-i="${i}"]`);if(!el||!c)return;const det=$('details',el);const open=det?det.open:null;
+  el.innerHTML=aiHTML(c.msgs[i],i,true);const nd=$('details',el);if(nd&&open!==null&&!splitThink(c.msgs[i].raw).thinking)nd.open=open;toBottom()}
+
+/* ---------- Chat flow ---------- */
+function newChat(){const c={id:uid(),title:'Новый чат',msgs:[],created:Date.now()};S.chats.unshift(c);S.cur=c.id;save();renderChat();renderDrawer();return c}
+function setBusy(b){S.busy=b;const s=$('#send');s.classList.toggle('stop',b);s.innerHTML=ic(b?'stop':'up');s.setAttribute('aria-label',b?'Остановить':'Отправить');updateSend()}
+function updateSend(){$('#send').disabled=!S.busy&&!$('#inp').value.trim()}
+async function send(text){text=text.trim();if(!text||S.busy)return;if(!S.engine){showSetup();return}
+  const c=curChat()||newChat();
+  const mm=text.match(/^\s*запомни[,:\s]+(.{3,200})/i);if(mm){S.mem.push({id:uid(),t:mm[1].trim()});LS.set('mem',S.mem);toast('Запомнил')}
+  c.msgs.push({role:'user',text});if(c.title==='Новый чат')c.title=text.slice(0,48);
+  $('#inp').value='';autosize();save();renderDrawer();await generate(c,c.msgs.length)}
+async function generate(c,upto){const i=c.msgs.length;const m={role:'assistant',text:'',raw:'',status:S.search?'Ищу в интернете':'Думаю',sources:null};c.msgs.push(m);
+  renderChat();setBusy(true);toBottom(true);
+  try{const q=c.msgs[upto-1].text;
+    if(S.search){m.sources=await webSearch(q);m.status=m.sources.length?`Найдено источников: ${m.sources.length}`:'Ничего не нашёл, отвечаю сам';updateLive(i)}
+    const messages=buildMessages(c,upto,m.sources);
+    const stream=await S.engine.chat.completions.create({messages,stream:true,temperature:S.think?0.6:0.7,top_p:S.think?0.95:0.8,max_tokens:S.think?2048:1200,extra_body:{enable_thinking:S.think}});
+    let last=0;for await(const ch of stream){const d=ch.choices&&ch.choices[0]&&ch.choices[0].delta&&ch.choices[0].delta.content||'';if(!d)continue;m.raw+=d;
+      const now=performance.now();if(now-last>40){last=now;updateLive(i)}}
+    const sp=splitThink(m.raw);m.text=sp.answer.trim()||(sp.think?'':m.raw);m.think=sp.think;if(!m.text&&!m.raw)m.err='Пустой ответ. Попробуйте ещё раз.'}
+  catch(e){console.error(e);m.err='Ошибка: '+(e&&e.message||e)}
+  finally{delete m.status;if(m.sources&&!m.sources.length)m.sources=null;setBusy(false);save();renderChat()}}
+
+/* ---------- Drawer & sheets ---------- */
+function openLayer(close){S.layers.push(close);$('#scrim').classList.add('on')}
+function closeTop(){const f=S.layers.pop();f&&f();if(!S.layers.length)$('#scrim').classList.remove('on')}
+$('#scrim').addEventListener('click',closeTop);
+function renderDrawer(){const now=Date.now(),day=864e5;const groups=[['Сегодня',[]],['Вчера',[]],['Последние 7 дней',[]],['Раньше',[]]];
+  S.chats.filter(c=>c.msgs.length||c.id===S.cur).forEach(c=>{const a=now-c.created;groups[a<day?0:a<2*day?1:a<7*day?2:3][1].push(c)});
+  $('#chats').innerHTML=groups.filter(g=>g[1].length).map(([n,arr])=>`<div class="dgroup">${n}</div>`+arr.map(c=>`<button class="chatrow${c.id===S.cur?' on':''}" data-chat="${c.id}">${ic('chat')}<span>${esc(c.title)}</span><span class="x" data-del="${c.id}" aria-label="Удалить">${ic('trash')}</span></button>`).join('')).join('')||'<p class="about">Здесь появятся ваши чаты.</p>'}
+function openDrawer(){renderDrawer();$('#drawer').classList.add('in');openLayer(()=>$('#drawer').classList.remove('in'))}
+function sheet(title,body,onClick){const s=document.createElement('div');s.className='sheet glass';s.innerHTML=`<div class="sh-h"><span style="width:40px"></span><b>${esc(title)}</b><button class="nbtn circle press" style="background:var(--fill)" data-close>${ic('x')}</button></div><div class="sh-b">${body}</div>`;
+  document.body.appendChild(s);requestAnimationFrame(()=>requestAnimationFrame(()=>s.classList.add('in')));s.addEventListener('click',e=>{if(e.target.closest('[data-close]')){closeTop();return}onClick&&onClick(e,s)});
+  openLayer(()=>{s.classList.remove('in');setTimeout(()=>s.remove(),500)});return s}
+function settingsBody(){const m=MODELS.find(x=>x.key===S.model);
+  return`<div class="ghead">Модель</div><div class="group"><button class="row" data-s="model"><span class="rt">${m?m.name:''}</span><span class="rv">Сменить</span></button></div>
+  <div class="ghead">Память</div><div class="group">${S.mem.map(x=>`<div class="row memrow"><span class="rt">${esc(x.t)}</span><button data-memdel="${x.id}" aria-label="Удалить">${ic('x')}</button></div>`).join('')}
+   <div class="memadd"><input id="memin" placeholder="Например: меня зовут Ефим" maxlength="200"><button data-s="memadd">Добавить</button></div></div>
+  <p class="about">KAL учитывает эти факты в ответах. Можно также написать в чате «Запомни, …».</p>
+  <div class="ghead">Оформление</div><div class="group">${[['auto','Как в системе'],['light','Светлая'],['dark','Тёмная']].map(([v,n])=>`<button class="row" data-theme="${v}"><span class="rt">${n}</span>${S.theme===v?`<span class="ck">${ic('check')}</span>`:''}</button>`).join('')}</div>
+  <div class="ghead">Обучение KAL</div><div class="group"><button class="row link" data-s="export"><span class="rt">Скачать диалоги с оценкой «хорошо»</span></button></div>
+  <p class="about">Файл в формате JSONL для дообучения следующей версии KAL. Сейчас оценено хорошо: ${S.chats.reduce((n,c)=>n+c.msgs.filter(m=>m.rate===1).length,0)}.</p>
+  <div class="ghead">Данные</div><div class="group"><button class="row danger" data-s="wipe"><span class="rt">Удалить все чаты</span></button></div>
+  <p class="about">${APP.name} ${APP.version} · © ${new Date().getFullYear()} ${APP.company}<br>Работает на устройстве на базе открытой модели Qwen3. Поиск — по Википедии. Чаты хранятся только в этом браузере.</p>`}
+function openSettings(){const s=sheet('Настройки',settingsBody(),(e,s)=>{const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.theme){S.theme=t.dataset.theme;LS.set('theme',S.theme);applyTheme();$('.sh-b',s).innerHTML=settingsBody()}
+  else if(t.dataset.memdel){S.mem=S.mem.filter(x=>x.id!==t.dataset.memdel);LS.set('mem',S.mem);$('.sh-b',s).innerHTML=settingsBody()}
+  else if(t.dataset.s==='memadd'){const v=$('#memin',s).value.trim();if(v){S.mem.push({id:uid(),t:v});LS.set('mem',S.mem);$('.sh-b',s).innerHTML=settingsBody()}}
+  else if(t.dataset.s==='model'){closeTop();showSetup('switch')}
+  else if(t.dataset.s==='export')exportTraining();
+  else if(t.dataset.s==='wipe'){if(t.dataset.sure){S.chats=[];S.cur=null;save();closeTop();newChat();toast('Чаты удалены')}else{t.dataset.sure=1;$('.rt',t).textContent='Нажмите ещё раз для удаления'}}})}
+function exportTraining(){const lines=[];S.chats.forEach(c=>c.msgs.forEach((m,i)=>{if(m.role==='assistant'&&m.rate===1){const hist=c.msgs.slice(0,i+1).filter(x=>!x.err).map(x=>({role:x.role,content:x.text}));
+    lines.push(JSON.stringify({messages:[{role:'system',content:'Ты — KAL, ИИ-ассистент компании KCSTAR THE LLM.'},...hist.slice(-8)]}))}}));
+  if(!lines.length){toast('Пока нет ответов с оценкой «хорошо»');return}
+  const blob=new Blob([lines.join('\n')],{type:'application/jsonl'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`kal-train-${new Date().toISOString().slice(0,10)}.jsonl`;
+  document.body.appendChild(a);a.click();a.remove();toast(`Сохранено диалогов: ${lines.length}`)}
+
+/* ---------- Events ---------- */
+const inp=$('#inp');function autosize(){inp.style.height='auto';inp.style.height=Math.min(160,inp.scrollHeight)+'px';updateSend()}
+inp.addEventListener('input',autosize);
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&matchMedia('(hover:hover)').matches){e.preventDefault();send(inp.value)}});
+function syncToggles(){$('#t-search').classList.toggle('on',S.search);$('#t-think').classList.toggle('on',S.think)}
+document.addEventListener('click',async e=>{const t=e.target;
+  const sg=t.closest('[data-sugg]');if(sg){send(sg.dataset.sugg);return}
+  const del=t.closest('[data-del]');if(del){e.stopPropagation();S.chats=S.chats.filter(c=>c.id!==del.dataset.del);if(S.cur===del.dataset.del)S.cur=S.chats[0]&&S.chats[0].id||null;save();renderDrawer();renderChat();return}
+  const ch=t.closest('[data-chat]');if(ch){S.cur=ch.dataset.chat;save();closeTop();renderChat();return}
+  const act=t.closest('[data-act]');if(act){const c=curChat();const i=+act.dataset.i;const m=c&&c.msgs[i];if(!m)return;
+    if(act.dataset.act==='copy'){try{await navigator.clipboard.writeText(m.text||'');toast('Скопировано')}catch(_){toast('Не удалось скопировать')}}
+    else if(act.dataset.act==='retry'){if(S.busy)return;c.msgs.splice(i);save();await generate(c,i)}
+    else if(act.dataset.act==='up'||act.dataset.act==='down'){const v=act.dataset.act==='up'?1:-1;m.rate=m.rate===v?0:v;save();renderChat();if(m.rate)toast(m.rate>0?'Спасибо! Ответ пойдёт в обучение':'Спасибо, учтём')}
+    return}
+  const a=t.closest('[data-a]');if(!a)return;
+  switch(a.dataset.a){
+    case'send':if(S.busy){try{S.engine.interruptGenerate()}catch(_){}}else send(inp.value);break;
+    case'new':if(S.layers.length)closeTop();if(!curChat()||curChat().msgs.length)newChat();inp.focus();break;
+    case'drawer':openDrawer();break;
+    case'settings':closeTop();setTimeout(openSettings,200);break;
+    case'model':showSetup('switch');break;
+    case'go':startModel();break;
+    case'setup-cancel':if(S.engine)$('#setup').classList.add('hidden');break;
+    case't-search':S.search=!S.search;LS.set('search',S.search);syncToggles();toast(S.search?'Поиск в интернете включён':'Поиск выключен');break;
+    case't-think':S.think=!S.think;LS.set('think',S.think);syncToggles();toast(S.think?'KAL будет думать дольше':'Быстрые ответы');break;
+  }});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&S.layers.length)closeTop()});
+
+/* ---------- Boot ---------- */
+syncToggles();updateTitle();if(!curChat())newChat();else{renderChat();renderDrawer()}
+(async()=>{const cached=await showSetup();if(LS.get('ready',0)&&cached&&(cached[S.model]||MOCK))startModel()})();
+</script>
+</body>
+</html>
