@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUMAN CRMP — Живи своей историей</title>
+<meta name="description" content="HUMAN CRMP — ролевой сервер Criminal Russia: город, фракции, работа, бизнес. Форум, новости, магазин и пополнение баланса.">
+<meta name="theme-color" content="#060608">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="icon-512.png">
+<meta property="og:title" content="HUMAN CRMP">
+<meta property="og:description" content="Живи своей историей. Ролевой сервер Criminal Russia.">
+<meta property="og:image" content="icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="pre"><div class="lg"><img class="lh" src="logo-h.png" alt=""><img class="lr" src="logo-r.png" alt=""></div><div class="bar"><i></i></div></div>
+<div class="grain"></div>
+<div id="wipe"><i></i><i></i><i></i><i></i><i></i></div>
+<div id="cur"></div><div id="cur2"></div>
+
+<header id="hdr">
+  <div class="wrap hd">
+    <a class="brand" href="#/"><span class="bl"><img class="h" src="logo-h.png" alt=""><img class="r" src="logo-r.png" alt=""></span><span>HUMAN<small>CRMP</small></span></a>
+    <nav class="mainnav" id="nav">
+      <a href="#/" data-r="home">Главная</a>
+      <a href="#/news" data-r="news">Новости</a>
+      <a href="#/forum" data-r="forum">Форум</a>
+      <a href="#/shop" data-r="shop">Магазин</a>
+      <a href="#/topup" data-r="topup">Пополнить</a>
+      <a href="#/rules" data-r="rules">Правила</a>
+    </nav>
+    <div class="hact" id="hact"></div>
+    <button class="burger" id="burger" aria-label="Меню"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <div class="brand flogo" id="flogo"><span class="bl"><img class="h" src="logo-h.png" alt=""><img class="r" src="logo-r.png" alt=""></span><span>HUMAN<small>CRMP</small></span></div>
+        <p class="sub" style="margin-top:14px;max-width:340px" id="fslogan">Ролевой сервер Criminal Russia. Живи своей историей.</p>
+        <div class="soc" id="soc"></div>
+      </div>
+      <div><h4>Проект</h4><a href="#/news">Новости</a><a href="#/rules">Правила</a><a href="#/forum">Форум</a></div>
+      <div><h4>Игрокам</h4><a href="#/shop">Магазин</a><a href="#/topup">Пополнить баланс</a><a href="#/profile">Личный кабинет</a></div>
+      <div><h4>Помощь</h4><a href="#/forum">Техподдержка</a><a href="#/forum">Жалобы</a><a href="#/rules">Как начать</a></div>
+    </div>
+    <div class="fbig">HUMAN <span>CRMP</span></div>
+    <div class="copy"><span>© <span id="year"></span> HUMAN CRMP. Все права защищены.</span><span>Не является официальным продуктом Rockstar Games.</span></div>
+  </div>
+</footer>
+
+<div class="modal" id="modal"><div class="mc" id="mc"></div></div>
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
