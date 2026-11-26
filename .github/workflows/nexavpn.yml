@@ -1,0 +1,60 @@
+name: NexaVPN APK
+on:
+  push:
+    branches: [ nexavpn ]
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nexavpn
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: npm install
+      - run: npx cap add android
+      - run: npx capacitor-assets generate --android
+      - run: npx cap sync android
+      - name: Build release APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+      - name: Sign
+        env:
+          KS: ${{ secrets.KEYSTORE_B64 }}
+          KS_PASS: ${{ secrets.KS_PASS }}
+        run: |
+          OUT=android/app/build/outputs/apk/release
+          BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+          if [ -n "$KS" ]; then
+            printf '%s' "$KS" | base64 -d > ks.jks
+            PASS=${KS_PASS:-youchat-ks}
+            $BT/zipalign -p -f 4 $OUT/app-release-unsigned.apk aligned.apk
+            KS_PASS_ENV="$PASS" $BT/apksigner sign --ks ks.jks --ks-key-alias youchat --ks-pass env:KS_PASS_ENV --key-pass env:KS_PASS_ENV --out NexaVPN.apk aligned.apk
+            rm -f ks.jks
+          else
+            echo "Нет KEYSTORE_B64, собираю debug"
+            (cd android && ./gradlew assembleDebug --no-daemon)
+            cp android/app/build/outputs/apk/debug/app-debug.apk NexaVPN.apk
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NexaVPN-apk
+          path: nexavpn/NexaVPN.apk
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: nexavpn-${{ github.run_number }}
+          name: NexaVPN (сборка ${{ github.run_number }})
+          files: nexavpn/NexaVPN.apk
+          make_latest: false

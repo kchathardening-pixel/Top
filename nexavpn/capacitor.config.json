@@ -1,0 +1,7 @@
+{
+  "appId": "ru.nexavpn.app",
+  "appName": "NexaVPN",
+  "webDir": "www",
+  "backgroundColor": "#04070b",
+  "android": { "allowMixedContent": false }
+}
