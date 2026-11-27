@@ -36,6 +36,12 @@ jobs:
               s=s.replace('\nandroid {\n','\nandroid {\n    compileOptions {\n        coreLibraryDesugaringEnabled true\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n    }\n',1)
           s=s.replace('\ndependencies {\n','\ndependencies {\n    implementation "com.wireguard.android:tunnel:1.0.20230706"\n    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"\n',1)
           open(p,'w').write(s)
+          m='android/app/src/main/AndroidManifest.xml'
+          x=open(m).read()
+          x=x.replace('<application','<application android:usesCleartextTraffic="true"',1)
+          flt='<intent-filter><action android:name="android.intent.action.VIEW"/><category android:name="android.intent.category.DEFAULT"/><category android:name="android.intent.category.BROWSABLE"/><data android:scheme="nexavpn"/></intent-filter>'
+          x=x.replace('</activity>',flt+'</activity>',1)
+          open(m,'w').write(x)
           PY
       - run: npx capacitor-assets generate --android
       - run: npx cap sync android

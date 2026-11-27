@@ -22,6 +22,8 @@ import java.nio.charset.StandardCharsets;
 @CapacitorPlugin(name = "NexaVpn")
 public class NexaVpnPlugin extends Plugin {
 
+    public static String pendingKey;
+
     private static GoBackend backend;
     private static final Tunnel TUNNEL = new Tunnel() {
         @Override
@@ -89,6 +91,14 @@ public class NexaVpnPlugin extends Plugin {
             }
             call.resolve();
         }).start();
+    }
+
+    @PluginMethod
+    public void takeKey(PluginCall call) {
+        JSObject o = new JSObject();
+        o.put("key", pendingKey);
+        pendingKey = null;
+        call.resolve(o);
     }
 
     @PluginMethod
