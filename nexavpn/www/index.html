@@ -21,7 +21,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.35;display:flex;align-items:center;justify-content:center;overflow:hidden}
+body{margin:0;-webkit-font-smoothing:antialiased;touch-action:manipulation;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.35;display:flex;align-items:center;justify-content:center;overflow:hidden}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none;padding:0}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -34,13 +34,13 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 #globe{position:absolute;inset:0;pointer-events:none;transition:opacity .5s}
 #app[data-tab="servers"] #globe,#app[data-tab="profile"] #globe,#app[data-mode="auth"] #globe{opacity:.35}
 
-.glass{background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(1.5);backdrop-filter:blur(24px) saturate(1.5);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.glass{background:var(--glass);-webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transform:translateZ(0)}
 
 .screen,.view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
 .screen::-webkit-scrollbar,.view::-webkit-scrollbar{display:none}
-.view{padding:18px 20px 120px}
-.enter{animation:enter .38s cubic-bezier(.2,.8,.2,1)}
-@keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.view{padding:18px 20px 120px;contain:layout paint style;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.enter{animation:enter .32s cubic-bezier(.22,1,.36,1)}
+@keyframes enter{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 
 /* ---------- auth ---------- */
 #auth{padding:44px 24px 28px;display:flex;flex-direction:column;align-items:center}
@@ -76,8 +76,9 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .brand .word{font-size:28px;margin-top:8px}
 .brand .tag{margin:2px 0 0;font-size:13px}
 .stage{flex:1;min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
-.power{--p:clamp(168px,27vh,208px);position:relative;width:var(--p);height:var(--p);border-radius:50%;transition:transform .2s}
-.power:active{transform:scale(.96)}
+.power{--p:clamp(168px,27vh,208px);position:relative;width:var(--p);height:var(--p);border-radius:50%;transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+.power:active{transform:scale(.93);transition-duration:.12s}
+.power .ring,.ripple{will-change:transform}
 .power .ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 1.2s linear infinite}
 #home[data-state="idle"] .power .ring{animation:none}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -88,7 +89,8 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .core{position:absolute;inset:13%;border-radius:50%;display:grid;place-items:center;background:rgba(18,23,31,.85);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);transition:background .5s,border-color .5s}
 .core svg{width:38%;height:38%;stroke-width:2.2;color:#dfe7f3;transition:color .4s,transform .4s}
 #home[data-state="connecting"] .core svg{animation:breathe 1s ease-in-out infinite}
-#home[data-state="connected"] .core{background:rgba(47,123,255,.14);border-color:rgba(47,123,255,.4)}
+#home[data-state="connected"] .core{background:rgba(47,123,255,.14);border-color:rgba(47,123,255,.4);animation:pop .7s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{0%{transform:scale(.88)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
 #home[data-state="connected"] .core svg{color:#fff}
 @keyframes breathe{50%{transform:scale(.86);opacity:.7}}
 .ripple{position:absolute;inset:6%;border-radius:50%;border:1.5px solid var(--accent);opacity:0;pointer-events:none}
@@ -137,6 +139,8 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .group-t{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:20px 0 8px 8px}
 .row{display:flex;align-items:center;gap:12px;padding:12px 14px;width:100%;text-align:left;min-height:62px}
 .row+.row{border-top:1px solid var(--line)}
+.row{transition:background .15s}
+.row:active{background:rgba(255,255,255,.06)}
 .row .t{flex:1;min-width:0}
 .row .t b{display:block;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .row .t span{color:var(--muted);font-size:13px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -152,6 +156,9 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .fav[aria-pressed="true"]{color:var(--warn)}
 .fav[aria-pressed="true"] svg{fill:var(--warn)}
 .lockic{color:var(--muted);width:17px;height:17px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.head .round{color:var(--fg);margin-top:2px}
+.inp.ta{height:150px;padding:12px 14px;resize:none;line-height:1.4;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px}
 .empty{text-align:center;color:var(--muted);padding:34px 20px}
 .autoico{background:var(--accent-soft);color:#8db4ff}
 
@@ -190,8 +197,8 @@ svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 /* ---------- sheet + toast ---------- */
 .sheet-wrap{position:absolute;inset:0;z-index:20;display:flex;align-items:flex-end;background:rgba(0,0,0,0);transition:background .3s}
 .sheet-wrap.open{background:rgba(0,0,0,.55)}
-.sheet{width:100%;padding:10px 20px max(22px,env(safe-area-inset-bottom,0px));border-radius:30px 30px 0 0;background:var(--glass-2);transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-.sheet-wrap.open .sheet{transform:none}
+.sheet{max-height:92%;overflow-y:auto;width:100%;padding:10px 20px max(22px,env(safe-area-inset-bottom,0px));border-radius:30px 30px 0 0;background:var(--glass-2);transform:translate3d(0,100%,0);transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.sheet-wrap.open .sheet{transform:translate3d(0,0,0)}
 .grab{width:38px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);margin:0 auto 16px}
 .sheet h3{margin:0 0 6px;font-size:20px;letter-spacing:-.01em}
 .sheet p{margin:0 0 16px;color:var(--muted)}
@@ -334,7 +341,7 @@ function monthKey(){var d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)
 function deviceName(){var u=navigator.userAgent||"";
   if(/iPhone/.test(u))return "iPhone";if(/iPad/.test(u))return "iPad";if(/Android/.test(u))return "Android";
   if(/Windows/.test(u))return "Windows";if(/Mac/.test(u))return "Mac";if(/Linux/.test(u))return "Linux";return "Это устройство"}
-function newData(){return{favs:["am-evn"],server:"auto",plan:"free",usage:0,month:monthKey(),
+function newData(){return{favs:["am-evn"],custom:[],server:"auto",plan:"free",usage:0,month:monthKey(),
   settings:{auto:false,kill:true,adblock:true,proto:"WireGuard"},history:[],sessions:0,totalSec:0,device:deviceName()}}
 function cur(){return DB.data[DB.current]}
 function isGuest(){return DB.current==="guest"}
@@ -342,7 +349,9 @@ function userName(){return isGuest()?"Гость":(DB.users[DB.current]||{}).nam
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 
 /* ---------- servers ---------- */
-var SERVERS=[
+var NATIVE=!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
+function vpn(){return window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.NexaVpn}
+var DEMO=[
  {id:"ru-msk",cc:"ru",country:"Россия",city:"Москва",ping:18,load:46,pro:false,lat:55.7,lon:37.6},
  {id:"ru-spb",cc:"ru",country:"Россия",city:"Санкт-Петербург",ping:24,load:33,pro:false,lat:59.9,lon:30.3},
  {id:"am-evn",cc:"am",country:"Армения",city:"Ереван",ping:12,load:28,pro:false,lat:40.2,lon:44.5},
@@ -355,9 +364,15 @@ var SERVERS=[
  {id:"us-nyc",cc:"us",country:"США",city:"Нью-Йорк",ping:118,load:49,pro:true,lat:40.7,lon:-74},
  {id:"jp-tyo",cc:"jp",country:"Япония",city:"Токио",ping:168,load:26,pro:true,lat:35.7,lon:139.7}
 ];
-var BY={};SERVERS.forEach(function(s){BY[s.id]=s});
-var jit={};SERVERS.forEach(function(s){jit[s.id]=0});
-function pingOf(s){return Math.max(5,Math.round(s.ping+jit[s.id]))}
+var SERVERS=[],BY={},jit={};
+function rebuild(){
+  var c=(DB.current&&DB.data[DB.current]&&DB.data[DB.current].custom)||[];
+  SERVERS=c.map(function(x){return{id:x.id,cc:null,country:"Свой сервер",city:x.name,host:x.host,conf:x.conf,ping:x.ping||0,load:0,pro:false,custom:true,lat:0,lon:0}}).concat(NATIVE?[]:DEMO);
+  BY={};SERVERS.forEach(function(s){BY[s.id]=s;if(!(s.id in jit))jit[s.id]=0});
+}
+function label(s){return s.custom?s.city:s.city+", "+s.country}
+function fmtSpd(x){return x<10?x.toFixed(1):String(Math.round(x))}
+function pingOf(s){if(s.custom)return Math.round(s.ping||0);return Math.max(5,Math.round(s.ping+jit[s.id]))}
 function pingCls(v){return v<60?"":v<120?"warn":"bad"}
 var FLAGS={
  ru:'<rect width="30" height="6.7" fill="#fff"/><rect y="6.7" width="30" height="6.7" fill="#0039a6"/><rect y="13.4" width="30" height="6.7" fill="#d52b1e"/>',
@@ -371,7 +386,7 @@ var FLAGS={
  kz:'<rect width="30" height="20" fill="#00afca"/><circle cx="15" cy="10" r="4" fill="#fec50c"/>',
  us:'<rect width="30" height="20" fill="#fff"/><rect y="0" width="30" height="2.860" fill="#b22234"/><rect y="5.710" width="30" height="2.860" fill="#b22234"/><rect y="11.430" width="30" height="2.860" fill="#b22234"/><rect y="17.140" width="30" height="2.860" fill="#b22234"/><rect width="13" height="11" fill="#3c3b6e"/>'
 };
-function flagSvg(cc){return '<svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+FLAGS[cc]+'</svg>'}
+function flagSvg(cc){if(!cc||!FLAGS[cc])return icon("globe","");return '<svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+FLAGS[cc]+'</svg>'}
 function autoIco(){return '<svg class="i"><use href="#i-bolt"/></svg>'}
 function icon(n,cls){return '<svg class="i '+(cls||"")+'"><use href="#i-'+n+'"/></svg>'}
 
@@ -436,7 +451,7 @@ $("#authForm").addEventListener("submit",function(e){
 $("#guestBtn").onclick=function(){DB.current="guest";if(!DB.data.guest)DB.data.guest=newData();save();enterApp()};
 
 /* ---------- state ---------- */
-var st={status:"idle",active:null,startedAt:0,bytes:0,down:0,up:0,ip:"",timers:[],tick:null};
+var st={status:"idle",active:null,startedAt:0,bytes:0,down:0,up:0,ip:"",timers:[],attempt:0,probeT:0,lastRx:0,lastTx:0};
 function isPro(){return cur().plan==="premium"}
 function canUse(s){return !s.pro||isPro()}
 function best(){
@@ -445,7 +460,7 @@ function best(){
 function selected(){var d=cur();return d.server==="auto"?null:BY[d.server]}
 
 function enterApp(){
-  var d=cur();
+  var d=cur();d.custom=d.custom||[];rebuild();
   if(d.month!==monthKey()){d.month=monthKey();d.usage=0}
   if(!canUse(BY[d.server]||{pro:false})&&d.server!=="auto")d.server="auto";
   $("#app").dataset.mode="main";$("#auth").hidden=true;$("#main").hidden=false;
@@ -470,7 +485,7 @@ function go(tab){
   if(tab==="home")paintHome();
 }
 $$(".tabbar button").forEach(function(b){b.onclick=function(){go(b.dataset.tab)}});
-$("#pill").onclick=function(){go("servers")};
+$("#pill").onclick=function(){if(!SERVERS.length&&NATIVE)openAddServer();else go("servers")};
 $("#hAvatar").onclick=function(){go("profile")};
 $("#hGear").onclick=function(){go("profile")};
 
@@ -481,15 +496,17 @@ function clearTimers(){st.timers.forEach(clearTimeout);st.timers=[]}
 function toggle(){
   buzz();
   if(st.status==="idle")connect();
-  else if(st.status==="connecting"){clearTimers();st.status="idle";paintHome()}
+  else if(st.status==="connecting"){disconnect()}
   else disconnect();
 }
 $("#power").onclick=toggle;
 function connect(){
   var d=cur();
-  if(!isPro()&&d.usage>=LIMIT){toast("Лимит 10 ГБ исчерпан. Включите Premium или дождитесь нового месяца.");return}
   var s=selected()||best();
-  st.active=s.id;st.status="connecting";paintHome();
+  if(!s){openAddServer();return}
+  if(!s.custom&&!isPro()&&d.usage>=LIMIT){toast("Лимит 10 ГБ исчерпан. Включите Premium или дождитесь нового месяца.");return}
+  st.active=s.id;st.status="connecting";var my=++st.attempt;paintHome();
+  if(s.custom){connectReal(s,my);return}
   var proto=d.settings.proto;
   setStatus(STAGES[0]);
   st.timers.push(setTimeout(function(){setStatus(proto==="WireGuard"?"Рукопожатие WireGuard…":"Рукопожатие "+proto+"…")},900));
@@ -498,14 +515,57 @@ function connect(){
     st.status="connected";st.startedAt=Date.now();st.bytes=0;
     var base=Math.max(24,200-pingOf(s)*0.9);st.down=base;st.up=base*0.5;
     st.ip=[185,Math.floor(40+Math.random()*180),Math.floor(Math.random()*250),Math.floor(2+Math.random()*250)].join(".");
-    buzz();paintHome();toast("Подключено: "+s.city+", "+s.country);
+    buzz();paintHome();toast("Подключено: "+label(s));
   },2700));
 }
+function probe(ms){
+  return new Promise(function(res,rej){
+    var t0=performance.now(),done=false,tm=setTimeout(function(){if(!done){done=true;rej(new Error("probe"))}},ms);
+    fetch("https://1.1.1.1/cdn-cgi/trace",{cache:"no-store"}).then(function(r){return r.text()}).then(function(tx){
+      if(done)return;done=true;clearTimeout(tm);var m=/ip=(\S+)/.exec(tx);res({ms:Math.max(1,Math.round(performance.now()-t0)),ip:m&&m[1]});
+    }).catch(function(){if(done)return;done=true;clearTimeout(tm);rej(new Error("probe"))});
+  });
+}
+function connectReal(s,my){
+  var v=vpn();
+  if(!v){st.status="idle";paintHome();toast("Туннель работает только в приложении на телефоне. В браузере это демо.");return}
+  setStatus("Запрос разрешения…");
+  v.connect({config:s.conf}).then(function(){
+    if(st.attempt!==my||st.status!=="connecting"){v.disconnect().catch(function(){});return}
+    setStatus("Проверка канала…");
+    return probe(8000).then(function(r){
+      if(st.attempt!==my||st.status!=="connecting"){v.disconnect().catch(function(){});return}
+      st.status="connected";st.startedAt=Date.now();st.bytes=0;st.down=st.up=0;st.lastRx=st.lastTx=0;st.probeT=Date.now();
+      st.ip=r.ip||"—";s.ping=r.ms;
+      buzz();paintHome();toast("Подключено: "+label(s));
+    });
+  }).catch(function(e){
+    if(st.attempt!==my)return;
+    v.disconnect().catch(function(){});
+    st.status="idle";paintHome();
+    toast(e&&e.message==="probe"?"Туннель поднят, но сервер не отвечает. Проверьте конфигурацию и UDP-порт на сервере.":"Не удалось подключиться: "+((e&&e.message)||"ошибка"));
+  });
+}
+var probing=false;
+function realTick(s){
+  var v=vpn();if(!v)return;
+  v.getStats().then(function(r){
+    var rx=r.rx||0,tx=r.tx||0;
+    if(st.lastRx||st.lastTx){st.down=st.down*0.5+Math.max(0,rx-st.lastRx)*8/1e6*0.5;st.up=st.up*0.5+Math.max(0,tx-st.lastTx)*8/1e6*0.5}
+    st.lastRx=rx;st.lastTx=tx;st.bytes=rx+tx;paintLive();
+  }).catch(function(){});
+  if(!probing&&Date.now()-st.probeT>5000){
+    probing=true;st.probeT=Date.now();
+    probe(6000).then(function(r){s.ping=r.ms;if(r.ip)st.ip=r.ip}).catch(function(){}).then(function(){probing=false});
+  }
+}
 function disconnect(silent){
-  clearTimers();
+  clearTimers();st.attempt++;
+  var cs=BY[st.active];
+  if(cs&&cs.custom&&st.status!=="idle"){var vv=vpn();if(vv)vv.disconnect().catch(function(){})}
   if(st.status==="connected"&&DB.current){
     var d=cur(),dur=Math.max(1,Math.round((Date.now()-st.startedAt)/1000)),s=BY[st.active];
-    d.history.unshift({id:s.id,t:st.startedAt,dur:dur,bytes:Math.round(st.bytes)});
+    d.history.unshift({id:s.id,t:st.startedAt,dur:dur,bytes:Math.round(st.bytes),n:label(s),cc:s.cc||null});
     d.history=d.history.slice(0,20);d.sessions++;d.totalSec+=dur;save();
   }
   st.status="idle";st.down=st.up=0;
@@ -518,7 +578,8 @@ function reconnectIfNeeded(){
 /* live tick */
 setInterval(function(){
   SERVERS.forEach(function(s){jit[s.id]=Math.max(-8,Math.min(8,jit[s.id]*0.6+(Math.random()-0.5)*7))});
-  if(DB.current&&st.status==="connected"){
+  if(DB.current&&st.status==="connected"&&BY[st.active]&&BY[st.active].custom){realTick(BY[st.active])}
+  else if(DB.current&&st.status==="connected"){
     var d=cur(),s=BY[st.active],base=Math.max(24,200-pingOf(s)*0.9);
     st.down+=(base-st.down)*0.25+(Math.random()-0.5)*base*0.16;
     st.up+=(base*0.5-st.up)*0.25+(Math.random()-0.5)*base*0.1;
@@ -528,8 +589,9 @@ setInterval(function(){
     paintLive();
     if(!isPro()&&d.usage>=LIMIT){disconnect();toast("Лимит 10 ГБ исчерпан. Соединение остановлено.")}
   }
+  if(DB.current&&$("#app").dataset.tab==="profile")updateProfileLive();
   if(DB.current&&$("#app").dataset.tab==="servers")$$("[data-ping]").forEach(function(el){
-    var v=pingOf(BY[el.dataset.ping]);el.lastChild.textContent=v+" мс";el.className="ping "+pingCls(v)
+    var v=pingOf(BY[el.dataset.ping]);el.lastChild.textContent=v?v+" мс":"—";el.className="ping "+pingCls(v)
   });
 },1000);
 
@@ -541,8 +603,8 @@ function paintHome(){
   $("#hAvatar").textContent=initials();
   var s=st.status==="idle"?selected():BY[st.active];
   $("#pFlag").innerHTML=s?flagSvg(s.cc):autoIco();
-  $("#pName").textContent=s?s.city+", "+s.country:"Автовыбор";
-  $("#pSub").textContent=s?"Пинг "+pingOf(s)+" мс · "+d.settings.proto:"Лучший сервер · "+d.settings.proto;
+  $("#pName").textContent=s?label(s):(SERVERS.length?"Автовыбор":"Добавьте сервер");
+  $("#pSub").textContent=s?(s.custom?"WireGuard · "+s.host:"Пинг "+pingOf(s)+" мс · "+d.settings.proto):(SERVERS.length?"Лучший сервер · "+d.settings.proto:"Нажмите, чтобы вставить конфигурацию");
   $("#power").setAttribute("aria-label",st.status==="idle"?"Подключиться":st.status==="connecting"?"Отменить подключение":"Отключиться");
   if(st.status==="idle"){setStatus("Не подключено");$("#timer").textContent="Нажмите, чтобы подключиться";$("#ipLine").textContent="";
     $("#sDown").textContent="0";$("#sUp").textContent="0";$("#sPing").textContent="0"}
@@ -552,19 +614,20 @@ function paintHome(){
 function paintLive(){
   if(st.status!=="connected")return;
   $("#timer").textContent=fmtTime(Math.floor((Date.now()-st.startedAt)/1000));
-  $("#sDown").textContent=Math.round(st.down);$("#sUp").textContent=Math.round(st.up);
+  $("#sDown").textContent=fmtSpd(st.down);$("#sUp").textContent=fmtSpd(st.up);
   $("#sPing").textContent=pingOf(BY[st.active]);
-  $("#ipLine").textContent="Виртуальный IP "+st.ip+" · "+cur().settings.proto;
+  var cs=BY[st.active];$("#ipLine").textContent=(cs&&cs.custom?"IP сервера "+st.ip+" · WireGuard":"Виртуальный IP "+st.ip+" · "+cur().settings.proto);
 }
 
 /* ---------- servers view ---------- */
 var sq="",sf="all";
 function renderServers(){
   var v=$("#servers");
-  v.innerHTML='<h1 class="h1">Серверы</h1>'+
+  v.innerHTML='<div class="head"><h1 class="h1">Серверы</h1><button class="round glass" id="addSrv" aria-label="Добавить свой сервер">'+icon("plus","")+'</button></div>'+
    '<div class="search"><svg class="i"><use href="#i-search"/></svg><input class="inp" id="sSearch" type="search" placeholder="Страна или город" autocomplete="off" value="'+esc(sq)+'" aria-label="Поиск сервера"></div>'+
    '<div class="seg glass" style="margin-bottom:14px"><button id="fAll" aria-pressed="'+(sf==="all")+'">Все</button><button id="fFav" aria-pressed="'+(sf==="fav")+'">Избранные</button></div>'+
    '<div id="slist"></div>';
+  $("#addSrv").onclick=openAddServer;
   $("#sSearch").oninput=function(e){sq=e.target.value;renderList()};
   $("#fAll").onclick=function(){sf="all";renderServers()};
   $("#fFav").onclick=function(){sf="fav";renderServers()};
@@ -577,13 +640,14 @@ function renderList(){
     return !q||(s.country+" "+s.city).toLowerCase().indexOf(q)>=0;
   });
   var html="";
-  if(!q&&sf==="all"){
+  if(!q&&sf==="all"&&SERVERS.length){
     html+='<div class="group glass"><button class="row'+(d.server==="auto"?" sel":"")+'" data-pick="auto"><span class="flag autoico">'+autoIco()+'</span><span class="t"><b>Автовыбор</b><span>Самый быстрый доступный сервер</span></span>'+(d.server==="auto"?icon("shield","")+'':"")+'</button></div>';
   }
-  if(!list.length){html+='<div class="empty">'+(sf==="fav"?"Нет избранных серверов. Нажмите на звезду рядом с сервером.":"Ничего не найдено. Попробуйте другой запрос.")+'</div>'}
+  if(!list.length){html+='<div class="empty">'+(!SERVERS.length?"Серверов пока нет. Нажмите «+» вверху и вставьте конфигурацию WireGuard вашего сервера.":sf==="fav"?"Нет избранных серверов. Нажмите на звезду рядом с сервером.":"Ничего не найдено. Попробуйте другой запрос.")+'</div>'}
   else{
     html+='<div class="group glass">'+list.map(function(s){
       var p=pingOf(s),locked=!canUse(s),fav=d.favs.indexOf(s.id)>=0;
+      if(s.custom)return '<div class="row'+(d.server===s.id?" sel":"")+'" data-pick="'+s.id+'" role="button" tabindex="0"><span class="flag">'+flagSvg(null)+'</span><span class="t"><b>'+esc(s.city)+'</b><span>WireGuard · '+esc(s.host)+'</span></span><span class="r"><span class="ping '+pingCls(p)+'" data-ping="'+s.id+'"><i></i><span>'+(p?p+' мс':'—')+'</span></span><button class="fav" data-del="'+s.id+'" aria-label="Удалить сервер">'+icon("trash","")+'</button></span></div>';
       return '<div class="row'+(d.server===s.id?" sel":"")+'" data-pick="'+s.id+'" role="button" tabindex="0">'+
         '<span class="flag">'+flagSvg(s.cc)+'</span>'+
         '<span class="t"><b>'+s.city+'</b><span>'+s.country+(s.pro?" · Premium":"")+'</span></span>'+
@@ -594,11 +658,56 @@ function renderList(){
   }
   box.innerHTML=html;
   $$("[data-pick]",box).forEach(function(el){
-    el.onclick=function(e){if(e.target.closest("[data-fav]"))return;pick(el.dataset.pick)};
-    el.onkeydown=function(e){if((e.key==="Enter"||e.key===" ")&&!e.target.closest("[data-fav]")){e.preventDefault();pick(el.dataset.pick)}};
+    el.onclick=function(e){if(e.target.closest("[data-fav],[data-del]"))return;pick(el.dataset.pick)};
+    el.onkeydown=function(e){if((e.key==="Enter"||e.key===" ")&&!e.target.closest("[data-fav],[data-del]")){e.preventDefault();pick(el.dataset.pick)}};
   });
+  $$("[data-del]",box).forEach(function(b){b.onclick=function(e){e.stopPropagation();askDelete(b.dataset.del)}});
   $$("[data-fav]",box).forEach(function(b){b.onclick=function(e){
     e.stopPropagation();var i=d.favs.indexOf(b.dataset.fav);if(i<0)d.favs.push(b.dataset.fav);else d.favs.splice(i,1);save();renderList()}});
+}
+function parseWg(t){
+  var g=function(k){var m=new RegExp("^\\s*"+k+"\\s*=\\s*(.+?)\\s*$","mi").exec(t);return m?m[1]:""};
+  var key=/^[A-Za-z0-9+\/]{43}=$/;
+  if(!key.test(g("PrivateKey")))return{err:"В конфигурации нет PrivateKey или он повреждён."};
+  if(!g("Address"))return{err:"В конфигурации нет строки Address."};
+  if(!key.test(g("PublicKey")))return{err:"В конфигурации нет PublicKey сервера."};
+  var m=/^(\[[^\]]+\]|[^:]+):(\d{1,5})$/.exec(g("Endpoint"));
+  if(!m)return{err:"Endpoint должен быть в виде адрес:порт."};
+  return{host:m[1]+":"+m[2]};
+}
+function openAddServer(){
+  openSheet('<h3>Свой сервер</h3><p>Вставьте конфигурацию WireGuard или выберите файл .conf.</p>'+
+   '<div class="field"><label for="srvName">Название</label><input class="inp" id="srvName" maxlength="30" placeholder="Мой сервер"></div>'+
+   '<div class="field" style="margin-top:10px"><label for="srvConf">Конфигурация</label><textarea class="inp ta" id="srvConf" spellcheck="false" autocapitalize="off" placeholder="[Interface]&#10;PrivateKey = ...&#10;Address = 10.8.0.2/32&#10;&#10;[Peer]&#10;PublicKey = ...&#10;Endpoint = 1.2.3.4:51820&#10;AllowedIPs = 0.0.0.0/0"></textarea></div>'+
+   '<div class="err" id="srvErr" role="alert"></div>'+
+   '<div class="btns" style="margin-top:0"><input type="file" id="srvFile" accept=".conf,text/plain" hidden><button class="btn ghost" data-a="file">Выбрать файл .conf</button><button class="btn primary" data-a="ok">Сохранить</button><button class="btn ghost" data-a="no">Отмена</button></div>',
+  function(sh){
+    $("[data-a=no]",sh).onclick=closeSheet;
+    $("[data-a=file]",sh).onclick=function(){$("#srvFile",sh).click()};
+    $("#srvFile",sh).onchange=function(e){
+      var f=e.target.files[0];if(!f)return;var r=new FileReader();
+      r.onload=function(){$("#srvConf",sh).value=String(r.result);if(!$("#srvName",sh).value)$("#srvName",sh).value=f.name.replace(/\.conf$/i,"")};
+      r.readAsText(f);
+    };
+    $("[data-a=ok]",sh).onclick=function(){
+      var conf=$("#srvConf",sh).value.trim(),p=parseWg(conf);
+      if(p.err){$("#srvErr",sh).textContent=p.err;return}
+      var name=$("#srvName",sh).value.trim()||p.host.split(":")[0],d=cur(),id="c-"+Date.now().toString(36);
+      d.custom.push({id:id,name:name,conf:conf,host:p.host});d.server=id;save();rebuild();closeSheet();toast("Сервер добавлен");
+      if($("#app").dataset.tab==="servers")renderServers();paintHome();
+    };
+  });
+}
+function askDelete(id){
+  var s=BY[id];if(!s)return;
+  openSheet('<h3>Удалить сервер?</h3><p>'+esc(s.city)+' будет удалён из приложения. Сам сервер не изменится.</p><div class="btns"><button class="btn danger" data-a="ok">Удалить</button><button class="btn ghost" data-a="no">Отмена</button></div>',function(sh){
+    $("[data-a=no]",sh).onclick=closeSheet;
+    $("[data-a=ok]",sh).onclick=function(){
+      var d=cur();if(st.active===id&&st.status!=="idle")disconnect(true);
+      d.custom=d.custom.filter(function(x){return x.id!==id});if(d.server===id)d.server="auto";
+      save();rebuild();closeSheet();renderServers();paintHome();
+    };
+  });
 }
 function premiumSheet(why){
   openSheet('<h3>Нужен Premium</h3><p>'+why+'</p><div class="btns"><button class="btn primary" data-a="on">Включить Premium (демо)</button><button class="btn ghost" data-a="no">Не сейчас</button></div>',function(s){
@@ -635,8 +744,8 @@ function renderProfile(){
   if(isGuest())h+='<div class="plan glass"><div class="hd"><b>Сохраните данные</b></div><p style="margin-top:6px">Создайте аккаунт, чтобы история и настройки остались при смене устройства.</p><button class="btn primary" data-act="signup">Создать аккаунт</button></div>';
   h+='<div class="plan glass">'+
    (pro?'<div class="hd"><b>Premium активен</b><span>Без лимита</span></div><div class="bar"><i style="width:100%"></i></div><p>Все серверы, безлимитный трафик, до 5 устройств. Использовано в этом месяце: '+fmtBytes(used)+'.</p><button class="btn ghost" data-act="free">Вернуться на Free</button>'
-       :'<div class="hd"><b>Бесплатный тариф</b><span>'+fmtBytes(used)+' из 10 ГБ</span></div><div class="bar"><i class="'+(pct>80?"hot":"")+'" style="width:'+pct+'%"></i></div><p>Лимит обновится '+nextTxt+'. Премиум-серверы закрыты.</p><button class="btn primary" data-act="pro">Попробовать Premium</button>')+'</div>';
-  h+='<div class="kpis"><div class="kpi glass"><small>Сессий</small><b>'+(d.sessions+(live?1:0))+'</b></div><div class="kpi glass"><small>Время в сети</small><b>'+fmtDur(d.totalSec+live)+'</b></div><div class="kpi glass"><small>За месяц</small><b>'+fmtBytes(used)+'</b></div></div>';
+       :'<div class="hd"><b>Бесплатный тариф</b><span id="pUsed">'+fmtBytes(used)+' из 10 ГБ</span></div><div class="bar"><i id="pBar" class="'+(pct>80?"hot":"")+'" style="width:'+pct+'%"></i></div><p>Лимит обновится '+nextTxt+'. Премиум-серверы закрыты.</p><button class="btn primary" data-act="pro">Попробовать Premium</button>')+'</div>';
+  h+='<div class="kpis"><div class="kpi glass"><small>Сессий</small><b id="kSess">'+(d.sessions+(live?1:0))+'</b></div><div class="kpi glass"><small>Время в сети</small><b id="kTime">'+fmtDur(d.totalSec+live)+'</b></div><div class="kpi glass"><small>За месяц</small><b id="kMonth">'+fmtBytes(used)+'</b></div></div>';
   h+='<div class="group-t">Защита</div><div class="group glass">'+
    '<div class="row"><span class="ic">'+icon("bolt","")+'</span><span class="t"><b>Автоподключение</b><span>При запуске приложения</span></span>'+sw("auto",d.settings.auto,"Автоподключение")+'</div>'+
    '<div class="row"><span class="ic">'+icon("shield","")+'</span><span class="t"><b>Kill Switch</b><span>Блокировать трафик при обрыве</span></span>'+sw("kill",d.settings.kill,"Kill Switch")+'</div>'+
@@ -648,8 +757,8 @@ function renderProfile(){
    '<button class="row" data-act="device"><span class="ic">'+icon("plus","")+'</span><span class="t"><b>Привязать устройство</b></span>'+icon("right","")+'</button></div>';
   h+='<div class="group-t">История подключений</div>';
   if(!d.history.length)h+='<div class="group glass"><div class="empty">Пока пусто. Подключитесь, и сессия появится здесь.</div></div>';
-  else h+='<div class="group glass">'+d.history.slice(0,6).map(function(x){var s=BY[x.id];
-    return '<div class="row"><span class="flag">'+flagSvg(s.cc)+'</span><span class="t"><b>'+s.city+', '+s.country+'</b><span>'+fmtDate(x.t)+'</span></span><span class="r" style="flex-direction:column;align-items:flex-end;gap:0"><span>'+fmtDur(x.dur)+'</span><span>'+fmtBytes(x.bytes)+'</span></span></div>'}).join("")+'</div>';
+  else h+='<div class="group glass">'+d.history.slice(0,6).map(function(x){var s=BY[x.id]||DEMO.filter(function(z){return z.id===x.id})[0],nm=x.n||(s?label(s):"Сервер"),cc=x.cc!==undefined?x.cc:(s&&s.cc);
+    return '<div class="row"><span class="flag">'+flagSvg(cc)+'</span><span class="t"><b>'+esc(nm)+'</b><span>'+fmtDate(x.t)+'</span></span><span class="r" style="flex-direction:column;align-items:flex-end;gap:0"><span>'+fmtDur(x.dur)+'</span><span>'+fmtBytes(x.bytes)+'</span></span></div>'}).join("")+'</div>';
   h+='<div class="group-t">Аккаунт</div><div class="group glass">'+
    '<button class="row" data-act="logout"><span class="ic">'+icon("out","red")+'</span><span class="t"><b class="red">Выйти</b></span></button>'+
    (isGuest()?"":'<button class="row" data-act="delete"><span class="ic">'+icon("trash","red")+'</span><span class="t"><b class="red">Удалить аккаунт</b></span></button>')+'</div>';
@@ -682,29 +791,43 @@ $("#profile").addEventListener("click",function(e){
       $("[data-a=no]",s).onclick=closeSheet;
       $("[data-a=ok]",s).onclick=function(){var em=DB.current;disconnect(true);delete DB.users[em];delete DB.data[em];DB.current=null;save();closeSheet();showAuth("register");toast("Аккаунт удалён")}})}
 });
-setInterval(function(){if(DB.current&&$("#app").dataset.tab==="profile"&&st.status==="connected"&&$("#sheetWrap").hidden)renderProfile()},5000);
+function updateProfileLive(){
+  var d=cur(),live=st.status==="connected"?Math.floor((Date.now()-st.startedAt)/1000):0,e;
+  if(e=$("#pUsed"))e.textContent=fmtBytes(d.usage)+" из 10 ГБ";
+  if(e=$("#pBar"))e.style.width=Math.min(100,d.usage/LIMIT*100)+"%";
+  if(e=$("#kTime"))e.textContent=fmtDur(d.totalSec+live);
+  if(e=$("#kMonth"))e.textContent=fmtBytes(d.usage);
+  if(e=$("#kSess"))e.textContent=d.sessions+(live?1:0);
+}
 
 /* ---------- globe ---------- */
 var cv=$("#globe"),cx=cv.getContext("2d"),W=0,H=0,pts=[];
 for(var la=-78;la<=78;la+=6){var r=Math.cos(la*Math.PI/180),n=Math.max(6,Math.round(64*r));
   for(var k=0;k<n;k++)pts.push([la*Math.PI/180,k/n*Math.PI*2])}
-var NODES=SERVERS.filter(function(s){return ["ru-msk","am-evn","de-fra","nl-ams","fi-hel","tr-ist"].indexOf(s.id)>=0});
-function resize(){var r=$("#app").getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);
+var NODES=DEMO.filter(function(s){return ["ru-msk","am-evn","de-fra","nl-ams","fi-hel","tr-ist"].indexOf(s.id)>=0});
+function resize(){var r=$("#app").getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,1.5);
   W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";cx.setTransform(dpr,0,0,dpr,0,0)}
 window.addEventListener("resize",resize);resize();
 var TILT=0.62,sT=Math.sin(TILT),cT=Math.cos(TILT);
 function proj(lat,lon,rot,R,cxp,cyp){
   var x=Math.cos(lat)*Math.sin(lon+rot),y=Math.sin(lat),z=Math.cos(lat)*Math.cos(lon+rot);
   var y2=y*cT-z*sT,z2=y*sT+z*cT;return{x:cxp+x*R,y:cyp-y2*R,z:z2}}
+var bk=[[],[],[],[],[],[]],lastDraw=0;
 function draw(t){
   cx.clearRect(0,0,W,H);
   var R=W*1.12,cxp=W/2,cyp=H*0.6+R,rot=reduced?0.4:t*0.00006+0.4;
   cx.fillStyle="rgba(4,7,11,.0)";
+  for(var b=0;b<6;b++)bk[b].length=0;
   for(var i=0;i<pts.length;i++){
     var p=proj(pts[i][0],pts[i][1],rot,R,cxp,cyp);
     if(p.z<=0||p.y<0||p.y>H)continue;
-    var a=.08+.5*Math.pow(p.z,1.4);
-    cx.fillStyle="rgba(130,175,255,"+a.toFixed(3)+")";cx.fillRect(p.x-.6,p.y-.6,1.4,1.4)}
+    var bi=Math.min(5,Math.floor(Math.pow(p.z,1.4)*6));
+    bk[bi].push(p.x-.6,p.y-.6);
+  }
+  for(var b2=0;b2<6;b2++){
+    cx.fillStyle="rgba(130,175,255,"+(.1+b2*.1).toFixed(2)+")";
+    var arr=bk[b2];for(var k2=0;k2<arr.length;k2+=2)cx.fillRect(arr[k2],arr[k2+1],1.4,1.4);
+  }
   cx.strokeStyle="rgba(47,123,255,.55)";cx.lineWidth=1.4;cx.beginPath();cx.arc(cxp,cyp,R,0,Math.PI*2);cx.stroke();
   cx.strokeStyle="rgba(47,123,255,.14)";cx.lineWidth=6;cx.stroke();
   var pr=NODES.map(function(s){return proj(s.lat*Math.PI/180,s.lon*Math.PI/180,rot,R,cxp,cyp)});
@@ -721,11 +844,16 @@ function draw(t){
     cx.fillStyle="rgba(47,123,255,"+(.18+.18*pulse).toFixed(2)+")";cx.beginPath();cx.arc(p.x,p.y,5+pulse*3,0,Math.PI*2);cx.fill();
     cx.fillStyle="#4f95ff";cx.beginPath();cx.arc(p.x,p.y,2.4,0,Math.PI*2);cx.fill()});
 }
-function loop(t){if(!document.hidden)draw(t);requestAnimationFrame(loop)}
+function loop(t){
+  var gap=$("#app").dataset.tab==="home"?15:50;
+  if(!document.hidden&&t-lastDraw>=gap){lastDraw=t;draw(t)}
+  requestAnimationFrame(loop);
+}
 requestAnimationFrame(loop);
 
 /* ---------- boot ---------- */
 setMode("login");
+if(NATIVE&&vpn())vpn().disconnect().catch(function(){});
 if(DB.current&&(DB.current==="guest"?DB.data.guest:DB.users[DB.current]&&DB.data[DB.current])){enterApp()}
 else{DB.current=null}
 })();

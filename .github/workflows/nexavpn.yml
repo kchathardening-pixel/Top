@@ -22,6 +22,21 @@ jobs:
           java-version: '17'
       - run: npm install
       - run: npx cap add android
+      - name: Native VPN module
+        run: |
+          D=android/app/src/main/java/ru/nexavpn/app
+          mkdir -p $D
+          cp native/NexaVpnPlugin.java native/MainActivity.java $D/
+          python3 - <<'PY'
+          p='android/app/build.gradle'
+          s=open(p).read()
+          if 'compileOptions {' in s:
+              s=s.replace('compileOptions {','compileOptions {\n        coreLibraryDesugaringEnabled true',1)
+          else:
+              s=s.replace('\nandroid {\n','\nandroid {\n    compileOptions {\n        coreLibraryDesugaringEnabled true\n        sourceCompatibility JavaVersion.VERSION_17\n        targetCompatibility JavaVersion.VERSION_17\n    }\n',1)
+          s=s.replace('\ndependencies {\n','\ndependencies {\n    implementation "com.wireguard.android:tunnel:1.0.20230706"\n    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"\n',1)
+          open(p,'w').write(s)
+          PY
       - run: npx capacitor-assets generate --android
       - run: npx cap sync android
       - name: Build release APK
