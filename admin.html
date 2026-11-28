@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#05080c">
+<title>NexaVPN Админка</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<script src="config.js"></script>
+<style>
+:root{--bg:#05080c;--panel:rgba(255,255,255,.05);--panel2:rgba(255,255,255,.09);--glass:rgba(24,28,36,.72);--line:rgba(255,255,255,.1);--fg:#f3f6fa;--muted:#919cae;--dim:#5d6878;--accent:#2f7bff;--ok:#33d17a;--bad:#ff5c5c;--warn:#ffb340;
+--font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.glass{background:var(--glass);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--line)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:14px;font-weight:600;transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--accent);color:#fff}.btn.primary:hover{background:#4a8cff}
+.btn.ghost{background:var(--panel2)}.btn.ghost:hover{background:rgba(255,255,255,.14)}
+.btn.danger{background:rgba(255,92,92,.15);color:var(--bad)}
+.btn.sm{height:36px;padding:0 14px;font-size:14px;border-radius:12px}
+.btn:disabled{opacity:.5;cursor:default}
+.inp{width:100%;height:46px;border-radius:14px;padding:0 14px;background:var(--panel);border:1px solid var(--line);outline:none}
+.inp:focus{border-color:var(--accent)}
+textarea.inp{height:110px;padding:12px 14px;resize:vertical}
+label{display:block;font-size:13px;color:var(--muted);margin:0 0 6px 2px}
+.err{color:var(--bad);font-size:14px;min-height:20px}
+.wrap{max-width:1040px;margin:0 auto;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+
+/* login */
+#login{max-width:420px;margin:0 auto;padding-top:8vh}
+#login .box{padding:28px;display:flex;flex-direction:column;gap:14px;margin-top:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;letter-spacing:-.02em}
+.brand svg{width:32px;height:32px}.brand b{color:var(--accent)}
+.brand small{font-weight:500;color:var(--muted);font-size:14px;margin-left:4px}
+
+/* app */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;padding:4px;border-radius:18px;overflow-x:auto;scrollbar-width:none;margin-bottom:18px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{padding:10px 18px;border-radius:14px;color:var(--muted);font-weight:600;white-space:nowrap;transition:background .2s,color .2s;position:relative}
+.tabs button.on{background:var(--panel2);color:var(--fg)}
+.dot{position:absolute;top:6px;right:6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bad);color:#fff;font-size:11px;display:grid;place-items:center}
+.view{display:none}.view.on{display:block;animation:in .3s cubic-bezier(.22,1,.36,1)}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.tile{padding:18px}.tile small{color:var(--muted)}.tile b{display:block;font-size:30px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:4px}
+.sec{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 0 10px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:12px 16px;border-top:1px solid var(--line);font-size:14px;white-space:nowrap}
+th{color:var(--muted);font-weight:500;border-top:0}
+.scroll{overflow-x:auto;border-radius:22px}
+.chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;background:var(--panel2)}
+.chip.ok{background:rgba(51,209,122,.16);color:var(--ok)}.chip.bad{background:rgba(255,92,92,.16);color:var(--bad)}.chip.warn{background:rgba(255,179,64,.16);color:var(--warn)}
+
+/* news */
+.two{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
+.form{padding:20px;display:flex;flex-direction:column;gap:12px}
+.chk{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg);margin:0}
+.chk input{width:20px;height:20px;accent-color:var(--accent)}
+.nlist{display:flex;flex-direction:column;gap:10px}
+.ni{padding:18px}.ni h4{margin:0 0 4px;font-size:16px}.ni p{margin:0 0 12px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}.ni .acts{display:flex;gap:8px;align-items:center}.ni .when{color:var(--dim);font-size:13px;margin-right:auto}
+
+/* chats */
+.chats{display:grid;grid-template-columns:320px 1fr;gap:16px;height:calc(100vh - 190px);min-height:460px}
+.clist{overflow-y:auto;border-radius:22px}
+.ci{display:block;width:100%;text-align:left;padding:14px 16px;border-top:1px solid var(--line);transition:background .15s}
+.ci:first-child{border-top:0}.ci:hover,.ci.on{background:var(--panel2)}
+.ci .l1{display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.ci .l2{color:var(--muted);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+.cview{display:flex;flex-direction:column;border-radius:22px;overflow:hidden;min-width:0}
+.chead{padding:14px 18px;border-bottom:1px solid var(--line);font-weight:600;display:flex;align-items:center;gap:10px}
+.back{display:none}
+.mlist{flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:6px}
+.bub{max-width:78%;padding:9px 14px;border-radius:18px;white-space:pre-wrap;overflow-wrap:anywhere}
+.bub.user{align-self:flex-start;background:var(--panel2);border-bottom-left-radius:5px}
+.bub.admin{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:5px}
+.bub small{display:block;font-size:11px;opacity:.65;margin-top:3px}
+.bub img{display:block;max-width:100%;max-height:280px;border-radius:12px;margin-bottom:6px}
+.reply{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:rgba(0,0,0,.25)}
+.reply input{flex:1;min-width:0;height:44px;border-radius:22px;padding:0 16px;background:var(--panel);border:1px solid var(--line);outline:none}
+.reply input:focus{border-color:var(--accent)}
+.empty{padding:36px 16px;text-align:center;color:var(--muted)}
+.keybox{padding:16px;border-radius:16px;background:var(--panel2);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;word-break:break-all;margin-top:12px}
+
+@media (max-width:900px){
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .two{grid-template-columns:1fr}
+  .chats{grid-template-columns:1fr;height:calc(100vh - 170px)}
+  .chats.open .clist{display:none}.chats:not(.open) .cview{display:none}
+  .back{display:inline-grid}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="logo" viewBox="0 0 64 64"><path d="M32 3 55 11.500V30c0 14.500-10 25.500-23 31C19 55.500 9 44.500 9 30V11.500Z" fill="#2f7bff"/><path d="M32 3 55 11.500V30c0 14.500-10 25.500-23 31V3Z" fill="#fff" fill-opacity=".1"/><path d="M24.500 29v-5a7.500 7.500 0 0 1 15 0v5" fill="none" stroke="#06101f" stroke-width="3.400" stroke-linecap="round"/><rect x="20" y="28" width="24" height="18" rx="4.500" fill="#06101f"/><circle cx="32" cy="35.500" r="2.600" fill="#2f7bff"/><rect x="30.800" y="36" width="2.400" height="5.500" rx="1.200" fill="#2f7bff"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+</defs></svg>
+
+<div class="wrap">
+  <!-- ВХОД -->
+  <section id="login">
+    <div class="brand"><svg><use href="#logo"/></svg><span>Nexa<b>VPN</b><small>Админка</small></span></div>
+    <form class="box card" id="lform">
+      <div><label for="lLogin">Логин</label><input class="inp" id="lLogin" autocomplete="username" autocapitalize="off" spellcheck="false"></div>
+      <div><label for="lPass">Пароль</label><input class="inp" id="lPass" type="password" autocomplete="current-password"></div>
+      <div id="apiRow"><label for="lApi">Адрес сервера</label><input class="inp" id="lApi" placeholder="https://1-2-3-4.sslip.io" autocapitalize="off" spellcheck="false"></div>
+      <div class="err" id="lErr" role="alert"></div>
+      <button class="btn primary" type="submit" id="lBtn">Войти</button>
+    </form>
+  </section>
+
+  <!-- ПАНЕЛЬ -->
+  <section id="app" hidden>
+    <div class="top">
+      <div class="brand"><svg><use href="#logo"/></svg><span>Nexa<b>VPN</b><small>Админка</small></span></div>
+      <div style="display:flex;gap:8px"><a class="btn ghost sm" href="index.html">Сайт</a><button class="btn ghost sm" id="logout">Выйти</button></div>
+    </div>
+    <div class="tabs glass" role="tablist">
+      <button data-v="overview" class="on">Обзор</button><button data-v="news">Новости</button><button data-v="chats" id="tChats">Чаты</button><button data-v="keys">Ключи</button>
+    </div>
+
+    <div class="view on" id="v-overview">
+      <div class="tiles">
+        <div class="tile card"><small>Пользователей</small><b id="sUsers">0</b></div>
+        <div class="tile card"><small>Активных доступов</small><b id="sActive">0</b></div>
+        <div class="tile card"><small>Оплат</small><b id="sPaid">0</b></div>
+        <div class="tile card"><small>Выручка, ₽</small><b id="sRev">0</b></div>
+      </div>
+      <div class="sec">Последние платежи</div>
+      <div class="scroll card"><table><thead><tr><th>Платёж</th><th>Пользователь</th><th>Тариф</th><th>Статус</th><th>Время</th></tr></thead><tbody id="payRows"></tbody></table></div>
+    </div>
+
+    <div class="view" id="v-news">
+      <div class="two">
+        <form class="form card" id="nform">
+          <b id="nTitleH">Новая новость</b>
+          <div><label for="nTitle">Заголовок</label><input class="inp" id="nTitle" maxlength="120"></div>
+          <div><label for="nText">Текст</label><textarea class="inp" id="nText" maxlength="2000"></textarea></div>
+          <label class="chk"><input type="checkbox" id="nPin">Закрепить вверху</label>
+          <div class="err" id="nErr" role="alert"></div>
+          <div style="display:flex;gap:8px"><button class="btn primary" type="submit" style="flex:1">Опубликовать</button><button class="btn ghost" type="button" id="nCancel" hidden>Отмена</button></div>
+        </form>
+        <div class="nlist" id="nlist"></div>
+      </div>
+    </div>
+
+    <div class="view" id="v-chats">
+      <div class="chats" id="chats">
+        <div class="clist card" id="clist"></div>
+        <div class="cview card" id="cview"><div class="empty">Выберите диалог слева.</div></div>
+      </div>
+    </div>
+
+    <div class="view" id="v-keys">
+      <div class="two">
+        <div class="form card">
+          <b>Выдать ключ вручную</b>
+          <div><label for="kDays">Срок</label><select class="inp" id="kDays"><option value="1">1 день</option><option value="7">7 дней</option><option value="30" selected>30 дней</option><option value="90">90 дней</option><option value="365">365 дней</option></select></div>
+          <div class="err" id="kErr" role="alert"></div>
+          <button class="btn primary" id="kBtn">Создать ключ</button>
+          <div class="keybox" id="kOut" hidden></div>
+          <button class="btn ghost" id="kCopy" hidden>Скопировать</button>
+        </div>
+        <div>
+          <div class="sec" style="margin-top:0">Все доступы</div>
+          <div class="scroll card"><table><thead><tr><th>ID</th><th>Статус</th><th>До</th><th>Адрес в сети</th></tr></thead><tbody id="subRows"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return(r||document).querySelector(s)},$$=function(s,r){return[].slice.call((r||document).querySelectorAll(s))};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function pad(n){return n<10?"0"+n:""+n}
+function dt(ts){var d=new Date(ts*1000);return d.toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"})}
+function tm(ts){var d=new Date(ts*1000);return pad(d.getHours())+":"+pad(d.getMinutes())}
+function ls(k,v){try{if(v===undefined)return sessionStorage.getItem(k);if(v===null)sessionStorage.removeItem(k);else sessionStorage.setItem(k,v)}catch(e){}return null}
+function lsp(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}return null}
+
+var API=(lsp("nexa.admin.api")||(window.NEXA&&NEXA.api)||"").replace(/\/+$/,""),TOKEN=ls("nexa.admin.token")||"";
+$("#lApi").value=API;
+if(window.NEXA&&NEXA.api)$("#apiRow").hidden=true;
+
+function call(path,opt){
+  opt=opt||{};var h={"Content-Type":"application/json"};if(TOKEN)h.Authorization="Bearer "+TOKEN;
+  return fetch(API+path,{method:opt.method||"GET",headers:h,body:opt.body?JSON.stringify(opt.body):undefined,cache:"no-store"}).then(function(r){
+    if(r.status===401&&TOKEN){out();throw new Error("auth")}
+    return r.json().then(function(j){if(!r.ok||j.ok===false){var e=new Error(j.error||"error");e.code=r.status;throw e}return j});
+  });
+}
+
+/* вход / выход */
+function enter(){$("#login").hidden=true;$("#app").hidden=false;loadAll();start()}
+function out(){TOKEN="";ls("nexa.admin.token",null);stop();$("#app").hidden=true;$("#login").hidden=false}
+$("#logout").onclick=out;
+$("#lform").onsubmit=function(e){
+  e.preventDefault();var err=$("#lErr");err.textContent="";
+  var a=$("#lApi").value.trim().replace(/\/+$/,"");
+  if(!a&&!(window.NEXA&&NEXA.api)){err.textContent="Укажите адрес сервера.";return}
+  if(a){API=a}
+  var b=$("#lBtn");b.disabled=true;
+  call("/api/admin/login",{method:"POST",body:{login:$("#lLogin").value,password:$("#lPass").value}}).then(function(j){
+    TOKEN=j.token;ls("nexa.admin.token",TOKEN);lsp("nexa.admin.api",API);$("#lPass").value="";enter();
+  }).catch(function(x){
+    err.textContent=x.code===401?"Неверный логин или пароль.":x.code===429?"Слишком много попыток. Подождите 10 минут.":"Сервер недоступен. Проверьте адрес.";
+  }).then(function(){b.disabled=false});
+};
+
+/* вкладки */
+$$(".tabs button").forEach(function(b){b.onclick=function(){
+  $$(".tabs button").forEach(function(x){x.classList.toggle("on",x===b)});
+  $$(".view").forEach(function(v){v.classList.toggle("on",v.id==="v-"+b.dataset.v)});
+  if(b.dataset.v==="chats")loadChats();
+}});
+
+/* обзор */
+function loadStats(){
+  call("/api/admin/stats").then(function(j){
+    $("#sUsers").textContent=j.stats.users;$("#sActive").textContent=j.stats.active;$("#sPaid").textContent=j.stats.paid;$("#sRev").textContent=j.stats.revenue;
+    var st={succeeded:["Оплачен","ok"],pending:["Ожидает","warn"],canceled:["Отменён","bad"]};
+    $("#payRows").innerHTML=j.payments.length?j.payments.map(function(p){var s=st[p.status]||[p.status,""];return"<tr><td>"+esc(p.id)+"</td><td>"+(p.user<0?"Выдан вручную":esc(p.user))+"</td><td>"+esc(p.plan)+'</td><td><span class="chip '+s[1]+'">'+s[0]+"</span></td><td>"+dt(p.ts)+"</td></tr>"}).join(""):'<tr><td colspan="5" class="empty">Платежей пока нет.</td></tr>';
+  }).catch(function(){});
+}
+
+/* новости */
+var editId=null;
+function loadNews(){
+  call("/api/news").then(function(j){
+    var l=$("#nlist");
+    if(!j.news.length){l.innerHTML='<div class="empty card">Новостей пока нет. Добавьте первую слева.</div>';return}
+    l.innerHTML=j.news.map(function(n){return'<article class="ni card"><h4>'+(n.pinned?'<span class="chip warn" style="margin-right:8px">Закреплено</span>':"")+esc(n.title)+"</h4><p>"+esc(n.text)+'</p><div class="acts"><span class="when">'+dt(n.ts)+'</span><button class="btn ghost sm" data-e="'+n.id+'">Изменить</button><button class="btn danger sm" data-d="'+n.id+'">Удалить</button></div></article>'}).join("");
+    $$("[data-e]",l).forEach(function(b){b.onclick=function(){var n=j.news.filter(function(x){return x.id==b.dataset.e})[0];editId=n.id;$("#nTitle").value=n.title;$("#nText").value=n.text;$("#nPin").checked=!!n.pinned;$("#nTitleH").textContent="Редактирование";$("#nCancel").hidden=false;window.scrollTo(0,0)}});
+    $$("[data-d]",l).forEach(function(b){b.onclick=function(){
+      if(b.dataset.sure){call("/api/admin/news/"+b.dataset.d,{method:"DELETE"}).then(loadNews)}
+      else{b.dataset.sure="1";b.textContent="Точно удалить?";setTimeout(function(){b.dataset.sure="";b.textContent="Удалить"},3000)}
+    }});
+  }).catch(function(){});
+}
+function resetNews(){editId=null;$("#nform").reset();$("#nTitleH").textContent="Новая новость";$("#nCancel").hidden=true}
+$("#nCancel").onclick=resetNews;
+$("#nform").onsubmit=function(e){
+  e.preventDefault();var err=$("#nErr");err.textContent="";
+  call("/api/admin/news",{method:"POST",body:{id:editId,title:$("#nTitle").value,text:$("#nText").value,pinned:$("#nPin").checked}}).then(function(){resetNews();loadNews()})
+   .catch(function(x){err.textContent=x.message==="empty"?"Заполните заголовок и текст.":"Не удалось сохранить."});
+};
+
+/* чаты */
+var curDev=null,lastId=0,chatsTimer=null,lastChats=[];
+function loadChats(){
+  call("/api/admin/chats").then(function(j){
+    lastChats=j.chats;var w=j.chats.reduce(function(a,c){return a+(c.waiting>0?1:0)},0);
+    var t=$("#tChats");t.innerHTML="Чаты"+(w?'<span class="dot">'+w+"</span>":"");
+    var l=$("#clist");
+    l.innerHTML=j.chats.length?j.chats.map(function(c){return'<button class="ci'+(c.device===curDev?" on":"")+'" data-d="'+esc(c.device)+'"><div class="l1"><span>Гость '+esc(c.device.slice(0,6))+'</span><span style="color:var(--dim);font-weight:400;font-size:12px">'+tm(c.ts)+'</span></div><div class="l2">'+(c.waiting?'<span class="chip bad" style="margin-right:6px">'+c.waiting+"</span>":"")+(c.frm==="admin"?"Вы: ":"")+esc(c.text)+"</div></button>"}).join(""):'<div class="empty">Сообщений пока нет.</div>';
+    $$(".ci",l).forEach(function(b){b.onclick=function(){openDialog(b.dataset.d)}});
+  }).catch(function(){});
+}
+function bubble(m){
+  var img=m.img?'<img src="'+API+"/api/uploads/"+esc(m.img)+'" alt="Фото">':"";
+  return'<div class="bub '+m.frm+'">'+img+(m.text?esc(m.text):"")+"<small>"+tm(m.ts)+"</small></div>";
+}
+function openDialog(dev){
+  curDev=dev;lastId=0;$("#chats").classList.add("open");
+  $("#cview").innerHTML='<div class="chead"><button class="btn ghost sm back" id="back" aria-label="Назад"><svg class="i"><use href="#i-back"/></svg></button>Гость '+esc(dev.slice(0,6))+'</div><div class="mlist" id="mlist"></div><form class="reply" id="rform"><input id="rin" placeholder="Ответ" maxlength="2000" autocomplete="off"><button class="btn primary sm" type="submit" style="height:44px;border-radius:22px;padding:0 20px">Отправить</button></form>';
+  $("#back").onclick=function(){curDev=null;$("#chats").classList.remove("open")};
+  $("#rform").onsubmit=function(e){e.preventDefault();var i=$("#rin"),t=i.value.trim();if(!t)return;i.value="";call("/api/admin/reply",{method:"POST",body:{device:dev,text:t}}).then(function(){pullDialog();loadChats()})};
+  pullDialog();loadChats();
+}
+function pullDialog(){
+  if(!curDev)return;var d=curDev;
+  call("/api/admin/chat?device="+encodeURIComponent(d)+"&after="+lastId).then(function(j){
+    if(d!==curDev||!j.messages.length)return;var box=$("#mlist");if(!box)return;
+    var stick=box.scrollTop+box.clientHeight>=box.scrollHeight-60||!lastId;
+    box.insertAdjacentHTML("beforeend",j.messages.map(bubble).join(""));
+    lastId=j.messages[j.messages.length-1].id;if(stick)box.scrollTop=box.scrollHeight;
+  }).catch(function(){});
+}
+
+/* ключи */
+function loadSubs(){
+  call("/api/admin/subs").then(function(j){
+    $("#subRows").innerHTML=j.subs.length?j.subs.map(function(s){return"<tr><td>"+(s.id<0?"Вручную":esc(s.id))+'</td><td><span class="chip '+(s.active?"ok":"bad")+'">'+(s.active?"Активен":"Истёк")+"</span></td><td>"+dt(s.expires)+"</td><td>"+esc(s.ip||"")+"</td></tr>"}).join(""):'<tr><td colspan="4" class="empty">Доступов пока нет.</td></tr>';
+  }).catch(function(){});
+}
+$("#kBtn").onclick=function(){
+  var b=this;b.disabled=true;$("#kErr").textContent="";
+  call("/api/admin/issue",{method:"POST",body:{days:+$("#kDays").value}}).then(function(j){
+    var o=$("#kOut");o.hidden=false;o.textContent=j.key;$("#kCopy").hidden=false;loadSubs();loadStats();
+  }).catch(function(){$("#kErr").textContent="Не удалось создать ключ. Проверьте, что WireGuard запущен на сервере."}).then(function(){b.disabled=false});
+};
+$("#kCopy").onclick=function(){
+  var t=$("#kOut").textContent,b=this;
+  var ok=function(){b.textContent="Скопировано";setTimeout(function(){b.textContent="Скопировать"},1500)};
+  try{navigator.clipboard.writeText(t).then(ok,function(){sel()})}catch(e){sel()}
+  function sel(){var r=document.createRange();r.selectNodeContents($("#kOut"));var s=getSelection();s.removeAllRanges();s.addRange(r)}
+};
+
+/* обновление */
+function loadAll(){loadStats();loadNews();loadChats();loadSubs()}
+function start(){stop();chatsTimer=setInterval(function(){if(document.hidden)return;loadChats();pullDialog();if($("#v-overview").classList.contains("on"))loadStats()},5000)}
+function stop(){clearInterval(chatsTimer)}
+
+if(TOKEN&&API)enter();
+})();
+</script>
+</body>
+</html>
