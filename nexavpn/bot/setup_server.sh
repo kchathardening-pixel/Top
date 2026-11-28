@@ -4,6 +4,7 @@ set -euo pipefail
 [ "$(id -u)" -eq 0 ] || { echo "Запустите от root"; exit 1; }
 
 APP=/opt/nexavpn-bot
+SRC="$(pwd)"
 IFACE_OUT=$(ip -4 route show default | awk '{print $5; exit}')
 PUBIP=$(curl -4 -s https://ifconfig.me || hostname -I | awk '{print $1}')
 
@@ -36,7 +37,7 @@ ufw --force enable >/dev/null
 
 # --- Бот ---
 mkdir -p "$APP"
-cp -r bot.py db.py wg.py requirements.txt .env.example "$APP"/
+cp -r bot.py api.py db.py wg.py requirements.txt .env.example "$APP"/
 cd "$APP"
 python3 -m venv venv
 ./venv/bin/pip install -q -r requirements.txt
@@ -45,6 +46,34 @@ if [ ! -f .env ]; then
   sed -i "s|^WG_ENDPOINT=.*|WG_ENDPOINT=$PUBIP|" .env
   chmod 600 .env
 fi
+
+# --- Сайт и HTTPS через Caddy (адрес вида 1-2-3-4.sslip.io, домен покупать не нужно) ---
+HOST="$(echo "$PUBIP" | tr . -).sslip.io"
+if ! command -v caddy >/dev/null; then
+  apt-get install -y debian-keyring debian-archive-keyring apt-transport-https gpg
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list
+  apt-get update -y && apt-get install -y caddy
+fi
+mkdir -p /opt/nexavpn-site
+if [ -d "$SRC/site" ]; then
+  cp -r "$SRC"/site/. /opt/nexavpn-site/
+  sed -i "s|api: *\"[^\"]*\"|api: \"https://$HOST\"|" /opt/nexavpn-site/config.js
+fi
+cat > /etc/caddy/Caddyfile <<CADDY
+$HOST {
+  handle /api/* {
+    reverse_proxy 127.0.0.1:8080
+  }
+  handle {
+    root * /opt/nexavpn-site
+    file_server
+  }
+}
+CADDY
+ufw allow 80/tcp >/dev/null
+ufw allow 443/tcp >/dev/null
+systemctl enable caddy >/dev/null && systemctl restart caddy
 
 cat > /etc/systemd/system/nexavpn-bot.service <<UNIT
 [Unit]
@@ -66,5 +95,6 @@ systemctl enable nexavpn-bot >/dev/null
 echo
 echo "Готово. Публичный ключ WireGuard сервера: $(cat /etc/wireguard/server.pub)"
 echo "IP сервера: $PUBIP"
-echo "Дальше: nano $APP/.env  (BOT_TOKEN, YOOKASSA_SECRET_KEY, ADMIN_ID)"
+echo "Сайт и API: https://$HOST"
+echo "Дальше: nano $APP/.env  (BOT_TOKEN, YOOKASSA_SECRET_KEY, ADMIN_ID, ADMIN_LOGIN, ADMIN_PASSWORD)"
 echo "Затем:  systemctl start nexavpn-bot && journalctl -u nexavpn-bot -f"

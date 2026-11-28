@@ -53,3 +53,7 @@ def client_conf(priv, ip):
         "AllowedIPs = 0.0.0.0/0, ::/0\n"
         "PersistentKeepalive = 25\n"
     )
+
+
+def pubkey(priv):
+    return _run("wg", "pubkey", inp=priv + "\n")

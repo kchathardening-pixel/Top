@@ -7,10 +7,15 @@ _c.row_factory = sqlite3.Row
 _c.executescript("""
 CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, trial_used INTEGER DEFAULT 0, created INTEGER);
 CREATE TABLE IF NOT EXISTS subs(user_id INTEGER PRIMARY KEY, expires INTEGER, ip TEXT, priv TEXT, pub TEXT, active INTEGER DEFAULT 0);
-CREATE TABLE IF NOT EXISTS msgs(id INTEGER PRIMARY KEY AUTOINCREMENT, device TEXT, frm TEXT, text TEXT, ts INTEGER);
+CREATE TABLE IF NOT EXISTS msgs(id INTEGER PRIMARY KEY AUTOINCREMENT, device TEXT, frm TEXT, text TEXT, ts INTEGER, img TEXT);
+CREATE TABLE IF NOT EXISTS news(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, text TEXT, ts INTEGER, pinned INTEGER DEFAULT 0);
 CREATE TABLE IF NOT EXISTS fwd(msg_id INTEGER PRIMARY KEY, device TEXT);
 CREATE TABLE IF NOT EXISTS payments(id TEXT PRIMARY KEY, user_id INTEGER, plan TEXT, status TEXT, created INTEGER);
 """)
+try:
+    _c.execute("ALTER TABLE msgs ADD COLUMN img TEXT")
+except sqlite3.OperationalError:
+    pass
 _c.commit()
 
 
@@ -85,15 +90,15 @@ def stats():
 
 
 # ---------- чат поддержки ----------
-def add_msg(device, frm, text):
+def add_msg(device, frm, text, img=None):
     with _lock:
-        cur = _c.execute("INSERT INTO msgs(device, frm, text, ts) VALUES(?,?,?,?)", (device, frm, text, int(time.time())))
+        cur = _c.execute("INSERT INTO msgs(device, frm, text, ts, img) VALUES(?,?,?,?,?)", (device, frm, text, int(time.time()), img))
         _c.commit()
         return cur.lastrowid
 
 
 def msgs_after(device, after):
-    return q("SELECT id, text, ts FROM msgs WHERE device=? AND frm='admin' AND id>? ORDER BY id LIMIT 50", (device, after))
+    return q("SELECT id, text, ts, img FROM msgs WHERE device=? AND frm='admin' AND id>? ORDER BY id LIMIT 50", (device, after))
 
 
 def recent_user_msgs(device, seconds=3600):
@@ -107,3 +112,52 @@ def set_fwd(msg_id, device):
 def get_fwd(msg_id):
     r = q("SELECT device FROM fwd WHERE msg_id=?", (msg_id,), one=True)
     return r["device"] if r else None
+
+
+# ---------- новости ----------
+def news_list():
+    return q("SELECT id, title, text, ts, pinned FROM news ORDER BY pinned DESC, ts DESC LIMIT 50")
+
+
+def news_save(nid, title, text, pinned):
+    if nid:
+        q("UPDATE news SET title=?, text=?, pinned=? WHERE id=?", (title, text, int(pinned), nid), write=True)
+        return nid
+    with _lock:
+        cur = _c.execute("INSERT INTO news(title, text, ts, pinned) VALUES(?,?,?,?)", (title, text, int(time.time()), int(pinned)))
+        _c.commit()
+        return cur.lastrowid
+
+
+def news_del(nid):
+    q("DELETE FROM news WHERE id=?", (nid,), write=True)
+
+
+# ---------- админка ----------
+def chats_list():
+    return q("""
+      SELECT m.device, m.text, m.frm, m.ts, m.img,
+        (SELECT COUNT(*) FROM msgs u WHERE u.device=m.device AND u.frm='user'
+           AND u.id > COALESCE((SELECT MAX(id) FROM msgs a WHERE a.device=m.device AND a.frm='admin'), 0)) AS waiting
+      FROM msgs m WHERE m.id=(SELECT MAX(id) FROM msgs WHERE device=m.device)
+      ORDER BY m.id DESC LIMIT 100""")
+
+
+def chat_msgs(device, after=0):
+    return q("SELECT id, frm, text, ts, img FROM msgs WHERE device=? AND id>? ORDER BY id LIMIT 300", (device, after))
+
+
+def all_subs():
+    return q("SELECT user_id, expires, active, ip FROM subs ORDER BY expires DESC LIMIT 200")
+
+
+def recent_payments():
+    return q("SELECT id, user_id, plan, status, created FROM payments ORDER BY created DESC LIMIT 50")
+
+
+def paid_by_plan():
+    return q("SELECT plan, COUNT(*) c FROM payments WHERE status='succeeded' GROUP BY plan")
+
+
+def find_sub_by_pub(pub):
+    return q("SELECT * FROM subs WHERE pub=?", (pub,), one=True)

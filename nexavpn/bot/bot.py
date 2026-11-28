@@ -1,9 +1,8 @@
 import asyncio, base64, io, logging, os, re, time, uuid
 
 import qrcode
-from aiohttp import web
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import CommandStart, Command
+from aiogram.filters import CommandObject, CommandStart, Command
 from aiogram.types import (BufferedInputFile, CallbackQuery, InlineKeyboardButton,
                            InlineKeyboardMarkup, Message)
 from yookassa import Configuration, Payment
@@ -19,7 +18,7 @@ def load_env(path=".env"):
 
 
 load_env()
-import db, wg  # noqa: E402  (после загрузки .env)
+import api, db, wg  # noqa: E402  (после загрузки .env)
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 SHOP_ID = os.environ["YOOKASSA_SHOP_ID"]
@@ -58,10 +57,27 @@ def fmt_date(ts):
     return time.strftime("%d.%m.%Y %H:%M", time.localtime(ts))
 
 
+async def offer(uid, chat_id, key):
+    p = PLANS[key]
+    try:
+        pid, url = await asyncio.to_thread(_create_payment, uid, key)
+    except Exception:
+        logging.exception("create payment")
+        return await bot.send_message(chat_id, "Не удалось создать платёж. Попробуйте позже или напишите в поддержку.", reply_markup=menu())
+    db.add_payment(pid, uid, key)
+    kb = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text=f"Оплатить {p['price']} ₽", url=url)],
+        [InlineKeyboardButton(text="Я оплатил, проверить", callback_data=f"chk:{pid}")],
+    ])
+    await bot.send_message(chat_id, f"Тариф: {p['title']}, {p['price']} ₽.\nПосле оплаты ключ придёт автоматически.", reply_markup=kb)
+
+
 @dp.message(CommandStart())
-async def start(m: Message):
+async def start(m: Message, command: CommandObject):
     db.touch_user(m.from_user.id)
     await m.answer("NexaVPN. Свобода в интернете.\nБыстрый и безопасный VPN. Выберите действие.", reply_markup=menu())
+    if command.args in PLANS:      # ссылка с сайта: t.me/бот?start=m1
+        await offer(m.from_user.id, m.chat.id, command.args)
 
 
 @dp.callback_query(F.data == "menu")
@@ -144,6 +160,17 @@ async def activate(uid, days):
     return db.get_sub(uid)
 
 
+def make_key(conf):
+    return "nexavpn://" + base64.urlsafe_b64encode(conf.encode()).decode().rstrip("=") + "#NexaVPN"
+
+
+async def issue_key(days):
+    """Выдача ключа из админки без привязки к Telegram."""
+    uid = -int(time.time() * 1000)
+    sub = await activate(uid, days)
+    return make_key(await asyncio.to_thread(wg.client_conf, sub["priv"], sub["ip"]))
+
+
 async def send_access(chat_id, uid):
     sub = db.get_sub(uid)
     if not sub or not sub["active"]:
@@ -155,7 +182,7 @@ async def send_access(chat_id, uid):
     await bot.send_photo(chat_id, BufferedInputFile(buf.getvalue(), "nexavpn.png"),
                          caption=f"Доступ активен до {fmt_date(sub['expires'])}.\nОтсканируйте QR в приложении WireGuard.")
     await bot.send_document(chat_id, BufferedInputFile(conf.encode(), "NexaVPN.conf"), caption="Файл конфигурации")
-    key = "nexavpn://" + base64.urlsafe_b64encode(conf.encode()).decode().rstrip("=") + "#NexaVPN"
+    key = make_key(conf)
     await bot.send_message(chat_id, "Ключ для приложения NexaVPN. Нажмите на него, чтобы скопировать, и вставьте при первом запуске:\n\n<code>" + key + "</code>", parse_mode="HTML")
 
 
@@ -223,61 +250,6 @@ async def admin_reply(m: Message):
     await m.reply("Отправлено в приложение")
 
 
-# ---------- HTTP API для чата поддержки в приложении ----------
-DEV_RE = re.compile(r"^[A-Za-z0-9]{8,64}$")
-
-
-@web.middleware
-async def cors(request, handler):
-    if request.method == "OPTIONS":
-        resp = web.Response()
-    else:
-        resp = await handler(request)
-    resp.headers["Access-Control-Allow-Origin"] = "*"
-    resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
-    resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    return resp
-
-
-async def api_send(request):
-    try:
-        data = await request.json()
-    except Exception:
-        return web.json_response({"ok": False}, status=400)
-    dev, text = str(data.get("device", "")), str(data.get("text", "")).strip()[:1000]
-    if not DEV_RE.match(dev) or not text:
-        return web.json_response({"ok": False}, status=400)
-    if db.recent_user_msgs(dev) >= 30:
-        return web.json_response({"ok": False, "error": "limit"}, status=429)
-    db.add_msg(dev, "user", text)
-    if ADMIN_ID:
-        sent = await bot.send_message(ADMIN_ID, f"Чат приложения, устройство {dev[:6]}:\n\n{text}\n\n(ответьте на это сообщение, и ответ придёт в приложение)")
-        db.set_fwd(sent.message_id, dev)
-    return web.json_response({"ok": True})
-
-
-async def api_poll(request):
-    dev = request.query.get("device", "")
-    try:
-        after = int(request.query.get("after", "0"))
-    except ValueError:
-        after = 0
-    if not DEV_RE.match(dev):
-        return web.json_response({"messages": []})
-    rows = db.msgs_after(dev, after)
-    return web.json_response({"messages": [{"id": r["id"], "text": r["text"], "ts": r["ts"]} for r in rows]})
-
-
-async def start_api():
-    app = web.Application(middlewares=[cors])
-    app.router.add_post("/api/support/send", api_send)
-    app.router.add_get("/api/support/poll", api_poll)
-    app.router.add_route("OPTIONS", "/{tail:.*}", lambda r: web.Response())
-    runner = web.AppRunner(app)
-    await runner.setup()
-    await web.TCPSite(runner, "0.0.0.0", API_PORT).start()
-
-
 async def poller():
     """Фоновая проверка платежей и отключение истёкших доступов."""
     tick = 0
@@ -303,7 +275,7 @@ async def main():
     global BOT_USERNAME
     logging.basicConfig(level=logging.INFO)
     BOT_USERNAME = (await bot.get_me()).username
-    await start_api()
+    await api.start(bot, ADMIN_ID, API_PORT, PLANS, issue_key)
     asyncio.create_task(poller())
     await dp.start_polling(bot)
 
